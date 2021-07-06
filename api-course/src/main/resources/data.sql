@@ -1,0 +1,1 @@
+INSERT INTO categorie (nom, supprimer) values ('féculent', false);

@@ -25,6 +25,6 @@ public class Produit implements Serializable {
     @Column(nullable = false)
     private Boolean supprimer = false;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Categorie categorie;
 }
