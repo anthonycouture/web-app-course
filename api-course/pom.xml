@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>fr.couture</groupId>
 	<artifactId>course</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>api-course</name>
 	<description>Api pour les courses</description>
 	<properties>
