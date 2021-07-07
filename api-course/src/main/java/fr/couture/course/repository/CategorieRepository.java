@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface CategorieRepository extends CrudRepository<Categorie, Long> {
 
     Optional<Categorie> findCategorieByNom(String nom);
+
+    Iterable<Categorie> findAllBySupprimerIsFalse();
 }
