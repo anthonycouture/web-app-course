@@ -13,4 +13,6 @@ public interface ProduitRepository extends CrudRepository<Produit, Long> {
     Iterable<Produit> findAllBySupprimerIsFalseAndCategorieEquals(Categorie categorie);
 
     Optional<Produit> findProduitByNom(String nom);
+
+    Iterable<Produit> findAllBySupprimerIsFalse();
 }
