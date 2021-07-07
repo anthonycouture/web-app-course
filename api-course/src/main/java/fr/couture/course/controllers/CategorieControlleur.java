@@ -2,7 +2,7 @@ package fr.couture.course.controllers;
 
 import fr.couture.course.dto.CategorieDTO;
 import fr.couture.course.exceptions.CategoryExistException;
-import fr.couture.course.exceptions.CategoryUseInListException;
+import fr.couture.course.exceptions.ProductExistInCategoryException;
 import fr.couture.course.services.CategorieService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +15,13 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @RestController
-@RequestMapping("/categorie")
+@RequestMapping("/categories")
 public class CategorieControlleur {
 
     private CategorieService categorieService;
     private ModelMapper modelMapper;
 
-    @GetMapping("/get-categories")
+    @GetMapping
     public List<CategorieDTO> findAllCategorie() {
         return StreamSupport
                 .stream(categorieService.findAllCategorie().spliterator(), false)
@@ -29,7 +29,7 @@ public class CategorieControlleur {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/create-categorie")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CategorieDTO createCategorie(@RequestBody CategorieDTO categorieDTO) {
         try {
@@ -41,11 +41,11 @@ public class CategorieControlleur {
         }
     }
 
-    @DeleteMapping("/delete-categorie/{id}")
+    @DeleteMapping("/{id}")
     public void deleteCategorie(@PathVariable Long id) {
         try {
             categorieService.deleteCategorie(id);
-        } catch (CategoryUseInListException e) {
+        } catch (ProductExistInCategoryException e) {
             e.printStackTrace();
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);

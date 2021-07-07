@@ -2,10 +2,11 @@ package fr.couture.course.services.impl;
 
 import fr.couture.course.entity.Categorie;
 import fr.couture.course.exceptions.CategoryExistException;
-import fr.couture.course.exceptions.CategoryUseInListException;
+import fr.couture.course.exceptions.CategoryNotFoundException;
+import fr.couture.course.exceptions.ProductExistInCategoryException;
 import fr.couture.course.repository.CategorieRepository;
-import fr.couture.course.repository.ListeCourseRepository;
 import fr.couture.course.services.CategorieService;
+import fr.couture.course.services.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class CategorieServiceImpl implements CategorieService {
 
     private CategorieRepository categorieRepository;
 
-    private ListeCourseRepository listeCourseRepository;
+    private ProduitService produitService;
 
     @Override
     public Iterable<Categorie> findAllCategorie() {
@@ -45,18 +46,23 @@ public class CategorieServiceImpl implements CategorieService {
     }
 
     @Override
-    public void deleteCategorie(Long id) throws CategoryUseInListException {
+    public void deleteCategorie(Long id) throws ProductExistInCategoryException {
         var isOk = new AtomicBoolean(false);
         categorieRepository.findById(id).ifPresent( c -> {
-            var listeCourseIterable = listeCourseRepository.findAllByProduitCategorie(c);
-            if(!listeCourseIterable.iterator().hasNext()) {
+            var produitIterable = produitService.findProduitByCategorie(c);
+            if(!produitIterable.iterator().hasNext()) {
                 c.setSupprimer(true);
                 categorieRepository.save(c);
                 isOk.set(true);
             }
         });
         if(!isOk.get())
-            throw new CategoryUseInListException();
+            throw new ProductExistInCategoryException();
+    }
+
+    @Override
+    public Categorie getCategorieById(Long id) throws CategoryNotFoundException {
+        return categorieRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
     }
 
     @Autowired
@@ -65,7 +71,7 @@ public class CategorieServiceImpl implements CategorieService {
     }
 
     @Autowired
-    public void setListeCourseRepository(ListeCourseRepository listeCourseRepository) {
-        this.listeCourseRepository = listeCourseRepository;
+    public void setProduitService(ProduitService produitService) {
+        this.produitService = produitService;
     }
 }

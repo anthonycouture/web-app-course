@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ListeCourseRepository extends CrudRepository<ListeCourse, Long> {
 
-    Iterable<ListeCourse> findAllByProduitCategorie(Categorie categorie);
 }
