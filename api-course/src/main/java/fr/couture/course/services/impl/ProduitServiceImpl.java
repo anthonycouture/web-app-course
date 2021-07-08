@@ -58,10 +58,11 @@ public class ProduitServiceImpl implements ProduitService {
             var product = productOptional.get();
             if (!product.getCategorie().equals(categorie) && !product.getSupprimer()) {
                 throw new ProductExistOtherCategoryException();
-            } else if (product.getCategorie().equals(categorie)) {
-                product.setSupprimer(false);
-                return modelMapper.map(produitRepository.save(product), ProduitResponse.class);
             }
+            product.setSupprimer(false);
+            product.setCategorie(categorie);
+            return modelMapper.map(produitRepository.save(product), ProduitResponse.class);
+
         }
         var newProduct = new Produit();
         newProduct.setNom(name);
