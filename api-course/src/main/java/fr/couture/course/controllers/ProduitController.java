@@ -1,8 +1,9 @@
 package fr.couture.course.controllers;
 
-import fr.couture.course.dto.ProduitDTO;
 import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.exceptions.ProductExistOtherCategoryException;
+import fr.couture.course.payload.ProduitRequest;
+import fr.couture.course.payload.ProduitResponse;
 import fr.couture.course.services.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,15 +19,15 @@ public class ProduitController {
     private ProduitService produitService;
 
     @GetMapping
-    public List<ProduitDTO> getProduits() {
+    public List<ProduitResponse> getProduits() {
         return produitService.findAllProduit();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProduitDTO createProduit(@RequestBody ProduitDTO produitDTO) {
+    public ProduitResponse createProduit(@RequestBody ProduitRequest produitRequest) {
         try {
-            return produitService.createProduit(produitDTO.getNom(), produitDTO.getCategorieId());
+            return produitService.createProduit(produitRequest.getNom(), produitRequest.getCategorieId());
         } catch (CategoryNotFoundException e) {
             e.printStackTrace();
             throw new ResponseStatusException(

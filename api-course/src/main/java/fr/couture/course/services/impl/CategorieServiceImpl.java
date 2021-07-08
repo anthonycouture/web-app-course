@@ -1,39 +1,53 @@
 package fr.couture.course.services.impl;
 
-import fr.couture.course.dto.CategorieDTO;
 import fr.couture.course.entity.Categorie;
+import fr.couture.course.exceptions.CategoryIsUseInListException;
 import fr.couture.course.exceptions.CategoryNotFoundException;
-import fr.couture.course.exceptions.ProductExistInCategoryException;
+import fr.couture.course.payload.CategorieResponse;
 import fr.couture.course.repository.CategorieRepository;
+import fr.couture.course.repository.ListeCourseRepository;
 import fr.couture.course.services.CategorieService;
-import fr.couture.course.services.ProduitService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
+/**
+ * @author Anthony Couture
+ *
+ * Service permettant de gérer les catégories
+ */
 @Service
 public class CategorieServiceImpl implements CategorieService {
 
     private CategorieRepository categorieRepository;
 
-    private ProduitService produitService;
+    private ListeCourseRepository listeCourseRepository;
 
     private ModelMapper modelMapper;
 
+    /**
+     *
+     * @return Liste des catégories non supprimées
+     */
     @Override
-    public List<CategorieDTO> findAllCategorie() {
-        return StreamSupport
-                .stream(categorieRepository.findAllBySupprimerIsFalse().spliterator(), false)
-                .map(c -> modelMapper.map(c, CategorieDTO.class))
+    @Transactional
+    public List<CategorieResponse> findAllCategorie() {
+        return categorieRepository.findAllBySupprimerIsFalse()
+                .map(c -> modelMapper.map(c, CategorieResponse.class))
                 .collect(Collectors.toList());
     }
 
+    /**
+     *
+     * @param nom nom de la catégorie
+     * @return la catégorie créée ou réactiver à partir du nom passé en paramètre
+     */
     @Override
-    public CategorieDTO createCategorie(String nom) {
+    public CategorieResponse createCategorie(String nom) {
         var categorie = categorieRepository.findCategorieByNom(nom).orElseGet(() -> {
             var newCategorie = new Categorie();
             newCategorie.setNom(nom);
@@ -41,18 +55,26 @@ public class CategorieServiceImpl implements CategorieService {
         });
 
         categorie.setSupprimer(false);
-        return modelMapper.map(categorieRepository.save(categorie), CategorieDTO.class);
+        return modelMapper.map(categorieRepository.save(categorie), CategorieResponse.class);
     }
 
+    /**
+     *
+     * @param id id de la catégorie à supprimer
+     * @throws CategoryIsUseInListException impossible de supprimer une catégorie si elle est utilisé par la liste
+     * @throws CategoryNotFoundException impossible de supprimer une catégorie si elle n'existe pas
+     *
+     * Supprime la catégorie dont l'id est passé en paramètre
+     */
     @Override
-    public void deleteCategorie(Long id) throws ProductExistInCategoryException, CategoryNotFoundException {
+    public void deleteCategorie(Long id) throws CategoryIsUseInListException, CategoryNotFoundException {
         var categorie = categorieRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
-        var produitIterable = produitService.findProduitByCategorie(categorie);
-        if (!produitIterable.iterator().hasNext()) {
+        var produitIterable = listeCourseRepository.findOneByProduit_CategorieIDEquals(id);
+        if (produitIterable.isEmpty()) {
             categorie.setSupprimer(true);
             categorieRepository.save(categorie);
         } else
-            throw new ProductExistInCategoryException();
+            throw new CategoryIsUseInListException();
     }
 
     @Autowired
@@ -61,12 +83,12 @@ public class CategorieServiceImpl implements CategorieService {
     }
 
     @Autowired
-    public void setProduitService(ProduitService produitService) {
-        this.produitService = produitService;
+    public void setModelMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
     }
 
     @Autowired
-    public void setModelMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
+    public void setListeCourseRepository(ListeCourseRepository listeCourseRepository) {
+        this.listeCourseRepository = listeCourseRepository;
     }
 }

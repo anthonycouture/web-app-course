@@ -1,16 +1,16 @@
 package fr.couture.course.services;
 
-import fr.couture.course.dto.CategorieDTO;
+import fr.couture.course.exceptions.CategoryIsUseInListException;
 import fr.couture.course.exceptions.CategoryNotFoundException;
-import fr.couture.course.exceptions.ProductExistInCategoryException;
+import fr.couture.course.payload.CategorieResponse;
 
 import java.util.List;
 
 public interface CategorieService {
 
-    List<CategorieDTO> findAllCategorie();
+    List<CategorieResponse> findAllCategorie();
 
-    CategorieDTO createCategorie(String nom);
+    CategorieResponse createCategorie(String nom);
 
-    void deleteCategorie(Long id) throws ProductExistInCategoryException, CategoryNotFoundException;
+    void deleteCategorie(Long id) throws CategoryIsUseInListException, CategoryNotFoundException;
 }

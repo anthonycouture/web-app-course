@@ -1,19 +1,15 @@
-package fr.couture.course.dto;
+package fr.couture.course.payload;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @Getter
 @Setter
-public class ProduitDTO {
-
-    private Long id;
+@NoArgsConstructor
+public class ProduitRequest {
 
     private String nom;
 
     private Long categorieId;
-
-    private String categorieNom;
 }
