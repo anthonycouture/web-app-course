@@ -19,7 +19,7 @@ public class Produit implements Serializable {
     @Setter(AccessLevel.NONE)
     private Long ID;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nom;
 
     @Column(nullable = false)
