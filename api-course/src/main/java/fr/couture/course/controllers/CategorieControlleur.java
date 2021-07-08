@@ -44,7 +44,8 @@ public class CategorieControlleur {
     }
 
     /**
-     * Supprimer une catégorie
+     * Supprimer une catégorie, status HTTP 200 si ok, 409 si la catégorie est utiliser dans la liste et
+     * 404 si la catégorie n'existe pas
      * @param id id de la catégorie à supprimer
      */
     @DeleteMapping("/{id}")
@@ -55,6 +56,24 @@ public class CategorieControlleur {
             e.printStackTrace();
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);
+        } catch (CategoryNotFoundException e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+    }
+
+
+    /**
+     * Modifie une catégorie, status HTTP 200 si ok, 404 si la catégorie n'existe pas
+     * @param id id de la catégorie à modifier
+     * @param categorieRequest les attributs à mettre à jour
+     * @return la catégorie mis à jour
+     */
+    @PutMapping("/{id}")
+    public CategorieResponse updateCategorie(@PathVariable Long id, @RequestBody CategorieRequest categorieRequest){
+        try {
+            return categorieService.updateCategorie(id, categorieRequest.getNom());
         } catch (CategoryNotFoundException e) {
             e.printStackTrace();
             throw new ResponseStatusException(

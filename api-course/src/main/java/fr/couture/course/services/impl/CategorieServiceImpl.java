@@ -59,6 +59,20 @@ public class CategorieServiceImpl implements CategorieService {
     }
 
     /**
+     * Met à jour les attributs d'une catégorie
+     * @param id id de la catégorie à modifier
+     * @param nom nouveau nom de la catégorie
+     * @return catégorie mis à jour
+     * @throws CategoryNotFoundException impossible de modifier une catégorie si elle n'existe pas
+     */
+    @Override
+    public CategorieResponse updateCategorie(Long id, String nom) throws CategoryNotFoundException {
+        var categorie = categorieRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
+        categorie.setNom(nom);
+        return modelMapper.map(categorieRepository.save(categorie), CategorieResponse.class);
+    }
+
+    /**
      * Supprime une catégorie
      * @param id id de la catégorie à supprimer
      * @throws CategoryIsUseInListException impossible de supprimer une catégorie si elle est utilisé par la liste

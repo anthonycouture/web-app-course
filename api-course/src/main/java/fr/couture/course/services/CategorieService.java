@@ -12,5 +12,7 @@ public interface CategorieService {
 
     CategorieResponse createCategorie(String nom);
 
+    CategorieResponse updateCategorie(Long id, String nom) throws CategoryNotFoundException;
+
     void deleteCategorie(Long id) throws CategoryIsUseInListException, CategoryNotFoundException;
 }
