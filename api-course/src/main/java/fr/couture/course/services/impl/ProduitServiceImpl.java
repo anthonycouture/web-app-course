@@ -29,6 +29,7 @@ public class ProduitServiceImpl implements ProduitService {
 
     /**
      * Retourne la liste des produits actifs
+     *
      * @return la liste des produits non supprimés
      */
     @Override
@@ -41,11 +42,12 @@ public class ProduitServiceImpl implements ProduitService {
 
     /**
      * Créer un produit
-     * @param name nom du produit
+     *
+     * @param name        nom du produit
      * @param idCategorie id de la catégorie du produit
      * @return le produit créé ou sa réactivation
      * @throws ProductExistOtherCategoryException Impossible de créer un produit si un produit actif est dans une autre catégorie
-     * @throws CategoryNotFoundException Impossible de créer un produit si sa catégorie n'existe pas
+     * @throws CategoryNotFoundException          Impossible de créer un produit si sa catégorie n'existe pas
      */
     @Override
     public ProduitResponse createProduit(String name, Long idCategorie) throws ProductExistOtherCategoryException, CategoryNotFoundException {

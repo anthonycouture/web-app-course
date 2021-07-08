@@ -31,6 +31,7 @@ public class CategorieServiceImpl implements CategorieService {
 
     /**
      * Retourne la liste des catégoris actifs
+     *
      * @return Liste des catégories actifs
      */
     @Override
@@ -43,6 +44,7 @@ public class CategorieServiceImpl implements CategorieService {
 
     /**
      * Création d'une catégorie
+     *
      * @param nom nom de la catégorie
      * @return la catégorie créée ou réactiver à partir du nom passé en paramètre
      */
@@ -60,7 +62,8 @@ public class CategorieServiceImpl implements CategorieService {
 
     /**
      * Met à jour les attributs d'une catégorie
-     * @param id id de la catégorie à modifier
+     *
+     * @param id  id de la catégorie à modifier
      * @param nom nouveau nom de la catégorie
      * @return catégorie mis à jour
      * @throws CategoryNotFoundException impossible de modifier une catégorie si elle n'existe pas
@@ -74,11 +77,12 @@ public class CategorieServiceImpl implements CategorieService {
 
     /**
      * Supprime une catégorie
+     *
      * @param id id de la catégorie à supprimer
      * @throws CategoryIsUseInListException impossible de supprimer une catégorie si elle est utilisé par la liste
-     * @throws CategoryNotFoundException impossible de supprimer une catégorie si elle n'existe pas
-     *
-     * Supprime la catégorie dont l'id est passé en paramètre
+     * @throws CategoryNotFoundException    impossible de supprimer une catégorie si elle n'existe pas
+     *                                      <p>
+     *                                      Supprime la catégorie dont l'id est passé en paramètre
      */
     @Override
     public void deleteCategorie(Long id) throws CategoryIsUseInListException, CategoryNotFoundException {

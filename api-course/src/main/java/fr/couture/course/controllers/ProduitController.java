@@ -25,6 +25,7 @@ public class ProduitController {
 
     /**
      * Retourne les produits actifs
+     *
      * @return la liste des produits actifs
      */
     @GetMapping
@@ -35,6 +36,7 @@ public class ProduitController {
     /**
      * Créer un produit, status HTTP 201 si ok, 419 si la catégorie n'existe pas et
      * 409 si le produit existe dans une autre catégorie
+     *
      * @param produitRequest produit à créer
      * @return la produit créé
      */

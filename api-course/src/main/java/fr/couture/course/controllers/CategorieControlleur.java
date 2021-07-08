@@ -25,6 +25,7 @@ public class CategorieControlleur {
 
     /**
      * Retourne les catégories actifs
+     *
      * @return la liste des catégories actifs
      */
     @GetMapping
@@ -34,6 +35,7 @@ public class CategorieControlleur {
 
     /**
      * Créer une catégorie, status HTTP 201 si ok
+     *
      * @param categorieRequest catégorie à créer
      * @return la nouvelle catégorie créée
      */
@@ -46,6 +48,7 @@ public class CategorieControlleur {
     /**
      * Supprimer une catégorie, status HTTP 200 si ok, 409 si la catégorie est utiliser dans la liste et
      * 404 si la catégorie n'existe pas
+     *
      * @param id id de la catégorie à supprimer
      */
     @DeleteMapping("/{id}")
@@ -66,12 +69,13 @@ public class CategorieControlleur {
 
     /**
      * Modifie une catégorie, status HTTP 200 si ok, 404 si la catégorie n'existe pas
-     * @param id id de la catégorie à modifier
+     *
+     * @param id               id de la catégorie à modifier
      * @param categorieRequest les attributs à mettre à jour
      * @return la catégorie mis à jour
      */
     @PutMapping("/{id}")
-    public CategorieResponse updateCategorie(@PathVariable Long id, @RequestBody CategorieRequest categorieRequest){
+    public CategorieResponse updateCategorie(@PathVariable Long id, @RequestBody CategorieRequest categorieRequest) {
         try {
             return categorieService.updateCategorie(id, categorieRequest.getNom());
         } catch (CategoryNotFoundException e) {
