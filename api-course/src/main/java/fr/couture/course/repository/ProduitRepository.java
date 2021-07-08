@@ -13,4 +13,6 @@ public interface ProduitRepository extends CrudRepository<Produit, Long> {
     Optional<Produit> findProduitByNom(String nom);
 
     Stream<Produit> findAllBySupprimerIsFalse();
+
+    Optional<Produit> findProduitByIDAndSupprimerIsFalse(Long id);
 }

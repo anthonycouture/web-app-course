@@ -2,6 +2,7 @@ package fr.couture.course.controllers;
 
 import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.exceptions.ProductExistOtherCategoryException;
+import fr.couture.course.exceptions.ProductNotFoundException;
 import fr.couture.course.payload.ProduitRequest;
 import fr.couture.course.payload.ProduitResponse;
 import fr.couture.course.services.ProduitService;
@@ -53,6 +54,29 @@ public class ProduitController {
             e.printStackTrace();
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Met à jour un produit, status HTTP 200 si ok, 404 si le produit n'existe pas et
+     * 419 si la catégorie n'existe pas
+     *
+     * @param id             id du produit à mettre à jour
+     * @param produitRequest attribut à mettre à jour
+     * @return Le produit mis à jour
+     */
+    @PutMapping("/{id}")
+    public ProduitResponse updateProduit(@PathVariable Long id, @RequestBody ProduitRequest produitRequest) {
+        try {
+            return produitService.updateProduit(id, produitRequest.getNom(), produitRequest.getCategorieId());
+        } catch (ProductNotFoundException e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, e.getMessage(), e);
+        } catch (CategoryNotFoundException e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(
+                    HttpStatus.PRECONDITION_FAILED, e.getMessage(), e);
         }
     }
 

@@ -3,6 +3,7 @@ package fr.couture.course.services.impl;
 import fr.couture.course.entity.Produit;
 import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.exceptions.ProductExistOtherCategoryException;
+import fr.couture.course.exceptions.ProductNotFoundException;
 import fr.couture.course.payload.ProduitResponse;
 import fr.couture.course.repository.CategorieRepository;
 import fr.couture.course.repository.ProduitRepository;
@@ -66,6 +67,28 @@ public class ProduitServiceImpl implements ProduitService {
         newProduct.setNom(name);
         newProduct.setCategorie(categorie);
         return modelMapper.map(produitRepository.save(newProduct), ProduitResponse.class);
+    }
+
+    /**
+     * Met à jour un produit
+     *
+     * @param id          id du produit à mettre à jour
+     * @param name        nouveau nom du produit (null si aucun changement)
+     * @param idCategorie id de la catégorie du produit (null si aucun changement)
+     * @return le produit après modification
+     * @throws ProductNotFoundException  Impossible de modifier le produit si il n'existe pas
+     * @throws CategoryNotFoundException Impossible de mettre à jour la catégorie du produit si elle n'existe pas
+     */
+    @Override
+    public ProduitResponse updateProduit(Long id, String name, Long idCategorie) throws ProductNotFoundException, CategoryNotFoundException {
+        var produit = produitRepository.findProduitByIDAndSupprimerIsFalse(id).orElseThrow(ProductNotFoundException::new);
+        if (idCategorie != null) {
+            var categorie = categorieRepository.findCategorieByIDAndSupprimerIsFalse(idCategorie).orElseThrow(CategoryNotFoundException::new);
+            produit.setCategorie(categorie);
+        }
+        if (name != null)
+            produit.setNom(name);
+        return modelMapper.map(produitRepository.save(produit), ProduitResponse.class);
     }
 
     @Autowired

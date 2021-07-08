@@ -12,5 +12,7 @@ public interface CategorieRepository extends CrudRepository<Categorie, Long> {
 
     Optional<Categorie> findCategorieByNom(String nom);
 
+    Optional<Categorie> findCategorieByIDAndSupprimerIsFalse(Long id);
+
     Stream<Categorie> findAllBySupprimerIsFalse();
 }

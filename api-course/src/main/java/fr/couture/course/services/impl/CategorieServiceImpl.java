@@ -70,7 +70,7 @@ public class CategorieServiceImpl implements CategorieService {
      */
     @Override
     public CategorieResponse updateCategorie(Long id, String nom) throws CategoryNotFoundException {
-        var categorie = categorieRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
+        var categorie = categorieRepository.findCategorieByIDAndSupprimerIsFalse(id).orElseThrow(CategoryNotFoundException::new);
         categorie.setNom(nom);
         return modelMapper.map(categorieRepository.save(categorie), CategorieResponse.class);
     }
