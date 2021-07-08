@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 /**
  * @author Anthony Couture
  *
- * Service permettant de gérer les catégories
+ * <p>Service permettant de gérer les catégories</p>
  */
 @Service
 public class CategorieServiceImpl implements CategorieService {
@@ -30,8 +30,8 @@ public class CategorieServiceImpl implements CategorieService {
     private ModelMapper modelMapper;
 
     /**
-     *
-     * @return Liste des catégories non supprimées
+     * Retourne la liste des catégoris actifs
+     * @return Liste des catégories actifs
      */
     @Override
     @Transactional
@@ -42,7 +42,7 @@ public class CategorieServiceImpl implements CategorieService {
     }
 
     /**
-     *
+     * Création d'une catégorie
      * @param nom nom de la catégorie
      * @return la catégorie créée ou réactiver à partir du nom passé en paramètre
      */
@@ -59,7 +59,7 @@ public class CategorieServiceImpl implements CategorieService {
     }
 
     /**
-     *
+     * Supprime une catégorie
      * @param id id de la catégorie à supprimer
      * @throws CategoryIsUseInListException impossible de supprimer une catégorie si elle est utilisé par la liste
      * @throws CategoryNotFoundException impossible de supprimer une catégorie si elle n'existe pas

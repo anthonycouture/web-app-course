@@ -15,6 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Anthony Couture
+ *
+ * <p>Service permettant de gérer les produits</p>
+ */
 @Service
 public class ProduitServiceImpl implements ProduitService {
 
@@ -22,6 +27,10 @@ public class ProduitServiceImpl implements ProduitService {
     private CategorieRepository categorieRepository;
     private ModelMapper modelMapper;
 
+    /**
+     * Retourne la liste des produits actifs
+     * @return la liste des produits non supprimés
+     */
     @Override
     @Transactional
     public List<ProduitResponse> findAllProduit() {
@@ -30,6 +39,14 @@ public class ProduitServiceImpl implements ProduitService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Créer un produit
+     * @param name nom du produit
+     * @param idCategorie id de la catégorie du produit
+     * @return le produit créé ou sa réactivation
+     * @throws ProductExistOtherCategoryException Impossible de créer un produit si un produit actif est dans une autre catégorie
+     * @throws CategoryNotFoundException Impossible de créer un produit si sa catégorie n'existe pas
+     */
     @Override
     public ProduitResponse createProduit(String name, Long idCategorie) throws ProductExistOtherCategoryException, CategoryNotFoundException {
         var categorie = categorieRepository.findById(idCategorie).orElseThrow(CategoryNotFoundException::new);

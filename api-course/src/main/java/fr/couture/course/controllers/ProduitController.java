@@ -12,17 +12,32 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+/**
+ * @author Anthony Couture
+ *
+ * <p>Controlleur qui gère les appels REST pour les produits</p>
+ */
 @RestController
 @RequestMapping("/produits")
 public class ProduitController {
 
     private ProduitService produitService;
 
+    /**
+     * Retourne les produits actifs
+     * @return la liste des produits actifs
+     */
     @GetMapping
     public List<ProduitResponse> getProduits() {
         return produitService.findAllProduit();
     }
 
+    /**
+     * Créer un produit, status HTTP 201 si ok, 419 si la catégorie n'existe pas et
+     * 409 si le produit existe dans une autre catégorie
+     * @param produitRequest produit à créer
+     * @return la produit créé
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProduitResponse createProduit(@RequestBody ProduitRequest produitRequest) {
