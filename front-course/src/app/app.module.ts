@@ -7,6 +7,9 @@ import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { AccueilComponent } from './pages/accueil/accueil.component';
+import {MatIconModule} from '@angular/material/icon';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 const routes = [
   {path: '', component: AccueilComponent}
@@ -26,7 +29,10 @@ const routes = [
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatSidenavModule
   ],
   providers: [],
   bootstrap: [AppComponent]

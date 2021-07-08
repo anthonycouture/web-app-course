@@ -1,1 +1,14 @@
+<mat-drawer-container autosize>
+  <mat-drawer #drawer class="side-nav" mode="side">
+    <p>Liste</p>
+    <p>Gestion</p>
+  </mat-drawer>
+
+  <mat-toolbar>
+    <button mat-icon-button (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span class="name-application">My App</span>
+  </mat-toolbar>
 <router-outlet></router-outlet>
+</mat-drawer-container>
