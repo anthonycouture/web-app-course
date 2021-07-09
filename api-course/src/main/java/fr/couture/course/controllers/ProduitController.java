@@ -31,7 +31,7 @@ public class ProduitController {
      */
     @GetMapping
     public List<ProduitResponse> getProduits() {
-        return produitService.findAllProduit();
+        return produitService.findAllProduitActifs();
     }
 
     /**

@@ -36,7 +36,7 @@ public class CategorieServiceImpl implements CategorieService {
      */
     @Override
     @Transactional
-    public List<CategorieResponse> findAllCategorie() {
+    public List<CategorieResponse> findAllCategoriesActifs() {
         return categorieRepository.findAllBySupprimerIsFalse()
                 .map(c -> modelMapper.map(c, CategorieResponse.class))
                 .collect(Collectors.toList());

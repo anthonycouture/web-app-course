@@ -35,7 +35,7 @@ public class ProduitServiceImpl implements ProduitService {
      */
     @Override
     @Transactional
-    public List<ProduitResponse> findAllProduit() {
+    public List<ProduitResponse> findAllProduitActifs() {
         return produitRepository.findAllBySupprimerIsFalse()
                 .map(p -> modelMapper.map(p, ProduitResponse.class))
                 .collect(Collectors.toList());
@@ -71,7 +71,7 @@ public class ProduitServiceImpl implements ProduitService {
     }
 
     /**
-     * Met à jour un produit
+     * Met à jour un produit actif
      *
      * @param id          id du produit à mettre à jour
      * @param name        nouveau nom du produit (null si aucun changement)

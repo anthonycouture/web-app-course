@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProduitService {
 
-    List<ProduitResponse> findAllProduit();
+    List<ProduitResponse> findAllProduitActifs();
 
     ProduitResponse createProduit(String name, Long idCategorie) throws ProductExistOtherCategoryException, CategoryNotFoundException;
 

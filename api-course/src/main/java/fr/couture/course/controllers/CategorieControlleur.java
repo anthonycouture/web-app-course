@@ -30,7 +30,7 @@ public class CategorieControlleur {
      */
     @GetMapping
     public List<CategorieResponse> findAllCategorie() {
-        return categorieService.findAllCategorie();
+        return categorieService.findAllCategoriesActifs();
     }
 
     /**
