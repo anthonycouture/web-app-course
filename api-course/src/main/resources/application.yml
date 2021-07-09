@@ -1,7 +1,3 @@
-server:
-  servlet:
-    context-path: /api
-
 spring:
   datasource:
     url: jdbc:h2:mem:apiCourse;DB_CLOSE_DELAY=-1
