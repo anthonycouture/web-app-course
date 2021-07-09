@@ -6,6 +6,7 @@ import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule} from '@angular/router';
+import {HttpClientModule} from '@angular/common/http';
 import {AccueilComponent} from './pages/accueil/accueil.component';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -35,6 +36,7 @@ const routes = [
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    HttpClientModule,
     BrowserAnimationsModule,
     MatIconModule,
     MatToolbarModule,

@@ -13,7 +13,5 @@ public class ProduitResponse {
 
     private String nom;
 
-    private Long categorieId;
-
-    private String categorieNom;
+    private CategorieResponse categorie;
 }
