@@ -11,15 +11,20 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatButtonModule} from "@angular/material/button";
+import {GestionComponent} from './pages/gestion/gestion.component';
+import {ToolbarMenuComponent} from './components/toolbar-menu/toolbar-menu.component';
 
 const routes = [
-  {path: '', component: AccueilComponent}
+  {path: '', component: AccueilComponent},
+  {path: 'gestion', component: GestionComponent}
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    AccueilComponent
+    AccueilComponent,
+    GestionComponent,
+    ToolbarMenuComponent
   ],
   imports: [
     BrowserModule,

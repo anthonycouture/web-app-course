@@ -1,21 +1,3 @@
-<mat-drawer-container autosize>
-  <mat-drawer #drawer class="side-nav" mode="side">
-    <button mat-icon-button>
-      <mat-icon>list</mat-icon>
-      Liste
-    </button>
-    <br/>
-    <button mat-icon-button>
-      <mat-icon>settings</mat-icon>
-      Gestion
-    </button>
-  </mat-drawer>
-
-  <mat-toolbar>
-    <button mat-icon-button (click)="drawer.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span class="name-application">Ma liste de course</span>
-  </mat-toolbar>
+<app-toolbar-menu>
   <router-outlet></router-outlet>
-</mat-drawer-container>
+</app-toolbar-menu>
