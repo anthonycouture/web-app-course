@@ -10,6 +10,7 @@ import {AccueilComponent} from './pages/accueil/accueil.component';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatButtonModule} from "@angular/material/button";
 
 const routes = [
   {path: '', component: AccueilComponent}
@@ -32,7 +33,8 @@ const routes = [
     BrowserAnimationsModule,
     MatIconModule,
     MatToolbarModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

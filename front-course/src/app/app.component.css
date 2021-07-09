@@ -4,4 +4,7 @@
 
 .side-nav {
   padding: 20px;
+  position: fixed;
+  width: 20%;
+
 }
