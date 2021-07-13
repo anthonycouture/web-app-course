@@ -1,4 +1,4 @@
-import {Categorie} from "./categorie.model";
+import {Categorie} from "./categorie";
 
 export class Produit {
 

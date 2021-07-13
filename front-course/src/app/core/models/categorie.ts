@@ -6,4 +6,5 @@ export class Categorie {
     this.id = id;
     this.nom = nom;
   }
+
 }

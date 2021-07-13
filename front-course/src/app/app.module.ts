@@ -13,7 +13,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatButtonModule} from "@angular/material/button";
 import {GestionComponent} from './pages/gestion/gestion.component';
-import {ToolbarMenuComponent} from './components/toolbar-menu/toolbar-menu.component';
+import {ToolbarMenuComponent} from './shared/components/toolbar-menu/toolbar-menu.component';
+import {MatTreeModule} from '@angular/material/tree';
 
 const routes = [
   {path: '', component: AccueilComponent},
@@ -41,7 +42,8 @@ const routes = [
     MatIconModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTreeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
