@@ -28,9 +28,10 @@ export class GestionComponent implements OnInit {
     );
   }
 
-  hasChild = (_: number, node: ProduitNode) => !!node.children && node.children.length > 0;
+  hasChild = (_: number, node: ProduitNode) => node.children && node.children.length > 0;
 
   ngOnInit(): void {
+
   }
 
 }
