@@ -24,3 +24,22 @@
 .example-tree div[role=group] > .mat-tree-node {
   padding-left: 40px;
 }
+
+.node {
+  background-color: lightsteelblue;
+}
+
+.delete-icon {
+  position: absolute;
+  right: 0;
+}
+
+.edit-icon {
+  position: absolute;
+  right: 3em;
+}
+
+.expand-icon {
+  text-align: right;
+  margin-bottom: 3%;
+}

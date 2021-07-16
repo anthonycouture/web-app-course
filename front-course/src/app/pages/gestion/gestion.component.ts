@@ -43,7 +43,7 @@ export class GestionComponent implements OnInit {
 
   }
 
-  filterByOption(valueTab: string[]) {
+  filterByOption(valueTab: string[]) :void {
     console.log(valueTab)
     let list = this.listProduit.filter(produit => {
       let nomProduit = produit.nom.toLowerCase();
@@ -60,7 +60,18 @@ export class GestionComponent implements OnInit {
     this.dataSource.data = this.TREE_PRODUIT;
     this.TREE_PRODUIT.forEach(produitNode => {
       this.treeControl.expand(produitNode);
-    })
+    });
+  }
 
+  collapse_all(): void{
+    this.TREE_PRODUIT.forEach(produitNode => {
+      this.treeControl.collapse(produitNode);
+    })
+  }
+
+  expand_all(): void{
+    this.TREE_PRODUIT.forEach(produitNode => {
+      this.treeControl.expand(produitNode);
+    })
   }
 }
