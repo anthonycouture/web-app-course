@@ -15,6 +15,12 @@ import {MatButtonModule} from "@angular/material/button";
 import {GestionComponent} from './pages/gestion/gestion.component';
 import {ToolbarMenuComponent} from './shared/components/toolbar-menu/toolbar-menu.component';
 import {MatTreeModule} from '@angular/material/tree';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatOptionModule} from "@angular/material/core";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {ReactiveFormsModule} from "@angular/forms";
+import {SearchAutocompleteComponent} from './shared/components/search-autocomplete/search-autocomplete.component';
 
 const routes = [
   {path: '', component: AccueilComponent},
@@ -26,7 +32,8 @@ const routes = [
     AppComponent,
     AccueilComponent,
     GestionComponent,
-    ToolbarMenuComponent
+    ToolbarMenuComponent,
+    SearchAutocompleteComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +50,12 @@ const routes = [
     MatToolbarModule,
     MatSidenavModule,
     MatButtonModule,
-    MatTreeModule
+    MatTreeModule,
+    MatAutocompleteModule,
+    MatOptionModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
