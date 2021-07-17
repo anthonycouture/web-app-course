@@ -6,6 +6,7 @@ import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.payload.CategorieResponse;
 import fr.couture.course.repository.CategorieRepository;
 import fr.couture.course.repository.ListeCourseRepository;
+import fr.couture.course.repository.ProduitRepository;
 import fr.couture.course.services.CategorieService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class CategorieServiceImpl implements CategorieService {
     private CategorieRepository categorieRepository;
 
     private ListeCourseRepository listeCourseRepository;
+
+    private ProduitRepository produitRepository;
 
     private ModelMapper modelMapper;
 
@@ -76,19 +79,24 @@ public class CategorieServiceImpl implements CategorieService {
     }
 
     /**
-     * Supprime une catégorie
+     * Supprime la catégorie dont l'id est passé en paramètre
      *
      * @param id id de la catégorie à supprimer
      * @throws CategoryIsUseInListException impossible de supprimer une catégorie si elle est utilisé par la liste
      * @throws CategoryNotFoundException    impossible de supprimer une catégorie si elle n'existe pas
-     *                                      <p>
-     *                                      Supprime la catégorie dont l'id est passé en paramètre
      */
+    @Transactional
     @Override
     public void deleteCategorie(Long id) throws CategoryIsUseInListException, CategoryNotFoundException {
         var categorie = categorieRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
         var produitIterable = listeCourseRepository.findOneByProduit_CategorieIDEquals(id);
         if (produitIterable.isEmpty()) {
+            categorie
+                    .getProduits()
+                    .forEach(produit -> {
+                        produit.setSupprimer(true);
+                        produitRepository.save(produit);
+                    });
             categorie.setSupprimer(true);
             categorieRepository.save(categorie);
         } else
@@ -108,5 +116,10 @@ public class CategorieServiceImpl implements CategorieService {
     @Autowired
     public void setListeCourseRepository(ListeCourseRepository listeCourseRepository) {
         this.listeCourseRepository = listeCourseRepository;
+    }
+
+    @Autowired
+    public void setProduitRepository(ProduitRepository produitRepository) {
+        this.produitRepository = produitRepository;
     }
 }
