@@ -21,6 +21,9 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
 import {SearchAutocompleteComponent} from './shared/components/search-autocomplete/search-autocomplete.component';
+import {ListGestionCategorieProduitComponent} from './pages/gestion/list-gestion-categorie-produit/list-gestion-categorie-produit.component';
+import {DialogDeleteCategorieComponent} from './pages/gestion/dialog-delete-categorie/dialog-delete-categorie.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 const routes = [
   {path: '', component: AccueilComponent},
@@ -33,11 +36,13 @@ const routes = [
     AccueilComponent,
     GestionComponent,
     ToolbarMenuComponent,
-    SearchAutocompleteComponent
+    SearchAutocompleteComponent,
+    ListGestionCategorieProduitComponent,
+    DialogDeleteCategorieComponent
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, {useHash: true}),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
@@ -55,7 +60,8 @@ const routes = [
     MatOptionModule,
     MatFormFieldModule,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
