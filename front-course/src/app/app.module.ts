@@ -25,6 +25,8 @@ import {ListGestionCategorieProduitComponent} from './pages/gestion/list-gestion
 import {DialogDeleteCategorieComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-delete-categorie/dialog-delete-categorie.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {DialogEditCategorieComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-edit-categorie/dialog-edit-categorie.component';
+import {StoreModule} from '@ngrx/store';
+import {categoriesReducer} from './core/state/categorie.reducer';
 
 const routes = [
   {path: '', component: AccueilComponent},
@@ -45,6 +47,7 @@ const routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes, {useHash: true}),
+    StoreModule.forRoot({categories: categoriesReducer}),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
@@ -64,7 +67,7 @@ const routes = [
     MatInputModule,
     ReactiveFormsModule,
     MatDialogModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

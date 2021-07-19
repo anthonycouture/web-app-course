@@ -1,15 +1,11 @@
-import {Categorie} from "./categorie";
-
 export class Produit {
 
   public id: number;
   public nom: string;
-  public categorie: Categorie
 
 
-  constructor(id: number, nom: string, categorie: Categorie) {
+  constructor(id: number, nom: string) {
     this.id = id;
     this.nom = nom;
-    this.categorie = categorie;
   }
 }
