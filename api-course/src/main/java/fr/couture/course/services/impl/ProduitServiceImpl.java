@@ -4,7 +4,7 @@ import fr.couture.course.entity.Produit;
 import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.exceptions.ProductExistOtherCategoryException;
 import fr.couture.course.exceptions.ProductNotFoundException;
-import fr.couture.course.payload.ProduitResponse;
+import fr.couture.course.payload.ProduitDTO;
 import fr.couture.course.repository.CategorieRepository;
 import fr.couture.course.repository.ProduitRepository;
 import fr.couture.course.services.ProduitService;
@@ -35,9 +35,9 @@ public class ProduitServiceImpl implements ProduitService {
      */
     @Override
     @Transactional
-    public List<ProduitResponse> findAllProduitActifs() {
+    public List<ProduitDTO> findAllProduitActifs() {
         return produitRepository.findAllBySupprimerIsFalse()
-                .map(p -> modelMapper.map(p, ProduitResponse.class))
+                .map(p -> modelMapper.map(p, ProduitDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -51,7 +51,7 @@ public class ProduitServiceImpl implements ProduitService {
      * @throws CategoryNotFoundException          Impossible de créer un produit si sa catégorie n'existe pas
      */
     @Override
-    public ProduitResponse createProduit(String name, Long idCategorie) throws ProductExistOtherCategoryException, CategoryNotFoundException {
+    public ProduitDTO createProduit(String name, Long idCategorie) throws ProductExistOtherCategoryException, CategoryNotFoundException {
         var categorie = categorieRepository.findById(idCategorie).orElseThrow(CategoryNotFoundException::new);
         var productOptional = produitRepository.findProduitByNom(name);
         if (productOptional.isPresent()) {
@@ -61,13 +61,13 @@ public class ProduitServiceImpl implements ProduitService {
             }
             product.setSupprimer(false);
             product.setCategorie(categorie);
-            return modelMapper.map(produitRepository.save(product), ProduitResponse.class);
+            return modelMapper.map(produitRepository.save(product), ProduitDTO.class);
 
         }
         var newProduct = new Produit();
         newProduct.setNom(name);
         newProduct.setCategorie(categorie);
-        return modelMapper.map(produitRepository.save(newProduct), ProduitResponse.class);
+        return modelMapper.map(produitRepository.save(newProduct), ProduitDTO.class);
     }
 
     /**
@@ -81,7 +81,7 @@ public class ProduitServiceImpl implements ProduitService {
      * @throws CategoryNotFoundException Impossible de mettre à jour la catégorie du produit si elle n'existe pas
      */
     @Override
-    public ProduitResponse updateProduit(Long id, String name, Long idCategorie) throws ProductNotFoundException, CategoryNotFoundException {
+    public ProduitDTO updateProduit(Long id, String name, Long idCategorie) throws ProductNotFoundException, CategoryNotFoundException {
         var produit = produitRepository.findProduitByIDAndSupprimerIsFalse(id).orElseThrow(ProductNotFoundException::new);
         if (idCategorie != null) {
             var categorie = categorieRepository.findCategorieByIDAndSupprimerIsFalse(idCategorie).orElseThrow(CategoryNotFoundException::new);
@@ -89,7 +89,7 @@ public class ProduitServiceImpl implements ProduitService {
         }
         if (name != null)
             produit.setNom(name);
-        return modelMapper.map(produitRepository.save(produit), ProduitResponse.class);
+        return modelMapper.map(produitRepository.save(produit), ProduitDTO.class);
     }
 
     @Autowired

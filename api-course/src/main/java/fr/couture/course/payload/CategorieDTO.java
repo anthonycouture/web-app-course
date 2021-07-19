@@ -1,17 +1,19 @@
 package fr.couture.course.payload;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
+import java.util.List;
+
 @Getter
 @Setter
-public class ProduitResponse {
+@NoArgsConstructor
+public class CategorieDTO {
 
     private Long id;
-
     private String nom;
 
-    private CategorieResponse categorie;
+    private List<ProduitDTO> produits;
 }

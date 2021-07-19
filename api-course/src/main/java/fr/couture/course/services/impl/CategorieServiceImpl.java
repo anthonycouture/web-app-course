@@ -3,7 +3,7 @@ package fr.couture.course.services.impl;
 import fr.couture.course.entity.Categorie;
 import fr.couture.course.exceptions.CategoryIsUseInListException;
 import fr.couture.course.exceptions.CategoryNotFoundException;
-import fr.couture.course.payload.CategorieResponse;
+import fr.couture.course.payload.CategorieDTO;
 import fr.couture.course.repository.CategorieRepository;
 import fr.couture.course.repository.ListeCourseRepository;
 import fr.couture.course.repository.ProduitRepository;
@@ -39,9 +39,9 @@ public class CategorieServiceImpl implements CategorieService {
      */
     @Override
     @Transactional
-    public List<CategorieResponse> findAllCategoriesActifs() {
+    public List<CategorieDTO> findAllCategoriesActifs() {
         return categorieRepository.findAllBySupprimerIsFalse()
-                .map(c -> modelMapper.map(c, CategorieResponse.class))
+                .map(c -> modelMapper.map(c, CategorieDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -52,7 +52,8 @@ public class CategorieServiceImpl implements CategorieService {
      * @return la catégorie créée ou réactiver à partir du nom passé en paramètre
      */
     @Override
-    public CategorieResponse createCategorie(String nom) {
+    @Transactional
+    public CategorieDTO createCategorie(String nom) {
         var categorie = categorieRepository.findCategorieByNom(nom).orElseGet(() -> {
             var newCategorie = new Categorie();
             newCategorie.setNom(nom);
@@ -60,7 +61,7 @@ public class CategorieServiceImpl implements CategorieService {
         });
 
         categorie.setSupprimer(false);
-        return modelMapper.map(categorieRepository.save(categorie), CategorieResponse.class);
+        return modelMapper.map(categorieRepository.save(categorie), CategorieDTO.class);
     }
 
     /**
@@ -72,10 +73,10 @@ public class CategorieServiceImpl implements CategorieService {
      * @throws CategoryNotFoundException impossible de modifier une catégorie si elle n'existe pas
      */
     @Override
-    public CategorieResponse updateCategorie(Long id, String nom) throws CategoryNotFoundException {
+    public CategorieDTO updateCategorie(Long id, String nom) throws CategoryNotFoundException {
         var categorie = categorieRepository.findCategorieByIDAndSupprimerIsFalse(id).orElseThrow(CategoryNotFoundException::new);
         categorie.setNom(nom);
-        return modelMapper.map(categorieRepository.save(categorie), CategorieResponse.class);
+        return modelMapper.map(categorieRepository.save(categorie), CategorieDTO.class);
     }
 
     /**

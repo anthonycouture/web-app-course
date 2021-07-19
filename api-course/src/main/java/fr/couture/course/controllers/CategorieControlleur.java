@@ -2,8 +2,7 @@ package fr.couture.course.controllers;
 
 import fr.couture.course.exceptions.CategoryIsUseInListException;
 import fr.couture.course.exceptions.CategoryNotFoundException;
-import fr.couture.course.payload.CategorieRequest;
-import fr.couture.course.payload.CategorieResponse;
+import fr.couture.course.payload.CategorieDTO;
 import fr.couture.course.services.CategorieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +28,7 @@ public class CategorieControlleur {
      * @return la liste des catégories actifs
      */
     @GetMapping
-    public List<CategorieResponse> findAllCategorie() {
+    public List<CategorieDTO> findAllCategorie() {
         return categorieService.findAllCategoriesActifs();
     }
 
@@ -41,7 +40,7 @@ public class CategorieControlleur {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CategorieResponse createCategorie(@RequestBody CategorieRequest categorieRequest) {
+    public CategorieDTO createCategorie(@RequestBody CategorieDTO categorieRequest) {
         return categorieService.createCategorie(categorieRequest.getNom());
     }
 
@@ -75,7 +74,7 @@ public class CategorieControlleur {
      * @return la catégorie mis à jour
      */
     @PutMapping("/{id}")
-    public CategorieResponse updateCategorie(@PathVariable Long id, @RequestBody CategorieRequest categorieRequest) {
+    public CategorieDTO updateCategorie(@PathVariable Long id, @RequestBody CategorieDTO categorieRequest) {
         try {
             return categorieService.updateCategorie(id, categorieRequest.getNom());
         } catch (CategoryNotFoundException e) {
