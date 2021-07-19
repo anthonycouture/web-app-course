@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {CategorieService} from "../../../core/services/categorie.service";
-import {Categorie} from "../../../core/models/categorie";
+import {CategorieService} from "../../../../core/services/categorie.service";
+import {Categorie} from "../../../../core/models/categorie";
 
 interface _DialogDataEditCategorie {
   idCategorie: number;

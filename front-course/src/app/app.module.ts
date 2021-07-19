@@ -22,9 +22,9 @@ import {MatInputModule} from "@angular/material/input";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SearchAutocompleteComponent} from './shared/components/search-autocomplete/search-autocomplete.component';
 import {ListGestionCategorieProduitComponent} from './pages/gestion/list-gestion-categorie-produit/list-gestion-categorie-produit.component';
-import {DialogDeleteCategorieComponent} from './pages/gestion/dialog-delete-categorie/dialog-delete-categorie.component';
+import {DialogDeleteCategorieComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-delete-categorie/dialog-delete-categorie.component';
 import {MatDialogModule} from "@angular/material/dialog";
-import {DialogEditCategorieComponent} from './pages/gestion/dialog-edit-categorie/dialog-edit-categorie.component';
+import {DialogEditCategorieComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-edit-categorie/dialog-edit-categorie.component';
 
 const routes = [
   {path: '', component: AccueilComponent},

@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {CategorieService} from "../../../core/services/categorie.service";
+import {CategorieService} from "../../../../core/services/categorie.service";
 
 
 interface _DialogDataDeleteCategorie {

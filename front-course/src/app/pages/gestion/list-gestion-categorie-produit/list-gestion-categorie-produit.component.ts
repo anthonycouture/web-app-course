@@ -4,9 +4,9 @@ import {ProduitNode} from "../../../shared/interface/produit-node";
 import {MatTreeNestedDataSource} from "@angular/material/tree";
 import {Produit} from "../../../core/models/produit";
 import {listProduitToListProduitNode} from "../../../shared/utils/utils-produit-node";
-import {DialogDeleteCategorieComponent} from "../dialog-delete-categorie/dialog-delete-categorie.component";
+import {DialogDeleteCategorieComponent} from "./dialog-delete-categorie/dialog-delete-categorie.component";
 import {MatDialog} from "@angular/material/dialog";
-import {DialogEditCategorieComponent} from "../dialog-edit-categorie/dialog-edit-categorie.component";
+import {DialogEditCategorieComponent} from "./dialog-edit-categorie/dialog-edit-categorie.component";
 
 @Component({
   selector: 'app-list-gestion-categorie-produit',
