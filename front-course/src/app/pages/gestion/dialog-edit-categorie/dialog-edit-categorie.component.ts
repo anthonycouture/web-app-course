@@ -1,5 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {CategorieService} from "../../../core/services/categorie.service";
+import {Categorie} from "../../../core/models/categorie";
 
 interface _DialogDataEditCategorie {
   idCategorie: number;
@@ -14,6 +16,7 @@ interface _DialogDataEditCategorie {
 export class DialogEditCategorieComponent implements OnInit {
 
   constructor(private dialogRef: MatDialogRef<DialogEditCategorieComponent>,
+              private categorieService: CategorieService,
               @Inject(MAT_DIALOG_DATA) public data: _DialogDataEditCategorie) {
   }
 
@@ -21,6 +24,11 @@ export class DialogEditCategorieComponent implements OnInit {
   }
 
   edit(): void {
+    let categorie = new Categorie(this.data.idCategorie, this.data.nomCategorie)
+    this.categorieService.editCategorie(categorie).subscribe(
+      () => console.log('ok'),
+      (error) => console.error(error)
+    );
     this.dialogRef.close();
   }
 

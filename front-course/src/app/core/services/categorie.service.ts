@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
+import {Categorie} from "../models/categorie";
 
 @Injectable({
   providedIn: 'root'
@@ -9,13 +10,17 @@ import {environment} from "../../../environments/environment";
 export class CategorieService {
 
 
-  private URL = environment.apiUrl;
+  private URL = environment.apiUrl + '/categories';
 
   constructor(private http: HttpClient) {
   }
 
 
   deleteCategorie(idCategorie: number): Observable<void> {
-    return this.http.delete<void>(this.URL + '/categories/' + idCategorie);
+    return this.http.delete<void>(this.URL + '/' + idCategorie);
+  }
+
+  editCategorie(categorie: Categorie): Observable<Categorie> {
+    return this.http.put<Categorie>(this.URL + '/' + categorie.id, categorie);
   }
 }
