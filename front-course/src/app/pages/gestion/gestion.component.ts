@@ -10,7 +10,9 @@ import {Produit} from "../../core/models/produit";
 })
 export class GestionComponent implements OnInit {
 
-  listProduit: Produit[] = [];
+  private _listProduitFull: Produit[] = [];
+  listProduiltFiltrer: Produit[] = [];
+
   listOption: string[] = [];
 
   constructor(private produitService: ProduitService) {
@@ -19,7 +21,8 @@ export class GestionComponent implements OnInit {
   ngOnInit(): void {
     this.produitService.getProduits().subscribe(
       (data) => {
-        this.listProduit = data;
+        this._listProduitFull = data;
+        this.listProduiltFiltrer = data;
         data.forEach(produit => this.listOption.push(produit.nom));
       },
       (error) => console.error(error)
@@ -27,14 +30,16 @@ export class GestionComponent implements OnInit {
   }
 
   filterByOption(valueTab: string[]): void {
-    this.listProduit = this.listProduit.filter(produit => {
+    this.listProduiltFiltrer = this._listProduitFull.filter(produit => {
       let nomProduit = produit.nom.toLowerCase();
       let responseFilter = false;
       valueTab.forEach(value => {
-          if (nomProduit === value.toLowerCase())
+          if (nomProduit === value.toLowerCase()) {
             responseFilter = true;
+            return;
+          }
         }
-      )
+      );
       return responseFilter;
     });
   }

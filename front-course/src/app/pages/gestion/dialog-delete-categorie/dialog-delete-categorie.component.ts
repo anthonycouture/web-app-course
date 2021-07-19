@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {CategorieService} from "../../../core/services/categorie.service";
 
 
-export interface DialogDataDeleteCategorie {
+interface _DialogDataDeleteCategorie {
   idCategorie: number;
   nomCategorie: string;
 }
@@ -18,7 +18,7 @@ export class DialogDeleteCategorieComponent implements OnInit {
 
   constructor(private dialogRef: MatDialogRef<DialogDeleteCategorieComponent>,
               private categorieService: CategorieService,
-              @Inject(MAT_DIALOG_DATA) public data: DialogDataDeleteCategorie) {
+              @Inject(MAT_DIALOG_DATA) public data: _DialogDataDeleteCategorie) {
   }
 
   ngOnInit(): void {

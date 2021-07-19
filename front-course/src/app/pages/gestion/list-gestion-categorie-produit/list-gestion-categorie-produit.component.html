@@ -16,10 +16,10 @@
         </mat-icon>
       </button>
       {{node.categorie.nom}}
-      <button class="edit-icon">
+      <button class="edit-icon" (click)="openDialogEditCategorie(node.categorie.id, node.categorie.nom)">
         <mat-icon>edit</mat-icon>
       </button>
-      <button class="delete-icon" (click)="openDialog(node.categorie.id, node.categorie.nom)">
+      <button class="delete-icon" (click)="openDialogDeleteCategorie(node.categorie.id, node.categorie.nom)">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
