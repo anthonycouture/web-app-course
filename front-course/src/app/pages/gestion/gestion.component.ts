@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Produit} from "../../core/models/produit";
 import {Store} from "@ngrx/store";
 import {selectCategories} from "../../core/state/categorie.selector";
 import {retrievedCategories} from "../../core/state/categorie.action";
-import {Observable} from "rxjs";
 import {CategorieService} from "../../core/services/categorie.service";
 import {Categorie} from "../../core/models/categorie";
 
@@ -19,9 +17,6 @@ export class GestionComponent implements OnInit {
   categoriesFiltrer: Categorie[] = [];
 
   listOption: string[] = [];
-
-  // @ts-ignore
-  list$: Observable<Produit[]> = this.store.select(selectCategories);
 
   constructor(private categorieService: CategorieService,
               private store: Store) {

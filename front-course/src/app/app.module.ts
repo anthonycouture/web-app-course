@@ -26,7 +26,8 @@ import {DialogDeleteCategorieComponent} from './pages/gestion/list-gestion-categ
 import {MatDialogModule} from "@angular/material/dialog";
 import {DialogEditCategorieComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-edit-categorie/dialog-edit-categorie.component';
 import {StoreModule} from '@ngrx/store';
-import {categoriesReducer} from './core/state/categorie.reducer';
+import {reducer} from './core/state/categorie.reducer';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 const routes = [
   {path: '', component: AccueilComponent},
@@ -47,7 +48,8 @@ const routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes, {useHash: true}),
-    StoreModule.forRoot({categories: categoriesReducer}),
+    StoreModule.forRoot({categories: reducer}),
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: false}),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable

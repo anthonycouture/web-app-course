@@ -2,11 +2,9 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {CategorieService} from "../../../../core/services/categorie.service";
 import {Categorie} from "../../../../core/models/categorie";
+import {Store} from "@ngrx/store";
+import {updateCategorieInList} from "../../../../core/state/categorie.action";
 
-interface _DialogDataEditCategorie {
-  idCategorie: number;
-  nomCategorie: string;
-}
 
 @Component({
   selector: 'app-dialog-edit-categorie',
@@ -15,18 +13,21 @@ interface _DialogDataEditCategorie {
 })
 export class DialogEditCategorieComponent implements OnInit {
 
+  categorie: Categorie;
+
   constructor(private dialogRef: MatDialogRef<DialogEditCategorieComponent>,
               private categorieService: CategorieService,
-              @Inject(MAT_DIALOG_DATA) public data: _DialogDataEditCategorie) {
+              private store: Store,
+              @Inject(MAT_DIALOG_DATA) public data: Categorie) {
+    this.categorie = JSON.parse(JSON.stringify(this.data));
   }
 
   ngOnInit(): void {
   }
 
   edit(): void {
-    let categorie = new Categorie(this.data.idCategorie, this.data.nomCategorie)
-    this.categorieService.editCategorie(categorie).subscribe(
-      () => console.log('ok'),
+    this.categorieService.editCategorie(this.categorie).subscribe(
+      () => this.store.dispatch(updateCategorieInList({categorie: this.categorie})),
       (error) => console.error(error)
     );
     this.dialogRef.close();

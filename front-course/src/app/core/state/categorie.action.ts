@@ -8,6 +8,16 @@ export const retrievedCategories = createAction(
 
 
 export const deleteCategorieInList = createAction(
-  'Supprime un produit de la liste',
+  'Supprime une categorie de la liste',
   props<{ categorie: Categorie }>()
 );
+
+export const addCategorieInList = createAction(
+  'Supprime une categorie à la liste',
+  props<{ categorie: Categorie }>()
+);
+
+export const updateCategorieInList = createAction(
+  'Met à jour une categorie de la liste',
+  props<{ categorie: Categorie }>()
+)

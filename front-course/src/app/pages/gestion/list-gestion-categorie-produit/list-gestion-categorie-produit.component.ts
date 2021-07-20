@@ -50,10 +50,10 @@ export class ListGestionCategorieProduitComponent implements OnChanges {
   }
 
 
-  openDialogEditCategorie(idCategorie: number, nomCategorie: string): void {
+  openDialogEditCategorie(categorie: Categorie): void {
     this.dialog.open(DialogEditCategorieComponent, {
       width: '350px',
-      data: {idCategorie: idCategorie, nomCategorie: nomCategorie}
+      data: categorie
     });
   }
 
