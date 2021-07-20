@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-
 /**
  * @author Anthony Couture
  *
@@ -32,6 +30,7 @@ public class ProduitController {
      */
     @PostMapping("/{idCategorie}")
     @ResponseStatus(HttpStatus.CREATED)
+    // TODO refaire le mapping ici
     public ProduitDTO createProduit(@PathVariable Long idCategorie, @RequestBody ProduitDTO produitRequest) {
         try {
             return produitService.createProduit(produitRequest.getNom(), idCategorie);
@@ -56,6 +55,7 @@ public class ProduitController {
      * @return Le produit mis à jour
      */
     @PutMapping("/{idCategorie}/{idProduit}")
+    // TODO refaire le mapping ici
     public ProduitDTO updateProduit(@PathVariable Long idCategorie, @PathVariable Long idProduit, @RequestBody ProduitDTO produitRequest) {
         try {
             return produitService.updateProduit(idProduit, produitRequest.getNom(), idCategorie);

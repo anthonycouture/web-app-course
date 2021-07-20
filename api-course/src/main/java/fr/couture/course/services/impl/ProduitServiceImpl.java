@@ -11,10 +11,6 @@ import fr.couture.course.services.ProduitService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Anthony Couture
@@ -29,19 +25,6 @@ public class ProduitServiceImpl implements ProduitService {
     private ModelMapper modelMapper;
 
     /**
-     * Retourne la liste des produits actifs
-     *
-     * @return la liste des produits non supprimés
-     */
-    @Override
-    @Transactional
-    public List<ProduitDTO> findAllProduitActifs() {
-        return produitRepository.findAllBySupprimerIsFalse()
-                .map(p -> modelMapper.map(p, ProduitDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    /**
      * Créer un produit
      *
      * @param name        nom du produit
@@ -50,6 +33,7 @@ public class ProduitServiceImpl implements ProduitService {
      * @throws ProductExistOtherCategoryException Impossible de créer un produit si un produit actif est dans une autre catégorie
      * @throws CategoryNotFoundException          Impossible de créer un produit si sa catégorie n'existe pas
      */
+    // TODO refaire le mapping ici
     @Override
     public ProduitDTO createProduit(String name, Long idCategorie) throws ProductExistOtherCategoryException, CategoryNotFoundException {
         var categorie = categorieRepository.findById(idCategorie).orElseThrow(CategoryNotFoundException::new);
@@ -80,6 +64,7 @@ public class ProduitServiceImpl implements ProduitService {
      * @throws ProductNotFoundException  Impossible de modifier le produit si il n'existe pas
      * @throws CategoryNotFoundException Impossible de mettre à jour la catégorie du produit si elle n'existe pas
      */
+    // TODO refaire le mapping ici
     @Override
     public ProduitDTO updateProduit(Long id, String name, Long idCategorie) throws ProductNotFoundException, CategoryNotFoundException {
         var produit = produitRepository.findProduitByIDAndSupprimerIsFalse(id).orElseThrow(ProductNotFoundException::new);

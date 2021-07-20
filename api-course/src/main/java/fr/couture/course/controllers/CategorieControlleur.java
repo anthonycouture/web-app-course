@@ -83,6 +83,7 @@ public class CategorieControlleur {
      * @param categorieRequest les attributs à mettre à jour
      * @return la catégorie mis à jour
      */
+    // TODO refaire le mapping ici
     @PutMapping("/{id}")
     public CategorieDTO updateCategorie(@PathVariable Long id, @RequestBody CategorieDTO categorieRequest) {
         try {

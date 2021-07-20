@@ -5,11 +5,7 @@ import fr.couture.course.exceptions.ProductExistOtherCategoryException;
 import fr.couture.course.exceptions.ProductNotFoundException;
 import fr.couture.course.payload.ProduitDTO;
 
-import java.util.List;
-
 public interface ProduitService {
-
-    List<ProduitDTO> findAllProduitActifs();
 
     ProduitDTO createProduit(String name, Long idCategorie) throws ProductExistOtherCategoryException, CategoryNotFoundException;
 

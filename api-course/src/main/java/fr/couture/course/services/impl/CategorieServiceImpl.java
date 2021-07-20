@@ -75,6 +75,7 @@ public class CategorieServiceImpl implements CategorieService {
      */
     @Override
     @Transactional
+    // TODO refaire le mapping ici
     public CategorieDTO updateCategorie(Long id, String nom) throws CategoryNotFoundException {
         var categorie = categorieRepository.findCategorieByIDAndSupprimerIsFalse(id).orElseThrow(CategoryNotFoundException::new);
         categorie.setNom(nom);
