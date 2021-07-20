@@ -17,4 +17,5 @@ jobs:
         run: mvn test
 
       - name: Maven package
+        working-directory: ./api-course
         run: mvn package
