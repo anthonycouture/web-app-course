@@ -27,9 +27,10 @@ public class CategorieControlleur {
      *
      * @return la liste des catégories actifs
      */
+    // TODO Faire disparaitre les supprimer par le mapper
     @GetMapping
     public List<CategorieDTO> findAllCategorie() {
-        return categorieService.findAllCategoriesActifs();
+        return categorieService.findAllCategoriesActifsWithProductsActifs();
     }
 
     /**

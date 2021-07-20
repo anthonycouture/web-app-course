@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CategorieService {
 
-    List<CategorieDTO> findAllCategoriesActifs();
+    List<CategorieDTO> findAllCategoriesActifsWithProductsActifs();
 
     CategorieDTO createCategorie(String nom);
 

@@ -39,7 +39,7 @@ public class CategorieServiceImpl implements CategorieService {
      */
     @Override
     @Transactional
-    public List<CategorieDTO> findAllCategoriesActifs() {
+    public List<CategorieDTO> findAllCategoriesActifsWithProductsActifs() {
         return categorieRepository.findAllBySupprimerIsFalse()
                 .map(c -> modelMapper.map(c, CategorieDTO.class))
                 .collect(Collectors.toList());
