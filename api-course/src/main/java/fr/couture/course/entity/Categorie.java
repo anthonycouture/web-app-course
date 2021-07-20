@@ -28,7 +28,7 @@ public class Categorie implements Serializable {
     private Boolean supprimer = false;
 
     @OneToMany(orphanRemoval = true, mappedBy = "categorie")
-    private List<Produit> produits;
+    private List<Produit> produits = List.of();
 
     @Override
     public boolean equals(Object o) {

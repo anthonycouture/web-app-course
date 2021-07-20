@@ -5,7 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * @author Anthony Couture
@@ -36,5 +35,5 @@ public interface CategorieRepository extends CrudRepository<Categorie, Long> {
      *
      * @return Stream de l'entité Categorie
      */
-    Stream<Categorie> findAllBySupprimerIsFalse();
+    Iterable<Categorie> findAllBySupprimerIsFalse();
 }

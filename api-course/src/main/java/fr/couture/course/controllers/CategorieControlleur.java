@@ -1,15 +1,21 @@
 package fr.couture.course.controllers;
 
+import fr.couture.course.entity.Categorie;
+import fr.couture.course.entity.Produit;
 import fr.couture.course.exceptions.CategoryIsUseInListException;
 import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.payload.CategorieDTO;
+import fr.couture.course.payload.ProduitDTO;
 import fr.couture.course.services.CategorieService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Anthony Couture
@@ -22,15 +28,17 @@ public class CategorieControlleur {
 
     private CategorieService categorieService;
 
+    private ModelMapper modelMapper;
+
     /**
-     * Retourne les catégories actifs
+     * Retourne les catégories
      *
      * @return la liste des catégories actifs
      */
-    // TODO Faire disparaitre les supprimer par le mapper
     @GetMapping
+    @Transactional
     public List<CategorieDTO> findAllCategorie() {
-        return categorieService.findAllCategoriesActifsWithProductsActifs();
+        return listCategorieToListCategorieDTO(categorieService.findAllCategoriesActifs());
     }
 
     /**
@@ -41,8 +49,9 @@ public class CategorieControlleur {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Transactional
     public CategorieDTO createCategorie(@RequestBody CategorieDTO categorieRequest) {
-        return categorieService.createCategorie(categorieRequest.getNom());
+        return categorieToCategorieDTO(categorieService.createCategorie(categorieRequest.getNom()));
     }
 
     /**
@@ -88,5 +97,39 @@ public class CategorieControlleur {
     @Autowired
     public void setCategorieService(CategorieService categorieService) {
         this.categorieService = categorieService;
+    }
+
+
+    private List<CategorieDTO> listCategorieToListCategorieDTO(List<Categorie> listCategorie) {
+        return listCategorie.stream()
+                .map(this::categorieToCategorieDTO)
+                .collect(Collectors.toList());
+    }
+
+    private CategorieDTO categorieToCategorieDTO(Categorie categorie) {
+        if (categorie.getSupprimer())
+            return null;
+
+        var produitDelete = categorie.getProduits().stream()
+                .filter(Produit::getSupprimer)
+                .map(p -> modelMapper.map(p, ProduitDTO.class))
+                .collect(Collectors.toList());
+
+        var categorieDTO = modelMapper.map(categorie, CategorieDTO.class);
+
+        categorieDTO.setProduits(
+                categorieDTO.getProduits()
+                        .stream()
+                        .filter(p -> !produitDelete.contains(p))
+                        .collect(Collectors.toList())
+        );
+
+
+        return categorieDTO;
+    }
+
+    @Autowired
+    public void setModelMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
     }
 }

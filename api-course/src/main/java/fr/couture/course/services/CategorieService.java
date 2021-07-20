@@ -1,5 +1,6 @@
 package fr.couture.course.services;
 
+import fr.couture.course.entity.Categorie;
 import fr.couture.course.exceptions.CategoryIsUseInListException;
 import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.payload.CategorieDTO;
@@ -8,9 +9,9 @@ import java.util.List;
 
 public interface CategorieService {
 
-    List<CategorieDTO> findAllCategoriesActifsWithProductsActifs();
+    List<Categorie> findAllCategoriesActifs();
 
-    CategorieDTO createCategorie(String nom);
+    Categorie createCategorie(String nom);
 
     CategorieDTO updateCategorie(Long id, String nom) throws CategoryNotFoundException;
 

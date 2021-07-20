@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * @author Anthony Couture
@@ -38,10 +39,10 @@ public class CategorieServiceImpl implements CategorieService {
      * @return Liste des catégories actifs
      */
     @Override
-    @Transactional
-    public List<CategorieDTO> findAllCategoriesActifsWithProductsActifs() {
-        return categorieRepository.findAllBySupprimerIsFalse()
-                .map(c -> modelMapper.map(c, CategorieDTO.class))
+    @Transactional(readOnly = true)
+    public List<Categorie> findAllCategoriesActifs() {
+        return StreamSupport
+                .stream(categorieRepository.findAllBySupprimerIsFalse().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
@@ -53,7 +54,7 @@ public class CategorieServiceImpl implements CategorieService {
      */
     @Override
     @Transactional
-    public CategorieDTO createCategorie(String nom) {
+    public Categorie createCategorie(String nom) {
         var categorie = categorieRepository.findCategorieByNom(nom).orElseGet(() -> {
             var newCategorie = new Categorie();
             newCategorie.setNom(nom);
@@ -61,7 +62,7 @@ public class CategorieServiceImpl implements CategorieService {
         });
 
         categorie.setSupprimer(false);
-        return modelMapper.map(categorieRepository.save(categorie), CategorieDTO.class);
+        return categorieRepository.save(categorie);
     }
 
     /**
