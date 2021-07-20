@@ -1,0 +1,22 @@
+name: test_build
+
+on: [ push ]
+
+jobs:
+  build_test_back:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: place in folder back application
+        working-directory: ./api_course
+
+      - uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 11
+
+      - name: Maven tests
+        run: mvn test
+
+      - name: Maven package
+        run: mvn package
