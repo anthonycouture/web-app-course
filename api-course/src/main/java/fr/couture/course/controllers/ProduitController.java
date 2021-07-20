@@ -57,7 +57,7 @@ public class ProduitController {
      * Met à jour un produit, status HTTP 200 si ok, 404 si le produit n'existe pas et
      * 419 si la catégorie n'existe pas
      *
-     * @param idCategorie   id de la catégorie du produit
+     * @param idCategorie    id de la catégorie du produit
      * @param idProduit      id du produit à mettre à jour
      * @param produitRequest attribut à mettre à jour
      * @return Le produit mis à jour

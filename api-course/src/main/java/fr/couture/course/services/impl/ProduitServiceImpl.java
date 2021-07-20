@@ -27,8 +27,8 @@ public class ProduitServiceImpl implements ProduitService {
      * @param name        nom du produit
      * @param idCategorie id de la catégorie du produit
      * @return le produit créé ou sa réactivation
-     * @throws ProductExistException Impossible de créer un produit si il existe déjà
-     * @throws CategoryNotFoundException          Impossible de créer un produit si sa catégorie n'existe pas
+     * @throws ProductExistException     Impossible de créer un produit si il existe déjà
+     * @throws CategoryNotFoundException Impossible de créer un produit si sa catégorie n'existe pas
      */
     @Override
     public Produit createProduit(String name, Long idCategorie) throws ProductExistException, CategoryNotFoundException {
