@@ -7,6 +7,7 @@ import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.payload.CategorieDTO;
 import fr.couture.course.payload.ProduitDTO;
 import fr.couture.course.services.CategorieService;
+import lombok.NonNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -83,11 +85,11 @@ public class CategorieControlleur {
      * @param categorieRequest les attributs à mettre à jour
      * @return la catégorie mis à jour
      */
-    // TODO refaire le mapping ici
     @PutMapping("/{id}")
+    @Transactional
     public CategorieDTO updateCategorie(@PathVariable Long id, @RequestBody CategorieDTO categorieRequest) {
         try {
-            return categorieService.updateCategorie(id, categorieRequest.getNom());
+            return categorieToCategorieDTO(categorieService.updateCategorie(id, categorieRequest.getNom()));
         } catch (CategoryNotFoundException e) {
             e.printStackTrace();
             throw new ResponseStatusException(
@@ -101,13 +103,14 @@ public class CategorieControlleur {
     }
 
 
-    private List<CategorieDTO> listCategorieToListCategorieDTO(List<Categorie> listCategorie) {
+    private List<CategorieDTO> listCategorieToListCategorieDTO(@NonNull List<Categorie> listCategorie) {
         return listCategorie.stream()
+                .filter(Objects::nonNull)
                 .map(this::categorieToCategorieDTO)
                 .collect(Collectors.toList());
     }
 
-    private CategorieDTO categorieToCategorieDTO(Categorie categorie) {
+    private CategorieDTO categorieToCategorieDTO(@NonNull Categorie categorie) {
         if (categorie.getSupprimer())
             return null;
 

@@ -31,8 +31,6 @@ public class CategorieServiceImpl implements CategorieService {
 
     private ProduitRepository produitRepository;
 
-    private ModelMapper modelMapper;
-
     /**
      * Retourne la liste des catégoris actifs
      *
@@ -75,11 +73,10 @@ public class CategorieServiceImpl implements CategorieService {
      */
     @Override
     @Transactional
-    // TODO refaire le mapping ici
-    public CategorieDTO updateCategorie(Long id, String nom) throws CategoryNotFoundException {
+    public Categorie updateCategorie(Long id, String nom) throws CategoryNotFoundException {
         var categorie = categorieRepository.findCategorieByIDAndSupprimerIsFalse(id).orElseThrow(CategoryNotFoundException::new);
         categorie.setNom(nom);
-        return modelMapper.map(categorieRepository.save(categorie), CategorieDTO.class);
+        return categorieRepository.save(categorie);
     }
 
     /**
@@ -89,8 +86,8 @@ public class CategorieServiceImpl implements CategorieService {
      * @throws CategoryIsUseInListException impossible de supprimer une catégorie si elle est utilisé par la liste
      * @throws CategoryNotFoundException    impossible de supprimer une catégorie si elle n'existe pas
      */
-    @Transactional
     @Override
+    @Transactional
     public void deleteCategorie(Long id) throws CategoryIsUseInListException, CategoryNotFoundException {
         var categorie = categorieRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
         var produitIterable = listeCourseRepository.findOneByProduit_CategorieIDEquals(id);
@@ -110,11 +107,6 @@ public class CategorieServiceImpl implements CategorieService {
     @Autowired
     public void setCategorieRepository(CategorieRepository categorieRepository) {
         this.categorieRepository = categorieRepository;
-    }
-
-    @Autowired
-    public void setModelMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
     }
 
     @Autowired

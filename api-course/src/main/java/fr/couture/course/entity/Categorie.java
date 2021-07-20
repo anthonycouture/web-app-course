@@ -1,9 +1,6 @@
 package fr.couture.course.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +11,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Categorie implements Serializable {
 
     @Id
@@ -29,17 +27,4 @@ public class Categorie implements Serializable {
 
     @OneToMany(orphanRemoval = true, mappedBy = "categorie")
     private List<Produit> produits = List.of();
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Categorie categorie = (Categorie) o;
-        return Objects.equals(ID, categorie.ID) && Objects.equals(nom, categorie.nom) && Objects.equals(supprimer, categorie.supprimer) && Objects.equals(produits, categorie.produits);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(ID, nom, supprimer, produits);
-    }
 }

@@ -1,13 +1,13 @@
 package fr.couture.course.services;
 
+import fr.couture.course.entity.Produit;
 import fr.couture.course.exceptions.CategoryNotFoundException;
-import fr.couture.course.exceptions.ProductExistOtherCategoryException;
+import fr.couture.course.exceptions.ProductExistException;
 import fr.couture.course.exceptions.ProductNotFoundException;
-import fr.couture.course.payload.ProduitDTO;
 
 public interface ProduitService {
 
-    ProduitDTO createProduit(String name, Long idCategorie) throws ProductExistOtherCategoryException, CategoryNotFoundException;
+    Produit createProduit(String name, Long idCategorie) throws ProductExistException, CategoryNotFoundException;
 
-    ProduitDTO updateProduit(Long id, String name, Long idCategorie) throws ProductNotFoundException, CategoryNotFoundException;
+    Produit updateProduit(Long id, String name, Long idCategorie) throws ProductNotFoundException, CategoryNotFoundException;
 }
