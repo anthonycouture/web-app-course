@@ -35,5 +35,5 @@ jobs:
       - name: npm install and npm run build
         working-directory: ./front-course
         run: |
-          npm clean install
+          npm clean-install
           npm run build
