@@ -12,10 +12,28 @@ jobs:
         with:
           java-version: 11
 
-      - name: Maven tests
+      - name: Maven tests and packages
         working-directory: ./api-course
-        run: mvn test
+        run: |
+            mvn test
+            mvn package
+            
+  build_test_front:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
 
-      - name: Maven package
-        working-directory: ./api-course
-        run: mvn package
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Node $
+        uses: actions/setup-node@v1
+        with:
+          node-version: $
+
+      - name: npm install and npm run build
+        working-directory: ./front-course
+        run: |
+          npm clean install
+          npm run build
