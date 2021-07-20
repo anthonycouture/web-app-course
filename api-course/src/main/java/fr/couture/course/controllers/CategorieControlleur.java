@@ -1,11 +1,10 @@
 package fr.couture.course.controllers;
 
 import fr.couture.course.entity.Categorie;
-import fr.couture.course.entity.Produit;
+import fr.couture.course.exceptions.CategoryExist;
 import fr.couture.course.exceptions.CategoryIsUseInListException;
 import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.payload.CategorieDTO;
-import fr.couture.course.payload.ProduitDTO;
 import fr.couture.course.services.CategorieService;
 import lombok.NonNull;
 import org.modelmapper.ModelMapper;
@@ -35,16 +34,16 @@ public class CategorieControlleur {
     /**
      * Retourne les catégories
      *
-     * @return la liste des catégories actifs
+     * @return la liste des catégories
      */
     @GetMapping
     @Transactional
     public List<CategorieDTO> findAllCategorie() {
-        return listCategorieToListCategorieDTO(categorieService.findAllCategoriesActifs());
+        return listCategorieToListCategorieDTO(categorieService.findAllCategories());
     }
 
     /**
-     * Créer une catégorie, status HTTP 201 si ok
+     * Créer une catégorie, status HTTP 201 si ok, 409 si la catégorie existe
      *
      * @param categorieRequest catégorie à créer
      * @return la nouvelle catégorie créée
@@ -53,7 +52,13 @@ public class CategorieControlleur {
     @ResponseStatus(HttpStatus.CREATED)
     @Transactional
     public CategorieDTO createCategorie(@RequestBody CategorieDTO categorieRequest) {
-        return categorieToCategorieDTO(categorieService.createCategorie(categorieRequest.getNom()));
+        try {
+            return categorieToCategorieDTO(categorieService.createCategorie(categorieRequest.getNom()));
+        } catch (CategoryExist e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT, e.getMessage(), e);
+        }
     }
 
     /**
@@ -111,25 +116,7 @@ public class CategorieControlleur {
     }
 
     private CategorieDTO categorieToCategorieDTO(@NonNull Categorie categorie) {
-        if (categorie.getSupprimer())
-            return null;
-
-        var produitDelete = categorie.getProduits().stream()
-                .filter(Produit::getSupprimer)
-                .map(p -> modelMapper.map(p, ProduitDTO.class))
-                .collect(Collectors.toList());
-
-        var categorieDTO = modelMapper.map(categorie, CategorieDTO.class);
-
-        categorieDTO.setProduits(
-                categorieDTO.getProduits()
-                        .stream()
-                        .filter(p -> !produitDelete.contains(p))
-                        .collect(Collectors.toList())
-        );
-
-
-        return categorieDTO;
+        return modelMapper.map(categorie, CategorieDTO.class);
     }
 
     @Autowired

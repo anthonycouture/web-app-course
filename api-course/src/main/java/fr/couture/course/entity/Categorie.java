@@ -21,9 +21,6 @@ public class Categorie implements Serializable {
     @Column(unique = true, nullable = false)
     private String nom;
 
-    @Column(nullable = false)
-    private Boolean supprimer = false;
-
     @OneToMany(orphanRemoval = true, mappedBy = "categorie")
     private List<Produit> produits = List.of();
 }

@@ -34,16 +34,8 @@ public class ProduitServiceImpl implements ProduitService {
     public Produit createProduit(String name, Long idCategorie) throws ProductExistException, CategoryNotFoundException {
         var categorie = categorieRepository.findById(idCategorie).orElseThrow(CategoryNotFoundException::new);
         var productOptional = produitRepository.findProduitByNom(name);
-        if (productOptional.isPresent()) {
-            var product = productOptional.get();
-            if (!product.getSupprimer()) {
-                throw new ProductExistException();
-            }
-            product.setSupprimer(false);
-            product.setCategorie(categorie);
-            return produitRepository.save(product);
-
-        }
+        if (productOptional.isPresent())
+            throw new ProductExistException();
         var newProduct = new Produit();
         newProduct.setNom(name);
         newProduct.setCategorie(categorie);
@@ -51,7 +43,7 @@ public class ProduitServiceImpl implements ProduitService {
     }
 
     /**
-     * Met à jour un produit actif
+     * Met à jour un produit
      *
      * @param id          id du produit à mettre à jour
      * @param name        nouveau nom du produit (null si aucun changement)
@@ -62,9 +54,9 @@ public class ProduitServiceImpl implements ProduitService {
      */
     @Override
     public Produit updateProduit(Long id, String name, Long idCategorie) throws ProductNotFoundException, CategoryNotFoundException {
-        var produit = produitRepository.findProduitByIDAndSupprimerIsFalse(id).orElseThrow(ProductNotFoundException::new);
+        var produit = produitRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         if (idCategorie != null) {
-            var categorie = categorieRepository.findCategorieByIDAndSupprimerIsFalse(idCategorie).orElseThrow(CategoryNotFoundException::new);
+            var categorie = categorieRepository.findCategorieByID(idCategorie).orElseThrow(CategoryNotFoundException::new);
             produit.setCategorie(categorie);
         }
         if (name != null)

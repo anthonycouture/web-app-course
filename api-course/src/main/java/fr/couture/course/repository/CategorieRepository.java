@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface CategorieRepository extends CrudRepository<Categorie, Long> {
 
     /**
-     * Retourne la catégorie selon son nom (unicité sur celui-ci) qu'elle soit actif ou non
+     * Retourne la catégorie selon son nom (unicité sur celui-ci)
      *
      * @param nom nom de la catégorie à rechercher
      * @return Optional de l'entité Categorie
@@ -28,12 +28,5 @@ public interface CategorieRepository extends CrudRepository<Categorie, Long> {
      * @param id id de la catégorie rechercher
      * @return Optional de l'entité Categorie
      */
-    Optional<Categorie> findCategorieByIDAndSupprimerIsFalse(Long id);
-
-    /**
-     * Retoune les catégories actifs
-     *
-     * @return Stream de l'entité Categorie
-     */
-    Iterable<Categorie> findAllBySupprimerIsFalse();
+    Optional<Categorie> findCategorieByID(Long id);
 }

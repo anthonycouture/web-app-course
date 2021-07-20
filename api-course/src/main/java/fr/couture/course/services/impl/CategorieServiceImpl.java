@@ -1,6 +1,7 @@
 package fr.couture.course.services.impl;
 
 import fr.couture.course.entity.Categorie;
+import fr.couture.course.exceptions.CategoryExist;
 import fr.couture.course.exceptions.CategoryIsUseInListException;
 import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.repository.CategorieRepository;
@@ -30,15 +31,15 @@ public class CategorieServiceImpl implements CategorieService {
     private ProduitRepository produitRepository;
 
     /**
-     * Retourne la liste des catégoris actifs
+     * Retourne la liste des catégoris
      *
-     * @return Liste des catégories actifs
+     * @return Liste des catégories
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Categorie> findAllCategoriesActifs() {
+    public List<Categorie> findAllCategories() {
         return StreamSupport
-                .stream(categorieRepository.findAllBySupprimerIsFalse().spliterator(), false)
+                .stream(categorieRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
@@ -46,19 +47,17 @@ public class CategorieServiceImpl implements CategorieService {
      * Création d'une catégorie
      *
      * @param nom nom de la catégorie
-     * @return la catégorie créée ou réactiver à partir du nom passé en paramètre
+     * @return la catégorie créée
      */
     @Override
     @Transactional
-    public Categorie createCategorie(String nom) {
-        var categorie = categorieRepository.findCategorieByNom(nom).orElseGet(() -> {
-            var newCategorie = new Categorie();
-            newCategorie.setNom(nom);
-            return newCategorie;
-        });
-
-        categorie.setSupprimer(false);
-        return categorieRepository.save(categorie);
+    public Categorie createCategorie(String nom) throws CategoryExist {
+        var categorie = categorieRepository.findCategorieByNom(nom);
+        if (categorie.isPresent())
+            throw new CategoryExist();
+        var newCategorie = new Categorie();
+        newCategorie.setNom(nom);
+        return categorieRepository.save(newCategorie);
     }
 
     /**
@@ -72,7 +71,7 @@ public class CategorieServiceImpl implements CategorieService {
     @Override
     @Transactional
     public Categorie updateCategorie(Long id, String nom) throws CategoryNotFoundException {
-        var categorie = categorieRepository.findCategorieByIDAndSupprimerIsFalse(id).orElseThrow(CategoryNotFoundException::new);
+        var categorie = categorieRepository.findCategorieByID(id).orElseThrow(CategoryNotFoundException::new);
         categorie.setNom(nom);
         return categorieRepository.save(categorie);
     }
@@ -92,12 +91,8 @@ public class CategorieServiceImpl implements CategorieService {
         if (produitIterable.isEmpty()) {
             categorie
                     .getProduits()
-                    .forEach(produit -> {
-                        produit.setSupprimer(true);
-                        produitRepository.save(produit);
-                    });
-            categorie.setSupprimer(true);
-            categorieRepository.save(categorie);
+                    .forEach(produit -> produitRepository.delete(produit));
+            categorieRepository.delete(categorie);
         } else
             throw new CategoryIsUseInListException();
     }

@@ -86,9 +86,6 @@ public class ProduitController {
     }
 
     private ProduitDTO produitToProduitDTO(@NonNull Produit produit) {
-        if (produit.getSupprimer())
-            return null;
-
         return modelMapper.map(produit, ProduitDTO.class);
     }
 

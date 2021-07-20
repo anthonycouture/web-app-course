@@ -20,9 +20,6 @@ public class Produit implements Serializable {
     @Column(nullable = false, unique = true)
     private String nom;
 
-    @Column(nullable = false)
-    private Boolean supprimer = false;
-
     @ManyToOne(optional = false)
     private Categorie categorie;
 }
