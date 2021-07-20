@@ -73,6 +73,7 @@ public class CategorieServiceImpl implements CategorieService {
      * @throws CategoryNotFoundException impossible de modifier une catégorie si elle n'existe pas
      */
     @Override
+    @Transactional
     public CategorieDTO updateCategorie(Long id, String nom) throws CategoryNotFoundException {
         var categorie = categorieRepository.findCategorieByIDAndSupprimerIsFalse(id).orElseThrow(CategoryNotFoundException::new);
         categorie.setNom(nom);
