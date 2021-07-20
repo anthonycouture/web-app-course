@@ -13,7 +13,7 @@ jobs:
           java-version: 11
 
       - name: Maven tests
-        working-directory: ./api_course
+        working-directory: ./api-course
         run: mvn test
 
       - name: Maven package
