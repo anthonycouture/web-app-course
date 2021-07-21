@@ -3,6 +3,7 @@ package fr.couture.course.controllers;
 import fr.couture.course.entity.Produit;
 import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.exceptions.ProductExistException;
+import fr.couture.course.exceptions.ProductIsUseInListException;
 import fr.couture.course.exceptions.ProductNotFoundException;
 import fr.couture.course.payload.ProduitDTO;
 import fr.couture.course.services.ProduitService;
@@ -74,6 +75,21 @@ public class ProduitController {
             e.printStackTrace();
             throw new ResponseStatusException(
                     HttpStatus.PRECONDITION_FAILED, e.getMessage(), e);
+        }
+    }
+
+    @DeleteMapping("/{idProduit}")
+    public void deleteProduit(@PathVariable Long idProduit) {
+        try {
+            produitService.deleteProduit(idProduit);
+        } catch (ProductNotFoundException e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, e.getMessage(), e);
+        } catch (ProductIsUseInListException e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT, e.getMessage(), e);
         }
     }
 

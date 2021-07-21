@@ -1,7 +1,7 @@
 package fr.couture.course.services.impl;
 
 import fr.couture.course.entity.Categorie;
-import fr.couture.course.exceptions.CategoryExist;
+import fr.couture.course.exceptions.CategoryExistException;
 import fr.couture.course.exceptions.CategoryIsUseInListException;
 import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.repository.CategorieRepository;
@@ -51,10 +51,10 @@ public class CategorieServiceImpl implements CategorieService {
      */
     @Override
     @Transactional
-    public Categorie createCategorie(String nom) throws CategoryExist {
+    public Categorie createCategorie(String nom) throws CategoryExistException {
         var categorie = categorieRepository.findCategorieByNom(nom);
         if (categorie.isPresent())
-            throw new CategoryExist();
+            throw new CategoryExistException();
         var newCategorie = new Categorie();
         newCategorie.setNom(nom);
         return categorieRepository.save(newCategorie);
@@ -87,14 +87,16 @@ public class CategorieServiceImpl implements CategorieService {
     @Transactional
     public void deleteCategorie(Long id) throws CategoryIsUseInListException, CategoryNotFoundException {
         var categorie = categorieRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
-        var produitIterable = listeCourseRepository.findOneByProduit_CategorieIDEquals(id);
-        if (produitIterable.isEmpty()) {
-            categorie
-                    .getProduits()
-                    .forEach(produit -> produitRepository.delete(produit));
-            categorieRepository.delete(categorie);
-        } else
+        var listeCourseOptionnal = listeCourseRepository.findOneByProduit_CategorieIDEquals(id);
+        if (listeCourseOptionnal.isPresent())
             throw new CategoryIsUseInListException();
+
+        categorie
+                .getProduits()
+                .forEach(produit -> produitRepository.delete(produit));
+        categorieRepository.delete(categorie);
+
+
     }
 
     @Autowired

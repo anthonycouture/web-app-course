@@ -1,7 +1,7 @@
 package fr.couture.course.controllers;
 
 import fr.couture.course.entity.Categorie;
-import fr.couture.course.exceptions.CategoryExist;
+import fr.couture.course.exceptions.CategoryExistException;
 import fr.couture.course.exceptions.CategoryIsUseInListException;
 import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.payload.CategorieDTO;
@@ -54,7 +54,7 @@ public class CategorieControlleur {
     public CategorieDTO createCategorie(@RequestBody CategorieDTO categorieRequest) {
         try {
             return categorieToCategorieDTO(categorieService.createCategorie(categorieRequest.getNom()));
-        } catch (CategoryExist e) {
+        } catch (CategoryExistException e) {
             e.printStackTrace();
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);

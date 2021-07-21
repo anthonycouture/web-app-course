@@ -1,6 +1,7 @@
 package fr.couture.course.repository;
 
 import fr.couture.course.entity.ListeCourse;
+import fr.couture.course.entity.Produit;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +22,7 @@ public interface ListeCourseRepository extends CrudRepository<ListeCourse, Long>
      * @return Optional de l'entité ListeCourse
      */
     Optional<ListeCourse> findOneByProduit_CategorieIDEquals(Long idCategorie);
+
+    Optional<ListeCourse> findOneByProduit(Produit produit);
 
 }

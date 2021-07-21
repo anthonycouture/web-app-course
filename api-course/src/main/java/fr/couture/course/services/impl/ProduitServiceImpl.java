@@ -3,8 +3,10 @@ package fr.couture.course.services.impl;
 import fr.couture.course.entity.Produit;
 import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.exceptions.ProductExistException;
+import fr.couture.course.exceptions.ProductIsUseInListException;
 import fr.couture.course.exceptions.ProductNotFoundException;
 import fr.couture.course.repository.CategorieRepository;
+import fr.couture.course.repository.ListeCourseRepository;
 import fr.couture.course.repository.ProduitRepository;
 import fr.couture.course.services.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ public class ProduitServiceImpl implements ProduitService {
 
     private ProduitRepository produitRepository;
     private CategorieRepository categorieRepository;
+    private ListeCourseRepository listeCourseRepository;
 
     /**
      * Créer un produit
@@ -64,6 +67,15 @@ public class ProduitServiceImpl implements ProduitService {
         return produitRepository.save(produit);
     }
 
+    @Override
+    public void deleteProduit(Long id) throws ProductNotFoundException, ProductIsUseInListException {
+        var produit = produitRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+        var listeCourseOptional = listeCourseRepository.findOneByProduit(produit);
+        if (listeCourseOptional.isPresent())
+            throw new ProductIsUseInListException();
+        produitRepository.delete(produit);
+    }
+
     @Autowired
     public void setProduitRepository(ProduitRepository produitRepository) {
         this.produitRepository = produitRepository;
@@ -72,5 +84,10 @@ public class ProduitServiceImpl implements ProduitService {
     @Autowired
     public void setCategorieRepository(CategorieRepository categorieRepository) {
         this.categorieRepository = categorieRepository;
+    }
+
+    @Autowired
+    public void setListeCourseRepository(ListeCourseRepository listeCourseRepository) {
+        this.listeCourseRepository = listeCourseRepository;
     }
 }
