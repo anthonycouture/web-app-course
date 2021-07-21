@@ -10,22 +10,22 @@ import {Categorie} from "../models/categorie";
 export class CategorieService {
 
 
-  private URL = environment.apiUrl + '/categories';
+  private _url = environment.apiUrl + '/categories';
 
-  constructor(private http: HttpClient) {
+  constructor(private _http: HttpClient) {
   }
 
 
   getCategories(): Observable<Categorie[]> {
-    return this.http.get<Categorie[]>(this.URL);
+    return this._http.get<Categorie[]>(this._url);
   }
 
 
   deleteCategorie(idCategorie: number): Observable<void> {
-    return this.http.delete<void>(this.URL + '/' + idCategorie);
+    return this._http.delete<void>(this._url + '/' + idCategorie);
   }
 
   editCategorie(categorie: Categorie): Observable<Categorie> {
-    return this.http.put<Categorie>(this.URL + '/' + categorie.id, categorie);
+    return this._http.put<Categorie>(this._url + '/' + categorie.id, categorie);
   }
 }

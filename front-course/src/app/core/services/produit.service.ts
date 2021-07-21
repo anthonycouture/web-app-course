@@ -8,12 +8,12 @@ import {Observable} from "rxjs";
 })
 export class ProduitService {
 
-  private URL = environment.apiUrl + '/produits';
+  private _url = environment.apiUrl + '/produits';
 
-  constructor(private http: HttpClient) {
+  constructor(private _http: HttpClient) {
   }
 
   deleteProduit(idProduit: number): Observable<void> {
-    return this.http.delete<void>(this.URL + '/' + idProduit);
+    return this._http.delete<void>(this._url + '/' + idProduit);
   }
 }

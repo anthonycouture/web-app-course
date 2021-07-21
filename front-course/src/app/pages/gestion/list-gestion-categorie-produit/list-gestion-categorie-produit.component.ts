@@ -21,7 +21,7 @@ export class ListGestionCategorieProduitComponent implements OnChanges {
   treeControl = new NestedTreeControl<Categorie>(node => node.produits);
   dataSource = new MatTreeNestedDataSource<Categorie>();
 
-  constructor(private dialog: MatDialog) {
+  constructor(private _dialog: MatDialog) {
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -46,7 +46,7 @@ export class ListGestionCategorieProduitComponent implements OnChanges {
 
 
   openDialogDeleteCategorie(categorie: Categorie): void {
-    this.dialog.open(DialogDeleteCategorieComponent, {
+    this._dialog.open(DialogDeleteCategorieComponent, {
       width: '350px',
       data: categorie
     });
@@ -54,14 +54,14 @@ export class ListGestionCategorieProduitComponent implements OnChanges {
 
 
   openDialogEditCategorie(categorie: Categorie): void {
-    this.dialog.open(DialogEditCategorieComponent, {
+    this._dialog.open(DialogEditCategorieComponent, {
       width: '350px',
       data: categorie
     });
   }
 
   openDialogDeleteProduit(produit: Produit): void {
-    this.dialog.open(DialogDeleteProduitComponent, {
+    this._dialog.open(DialogDeleteProduitComponent, {
       width: '350px',
       data: produit
     });

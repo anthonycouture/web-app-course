@@ -13,9 +13,9 @@ import {Categorie} from "../../../../core/models/categorie";
 export class DialogDeleteCategorieComponent implements OnInit {
 
 
-  constructor(private dialogRef: MatDialogRef<DialogDeleteCategorieComponent>,
-              private categorieService: CategorieService,
-              private store: Store,
+  constructor(private _dialogRef: MatDialogRef<DialogDeleteCategorieComponent>,
+              private _categorieService: CategorieService,
+              private _store: Store,
               @Inject(MAT_DIALOG_DATA) public data: Categorie) {
   }
 
@@ -23,15 +23,15 @@ export class DialogDeleteCategorieComponent implements OnInit {
   }
 
   delete(): void {
-    this.categorieService.deleteCategorie(this.data.id).subscribe(
-      () => this.store.dispatch(deleteCategorieInList({categorie: this.data})),
+    this._categorieService.deleteCategorie(this.data.id).subscribe(
+      () => this._store.dispatch(deleteCategorieInList({categorie: this.data})),
       (error) => console.error(error)
     );
-    this.dialogRef.close();
+    this._dialogRef.close();
   }
 
   notDelete(): void {
-    this.dialogRef.close();
+    this._dialogRef.close();
   }
 
 }

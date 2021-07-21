@@ -9,10 +9,10 @@ import {
 import {Categorie} from "../models/categorie";
 
 
-const initialState: Categorie[] = [];
+const _initialState: Categorie[] = [];
 
-const categoriesReducer = createReducer(
-  initialState,
+const _categoriesReducer = createReducer(
+  _initialState,
   on(retrievedCategories, (state, {categories}) => categories),
   on(deleteCategorieInList, (state, {categorie}) => state.filter(item => JSON.stringify(item) !== JSON.stringify(categorie))),
   on(addCategorieInList, (state, {categorie}) => [...state, categorie]),
@@ -34,5 +34,5 @@ const categoriesReducer = createReducer(
 
 
 export function reducer(state: Categorie[] | undefined, action: Action) {
-  return categoriesReducer(state, action);
+  return _categoriesReducer(state, action);
 }

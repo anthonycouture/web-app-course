@@ -28,8 +28,10 @@ import {SearchAutocompleteComponent} from './shared/components/search-autocomple
 import {ListGestionCategorieProduitComponent} from './pages/gestion/list-gestion-categorie-produit/list-gestion-categorie-produit.component';
 import {DialogDeleteCategorieComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-delete-categorie/dialog-delete-categorie.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {DialogEditCategorieComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-edit-categorie/dialog-edit-categorie.component';
 import {DialogDeleteProduitComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-delete-produit/dialog-delete-produit.component';
+import {SnackBarComponent} from './shared/components/snack-bar/snack-bar.component';
 
 const routes = [
   {path: '', component: AccueilComponent},
@@ -46,7 +48,8 @@ const routes = [
     ListGestionCategorieProduitComponent,
     DialogDeleteCategorieComponent,
     DialogEditCategorieComponent,
-    DialogDeleteProduitComponent
+    DialogDeleteProduitComponent,
+    SnackBarComponent
   ],
   imports: [
     BrowserModule,
@@ -80,6 +83,7 @@ const routes = [
     ReactiveFormsModule,
     MatDialogModule,
     FormsModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

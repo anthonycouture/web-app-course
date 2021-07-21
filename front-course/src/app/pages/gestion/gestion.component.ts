@@ -18,10 +18,10 @@ export class GestionComponent implements OnInit {
 
   listOption: string[] = [];
 
-  constructor(private categorieService: CategorieService,
-              private store: Store) {
+  constructor(private _categorieService: CategorieService,
+              private _store: Store) {
     // @ts-ignore
-    this.store.select(selectCategories).subscribe(
+    this._store.select(selectCategories).subscribe(
       (data) => {
         console.log(data);
         this._categoriesFull = data;
@@ -34,9 +34,9 @@ export class GestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.categorieService.getCategories().subscribe(
+    this._categorieService.getCategories().subscribe(
       (data) => {
-        this.store.dispatch(retrievedCategories({categories: data}));
+        this._store.dispatch(retrievedCategories({categories: data}));
       },
       (error) => console.error(error)
     );

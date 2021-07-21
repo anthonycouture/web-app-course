@@ -15,9 +15,9 @@ export class DialogEditCategorieComponent implements OnInit {
 
   categorie: Categorie;
 
-  constructor(private dialogRef: MatDialogRef<DialogEditCategorieComponent>,
-              private categorieService: CategorieService,
-              private store: Store,
+  constructor(private _dialogRef: MatDialogRef<DialogEditCategorieComponent>,
+              private _categorieService: CategorieService,
+              private _store: Store,
               @Inject(MAT_DIALOG_DATA) public data: Categorie) {
     this.categorie = JSON.parse(JSON.stringify(this.data));
   }
@@ -26,15 +26,15 @@ export class DialogEditCategorieComponent implements OnInit {
   }
 
   edit(): void {
-    this.categorieService.editCategorie(this.categorie).subscribe(
-      () => this.store.dispatch(updateCategorieInList({categorie: this.categorie})),
+    this._categorieService.editCategorie(this.categorie).subscribe(
+      () => this._store.dispatch(updateCategorieInList({categorie: this.categorie})),
       (error) => console.error(error)
     );
-    this.dialogRef.close();
+    this._dialogRef.close();
   }
 
   notEdit(): void {
-    this.dialogRef.close();
+    this._dialogRef.close();
   }
 
 }

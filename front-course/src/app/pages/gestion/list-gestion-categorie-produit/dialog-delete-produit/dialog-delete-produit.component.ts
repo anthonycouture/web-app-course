@@ -12,9 +12,9 @@ import {ProduitService} from "../../../../core/services/produit.service";
 })
 export class DialogDeleteProduitComponent implements OnInit {
 
-  constructor(private dialogRef: MatDialogRef<DialogDeleteProduitComponent>,
-              private store: Store,
-              private produitService: ProduitService,
+  constructor(private _dialogRef: MatDialogRef<DialogDeleteProduitComponent>,
+              private _store: Store,
+              private _produitService: ProduitService,
               @Inject(MAT_DIALOG_DATA) public data: Produit) {
   }
 
@@ -23,14 +23,14 @@ export class DialogDeleteProduitComponent implements OnInit {
 
 
   delete(): void {
-    this.produitService.deleteProduit(this.data.id).subscribe(
-      () => this.store.dispatch(deleteProduitInCategorie({produit: this.data})),
+    this._produitService.deleteProduit(this.data.id).subscribe(
+      () => this._store.dispatch(deleteProduitInCategorie({produit: this.data})),
       (error) => console.error(error)
     )
-    this.dialogRef.close();
+    this._dialogRef.close();
   }
 
   notDelete(): void {
-    this.dialogRef.close();
+    this._dialogRef.close();
   }
 }
