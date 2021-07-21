@@ -26,9 +26,8 @@ const categoriesReducer = createReducer(
   }),
   on(deleteProduitInCategorie, (state, {produit}) => {
     return state.map(categorie => {
-      let categorieUpdate: Categorie = JSON.parse(JSON.stringify(categorie));
-      categorieUpdate.produits = categorieUpdate.produits?.filter(item => JSON.stringify(item) !== JSON.stringify(produit))
-      return categorieUpdate;
+      categorie.produits = categorie.produits?.filter(item => item !== produit)
+      return categorie;
     });
   })
 );

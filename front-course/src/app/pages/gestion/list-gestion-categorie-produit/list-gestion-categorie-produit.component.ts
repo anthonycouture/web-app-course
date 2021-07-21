@@ -25,6 +25,7 @@ export class ListGestionCategorieProduitComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.dataSource.data = [];
     this.dataSource.data = this.categories;
   }
 

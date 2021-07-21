@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Store} from "@ngrx/store";
 import {Produit} from "../../../../core/models/produit";
 import {deleteProduitInCategorie} from "../../../../core/state/categorie.action";
+import {ProduitService} from "../../../../core/services/produit.service";
 
 @Component({
   selector: 'app-dialog-delete-produit',
@@ -13,6 +14,7 @@ export class DialogDeleteProduitComponent implements OnInit {
 
   constructor(private dialogRef: MatDialogRef<DialogDeleteProduitComponent>,
               private store: Store,
+              private produitService: ProduitService,
               @Inject(MAT_DIALOG_DATA) public data: Produit) {
   }
 
@@ -21,7 +23,10 @@ export class DialogDeleteProduitComponent implements OnInit {
 
 
   delete(): void {
-    this.store.dispatch(deleteProduitInCategorie({produit: this.data}));
+    this.produitService.deleteProduit(this.data.id).subscribe(
+      () => this.store.dispatch(deleteProduitInCategorie({produit: this.data})),
+      (error) => console.error(error)
+    )
     this.dialogRef.close();
   }
 

@@ -51,7 +51,14 @@ const routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes, {useHash: true}),
-    StoreModule.forRoot({categories: reducer}),
+    StoreModule.forRoot({categories: reducer}, {
+      runtimeChecks: {
+        strictStateImmutability: false,
+        strictActionImmutability: false,
+        strictStateSerializability: true,
+        strictActionSerializability: true,
+      }
+    }),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: false}),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,

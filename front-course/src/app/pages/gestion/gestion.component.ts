@@ -23,6 +23,7 @@ export class GestionComponent implements OnInit {
     // @ts-ignore
     this.store.select(selectCategories).subscribe(
       (data) => {
+        console.log(data);
         this._categoriesFull = data;
         this.categoriesFiltrer = data;
         data.forEach(categorie => {
