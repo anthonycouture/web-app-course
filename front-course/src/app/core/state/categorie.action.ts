@@ -1,5 +1,6 @@
 import {createAction, props} from "@ngrx/store";
 import {Categorie} from "../models/categorie";
+import {Produit} from "../models/produit";
 
 export const retrievedCategories = createAction(
   'Init de la liste de categories',
@@ -20,4 +21,9 @@ export const addCategorieInList = createAction(
 export const updateCategorieInList = createAction(
   'Met à jour une categorie de la liste',
   props<{ categorie: Categorie }>()
+)
+
+export const deleteProduitInCategorie = createAction(
+  'Supprime un produit dans une catégorie',
+  props<{ produit: Produit }>()
 )

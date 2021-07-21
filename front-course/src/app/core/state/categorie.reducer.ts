@@ -2,6 +2,7 @@ import {Action, createReducer, on} from "@ngrx/store";
 import {
   addCategorieInList,
   deleteCategorieInList,
+  deleteProduitInCategorie,
   retrievedCategories,
   updateCategorieInList
 } from "./categorie.action";
@@ -13,7 +14,7 @@ const initialState: Categorie[] = [];
 const categoriesReducer = createReducer(
   initialState,
   on(retrievedCategories, (state, {categories}) => categories),
-  on(deleteCategorieInList, (state, {categorie}) => state.filter(item => item !== categorie)),
+  on(deleteCategorieInList, (state, {categorie}) => state.filter(item => JSON.stringify(item) !== JSON.stringify(categorie))),
   on(addCategorieInList, (state, {categorie}) => [...state, categorie]),
   on(updateCategorieInList, (state, {categorie}) => {
     return state.map(item => {
@@ -23,6 +24,13 @@ const categoriesReducer = createReducer(
       return item;
     })
   }),
+  on(deleteProduitInCategorie, (state, {produit}) => {
+    return state.map(categorie => {
+      let categorieUpdate: Categorie = JSON.parse(JSON.stringify(categorie));
+      categorieUpdate.produits = categorieUpdate.produits?.filter(item => JSON.stringify(item) !== JSON.stringify(produit))
+      return categorieUpdate;
+    });
+  })
 );
 
 

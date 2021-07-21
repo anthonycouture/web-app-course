@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Supprimer le produit ?</h1>
+<div mat-dialog-content>
+  <p>La produit {{data.nom}} sera supprimé</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="notDelete()">Annuler</button>
+  <button mat-button (click)="delete()" cdkFocusInitial>Ok</button>
+</div>

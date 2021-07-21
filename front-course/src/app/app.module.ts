@@ -1,6 +1,10 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
+import {StoreModule} from '@ngrx/store';
+import {reducer} from './core/state/categorie.reducer';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+
 import {AppComponent} from './app.component';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
@@ -25,9 +29,7 @@ import {ListGestionCategorieProduitComponent} from './pages/gestion/list-gestion
 import {DialogDeleteCategorieComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-delete-categorie/dialog-delete-categorie.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {DialogEditCategorieComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-edit-categorie/dialog-edit-categorie.component';
-import {StoreModule} from '@ngrx/store';
-import {reducer} from './core/state/categorie.reducer';
-import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {DialogDeleteProduitComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-delete-produit/dialog-delete-produit.component';
 
 const routes = [
   {path: '', component: AccueilComponent},
@@ -43,7 +45,8 @@ const routes = [
     SearchAutocompleteComponent,
     ListGestionCategorieProduitComponent,
     DialogDeleteCategorieComponent,
-    DialogEditCategorieComponent
+    DialogEditCategorieComponent,
+    DialogDeleteProduitComponent
   ],
   imports: [
     BrowserModule,

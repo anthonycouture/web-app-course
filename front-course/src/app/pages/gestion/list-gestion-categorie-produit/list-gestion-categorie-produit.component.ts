@@ -5,6 +5,8 @@ import {DialogDeleteCategorieComponent} from "./dialog-delete-categorie/dialog-d
 import {MatDialog} from "@angular/material/dialog";
 import {DialogEditCategorieComponent} from "./dialog-edit-categorie/dialog-edit-categorie.component";
 import {Categorie} from "../../../core/models/categorie";
+import {Produit} from "../../../core/models/produit";
+import {DialogDeleteProduitComponent} from "./dialog-delete-produit/dialog-delete-produit.component";
 
 @Component({
   selector: 'app-list-gestion-categorie-produit',
@@ -57,4 +59,10 @@ export class ListGestionCategorieProduitComponent implements OnChanges {
     });
   }
 
+  openDialogDeleteProduit(produit: Produit): void {
+    this.dialog.open(DialogDeleteProduitComponent, {
+      width: '350px',
+      data: produit
+    });
+  }
 }
