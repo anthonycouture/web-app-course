@@ -59,14 +59,13 @@ public class ProduitController {
      * 419 si la catégorie n'existe pas
      *
      * @param idCategorie    id de la catégorie du produit
-     * @param idProduit      id du produit à mettre à jour
      * @param produitRequest attribut à mettre à jour
      * @return Le produit mis à jour
      */
-    @PutMapping("/{idCategorie}/{idProduit}")
-    public ProduitDTO updateProduit(@PathVariable Long idCategorie, @PathVariable Long idProduit, @RequestBody ProduitDTO produitRequest) {
+    @PutMapping("/{idCategorie}")
+    public ProduitDTO updateProduit(@PathVariable Long idCategorie, @RequestBody ProduitDTO produitRequest) {
         try {
-            return produitToProduitDTO(produitService.updateProduit(idProduit, produitRequest.getNom(), idCategorie));
+            return produitToProduitDTO(produitService.updateProduit(produitRequest.getId(), produitRequest.getNom(), idCategorie));
         } catch (ProductNotFoundException e) {
             e.printStackTrace();
             throw new ResponseStatusException(

@@ -8,3 +8,6 @@ INSERT INTO categorie (nom)
 values ('laitier');
 INSERT INTO produit(nom, categorie_id)
 values ('lait', 2);
+
+INSERT INTO produit(nom, categorie_id)
+values ('yaourt', 2);
