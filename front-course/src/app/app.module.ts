@@ -32,6 +32,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {DialogEditCategorieComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-edit-categorie/dialog-edit-categorie.component';
 import {DialogDeleteProduitComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-delete-produit/dialog-delete-produit.component';
 import {SnackBarComponent} from './shared/components/snack-bar/snack-bar.component';
+import {DialogEditProduitComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-edit-produit/dialog-edit-produit.component';
+import {MatSelectModule} from "@angular/material/select";
 
 const routes = [
   {path: '', component: AccueilComponent},
@@ -49,7 +51,8 @@ const routes = [
     DialogDeleteCategorieComponent,
     DialogEditCategorieComponent,
     DialogDeleteProduitComponent,
-    SnackBarComponent
+    SnackBarComponent,
+    DialogEditProduitComponent
   ],
   imports: [
     BrowserModule,
@@ -83,7 +86,8 @@ const routes = [
     ReactiveFormsModule,
     MatDialogModule,
     FormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

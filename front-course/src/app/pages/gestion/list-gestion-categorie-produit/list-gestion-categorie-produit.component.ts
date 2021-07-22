@@ -7,6 +7,7 @@ import {DialogEditCategorieComponent} from "./dialog-edit-categorie/dialog-edit-
 import {Categorie} from "../../../core/models/categorie";
 import {Produit} from "../../../core/models/produit";
 import {DialogDeleteProduitComponent} from "./dialog-delete-produit/dialog-delete-produit.component";
+import {DialogEditProduitComponent} from "./dialog-edit-produit/dialog-edit-produit.component";
 
 @Component({
   selector: 'app-list-gestion-categorie-produit',
@@ -62,6 +63,13 @@ export class ListGestionCategorieProduitComponent implements OnChanges {
 
   openDialogDeleteProduit(produit: Produit): void {
     this._dialog.open(DialogDeleteProduitComponent, {
+      width: '350px',
+      data: produit
+    });
+  }
+
+  openDialogEditProduit(produit: Produit): void {
+    this._dialog.open(DialogEditProduitComponent, {
       width: '350px',
       data: produit
     });

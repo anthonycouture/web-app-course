@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Store} from "@ngrx/store";
 import {Produit} from "../../../../core/models/produit";
-import {deleteProduitInCategorie} from "../../../../core/state/categorie.action";
+import {deleteProduitInList} from "../../../../core/state/categorie.action";
 import {ProduitService} from "../../../../core/services/produit.service";
 
 @Component({
@@ -24,7 +24,7 @@ export class DialogDeleteProduitComponent implements OnInit {
 
   delete(): void {
     this._produitService.deleteProduit(this.data.id).subscribe(
-      () => this._store.dispatch(deleteProduitInCategorie({produit: this.data})),
+      () => this._store.dispatch(deleteProduitInList({produit: this.data})),
       (error) => console.error(error)
     )
     this._dialogRef.close();

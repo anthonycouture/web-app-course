@@ -30,7 +30,7 @@
   </mat-nested-tree-node>
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
     {{node.nom}}
-    <button class="edit-icon">
+    <button class="edit-icon" (click)="openDialogEditProduit(node)">
       <mat-icon>edit</mat-icon>
     </button>
     <button class="delete-icon" (click)="openDialogDeleteProduit(node)">

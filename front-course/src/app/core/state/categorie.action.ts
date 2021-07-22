@@ -23,7 +23,12 @@ export const updateCategorieInList = createAction(
   props<{ categorie: Categorie }>()
 )
 
-export const deleteProduitInCategorie = createAction(
+export const deleteProduitInList = createAction(
   'Supprime un produit dans une catégorie',
   props<{ produit: Produit }>()
+)
+
+export const updateProduitInList = createAction(
+  'Met à jour un produit dans la liste',
+  props<{ categorie: Categorie, produit: Produit }>()
 )
