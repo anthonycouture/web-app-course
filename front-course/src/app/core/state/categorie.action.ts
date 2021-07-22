@@ -10,11 +10,11 @@ export const retrievedCategories = createAction(
 
 export const deleteCategorieInList = createAction(
   'Supprime une categorie de la liste',
-  props<{ categorie: Categorie }>()
+  props<{ idCategorie: number }>()
 );
 
 export const addCategorieInList = createAction(
-  'Supprime une categorie à la liste',
+  'Ajoute une categorie à la liste',
   props<{ categorie: Categorie }>()
 );
 
@@ -25,10 +25,10 @@ export const updateCategorieInList = createAction(
 
 export const deleteProduitInList = createAction(
   'Supprime un produit dans une catégorie',
-  props<{ produit: Produit }>()
+  props<{ idProduit: number }>()
 )
 
 export const updateProduitInList = createAction(
   'Met à jour un produit dans la liste',
-  props<{ categorie: Categorie, produit: Produit }>()
+  props<{ idCategorie: number, produit: Produit }>()
 )

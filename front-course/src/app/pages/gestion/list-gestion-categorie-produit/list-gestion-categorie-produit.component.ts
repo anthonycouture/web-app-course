@@ -26,22 +26,31 @@ export class ListGestionCategorieProduitComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    let expandedNodes = new Array<Categorie>();
+    this.dataSource.data.forEach(node => {
+      if (this.treeControl.isExpanded(node))
+        expandedNodes.push(node)
+    });
     this.dataSource.data = [];
     this.dataSource.data = this.categories;
+    this.dataSource.data.forEach(node => {
+      if (expandedNodes.find(item => item.id === node.id))
+        this.treeControl.expand(node);
+    })
   }
 
 
   hasChild = (_: number, node: Categorie) => node.produits && node.produits.length >= 0;
 
   collapse_all(): void {
-    this.dataSource.data.forEach(produitNode => {
-      this.treeControl.collapse(produitNode);
+    this.dataSource.data.forEach(node => {
+      this.treeControl.collapse(node);
     })
   }
 
   expand_all(): void {
-    this.dataSource.data.forEach(produitNode => {
-      this.treeControl.expand(produitNode);
+    this.dataSource.data.forEach(node => {
+      this.treeControl.expand(node);
     })
   }
 

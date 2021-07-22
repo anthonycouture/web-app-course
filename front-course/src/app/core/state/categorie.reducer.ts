@@ -15,31 +15,27 @@ const _initialState: Categorie[] = [];
 const _categoriesReducer = createReducer(
   _initialState,
   on(retrievedCategories, (state, {categories}) => categories),
-  on(deleteCategorieInList, (state, {categorie}) => state.filter(item => JSON.stringify(item) !== JSON.stringify(categorie))),
+  on(deleteCategorieInList, (state, {idCategorie}) => state.filter(item => item.id !== idCategorie)),
   on(addCategorieInList, (state, {categorie}) => [...state, categorie]),
   on(updateCategorieInList, (state, {categorie}) => {
-    return state.map(item => {
-      if (item.id === categorie.id) {
-        item = categorie;
-      }
-      return item;
-    })
+    return state.map(item => item.id === categorie.id ? categorie : item);
   }),
-  on(deleteProduitInList, (state, {produit}) => {
+  on(deleteProduitInList, (state, {idProduit}) => {
     return state.map(categorie => {
-      categorie.produits = categorie.produits?.filter(item => item !== produit)
-      return categorie;
+      let categorieUpdate = Object.assign({}, categorie);
+      categorieUpdate.produits = categorieUpdate.produits?.filter(item => item.id !== idProduit)
+      return categorieUpdate;
     });
   }),
-  on(updateProduitInList, (state, {categorie, produit}) => {
+  on(updateProduitInList, (state, {idCategorie, produit}) => {
     return state.map(categorieState => {
-      categorieState.produits = categorieState.produits?.filter(item => item.id !== produit.id)
-      if (categorieState === categorie) {
-        console.log(categorieState.nom + ' ' + categorie.nom);
-        let produitsCategorieState = categorieState.produits ?? [];
+      let categorieUpdate = Object.assign({}, categorieState);
+      categorieUpdate.produits = categorieState.produits?.filter(item => item.id !== produit.id)
+      if (categorieUpdate.id === idCategorie) {
+        let produitsCategorieState = categorieUpdate.produits ?? [];
         produitsCategorieState.push(produit)
       }
-      return categorieState;
+      return categorieUpdate;
     })
   })
 );

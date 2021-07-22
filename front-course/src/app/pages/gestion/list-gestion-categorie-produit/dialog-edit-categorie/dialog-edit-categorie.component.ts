@@ -19,7 +19,7 @@ export class DialogEditCategorieComponent implements OnInit {
               private _categorieService: CategorieService,
               private _store: Store,
               @Inject(MAT_DIALOG_DATA) public data: Categorie) {
-    this.categorie = JSON.parse(JSON.stringify(this.data));
+    this.categorie = Object.assign({}, data);
   }
 
   ngOnInit(): void {
