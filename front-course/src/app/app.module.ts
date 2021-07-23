@@ -34,6 +34,8 @@ import {DialogDeleteProduitComponent} from './pages/gestion/list-gestion-categor
 import {SnackBarComponent} from './shared/components/snack-bar/snack-bar.component';
 import {DialogEditProduitComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-edit-produit/dialog-edit-produit.component';
 import {MatSelectModule} from "@angular/material/select";
+import {SelectSearchComponent} from './shared/components/select-search/select-search.component';
+import {SelectSearchCreateComponent} from './shared/components/select-search-create/select-search-create.component';
 
 const routes = [
   {path: '', component: AccueilComponent},
@@ -52,7 +54,9 @@ const routes = [
     DialogEditCategorieComponent,
     DialogDeleteProduitComponent,
     SnackBarComponent,
-    DialogEditProduitComponent
+    DialogEditProduitComponent,
+    SelectSearchComponent,
+    SelectSearchCreateComponent
   ],
   imports: [
     BrowserModule,

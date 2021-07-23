@@ -2,7 +2,10 @@
 <div mat-dialog-content>
   <p>La suppression de la catégorie {{data.nom}} supprimera les produits de celle-ci</p>
 </div>
-<div mat-dialog-actions>
-  <button mat-button (click)="notDelete()">Annuler</button>
-  <button mat-button (click)="delete()" cdkFocusInitial>Ok</button>
-</div>
+<form
+  (ngSubmit)="delete()">
+  <div mat-dialog-actions>
+    <button mat-button>Ok</button>
+    <button mat-button (click)="notDelete()">Annuler</button>
+  </div>
+</form>

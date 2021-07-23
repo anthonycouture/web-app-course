@@ -29,7 +29,7 @@ export class SearchAutocompleteComponent implements OnInit {
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    let optionValide = this.listOption.filter(option => option.toLowerCase().includes(filterValue));
+    let optionValide = this.listOption.filter(option => option.toLowerCase().startsWith(filterValue));
     this.optionValide.emit(optionValide);
     return optionValide;
   }

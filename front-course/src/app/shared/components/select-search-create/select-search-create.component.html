@@ -1,0 +1,14 @@
+<mat-form-field appearance="fill">
+  <mat-label>State</mat-label>
+  <mat-select>
+    <mat-form-field appearance="fill">
+      <input
+        type="text"
+        (keyup)="onKey()"
+        matInput
+        placeholder="Produit"
+        [(ngModel)]="searchValue">
+    </mat-form-field>
+    <mat-option *ngFor="let state of selectedStates" [value]="state">{{state}}</mat-option>
+  </mat-select>
+</mat-form-field>

@@ -1,14 +1,18 @@
-<mat-form-field appearance="fill">
-  <mat-label>Catégorie</mat-label>
-  <mat-select [(value)]="categorieSelected" required>
-    <mat-option [value]="option" *ngFor="let option of categories">{{ option.nom }}</mat-option>
-  </mat-select>
-</mat-form-field>
-<mat-form-field appearance="fill">
-  <mat-label>Nom du produit</mat-label>
-  <input matInput [(ngModel)]="produit.nom" required>
-</mat-form-field>
-<div mat-dialog-actions>
-  <button mat-button (click)="notEdit()">Annuler</button>
-  <button mat-button (click)="edit()" cdkFocusInitial>Modifier</button>
-</div>
+<h1 mat-dialog-title>Modifier le produit</h1>
+<form
+  (ngSubmit)="edit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Catégorie</mat-label>
+    <mat-select [(value)]="categorieSelected" required>
+      <mat-option [value]="option" *ngFor="let option of categories">{{ option.nom }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Nom du produit</mat-label>
+    <input matInput [(ngModel)]="produit.nom" required name="nomProduit">
+  </mat-form-field>
+  <div mat-dialog-actions>
+    <button mat-button>Modifier</button>
+    <button mat-button (click)="notEdit()">Annuler</button>
+  </div>
+</form>
