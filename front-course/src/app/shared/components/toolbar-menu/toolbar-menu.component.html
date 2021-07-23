@@ -11,11 +11,16 @@
     </button>
   </mat-drawer>
 
-  <mat-toolbar color="primary">
-    <button mat-icon-button (click)="drawer.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span class="name-application">Ma liste de course</span>
-  </mat-toolbar>
-  <ng-content></ng-content>
+  <mat-drawer-content>
+    <mat-toolbar color="primary" class="toolbar">
+      <button mat-icon-button (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="name-application">Ma liste de course</span>
+    </mat-toolbar>
+
+    <div class="router">
+      <ng-content></ng-content>
+    </div>
+  </mat-drawer-content>
 </mat-drawer-container>

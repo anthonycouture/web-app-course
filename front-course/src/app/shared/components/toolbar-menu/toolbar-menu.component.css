@@ -7,3 +7,16 @@
   position: fixed;
   width: 120px;
 }
+
+.toolbar {
+  display: flex;
+  position: fixed;
+  z-index: 2;
+}
+
+.router {
+  padding-top: 4rem;
+}
+
+
+
