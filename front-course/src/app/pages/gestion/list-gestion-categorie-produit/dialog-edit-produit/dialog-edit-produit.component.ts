@@ -6,6 +6,7 @@ import {selectCategories} from "../../../../core/state/categorie.selector";
 import {Produit} from "../../../../core/models/produit";
 import {updateProduitInList} from "../../../../core/state/categorie.action";
 import {ProduitService} from "../../../../core/services/produit.service";
+import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-dialog-edit-produit',
@@ -15,16 +16,19 @@ import {ProduitService} from "../../../../core/services/produit.service";
 export class DialogEditProduitComponent implements OnInit {
 
   categories: Categorie[] = [];
-  categorieSelected: Categorie | undefined;
-  produit: Produit;
+
+  produitForm = this._formBuilder.group({
+    categorie: [undefined, Validators.required],
+    produitName: [this.data.nom, Validators.required]
+  });
 
   constructor(
     private _dialogRef: MatDialogRef<DialogEditProduitComponent>,
     private _store: Store,
     private _produitService: ProduitService,
+    private _formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: Produit
   ) {
-    this.produit = Object.assign({}, data);
   }
 
   ngOnInit(): void {
@@ -32,20 +36,20 @@ export class DialogEditProduitComponent implements OnInit {
     this._store.select(selectCategories).subscribe(
       (data) => {
         this.categories = data;
-        this.categorieSelected = data.filter(item => item.produits?.includes(this.data))[0];
+        this.produitForm.controls['categorie'].setValue(data.filter(item => item.produits?.includes(this.data))[0]);
       }
     );
   }
 
 
   edit(): void {
-    if (this.categorieSelected !== undefined) {
-      let categorie = this.categorieSelected;
-      this._produitService.updateProduit(categorie.id, this.produit).subscribe(
-        (data) => this._store.dispatch(updateProduitInList({idCategorie: categorie.id, produit: data})),
-        (error) => console.error(error)
-      );
-    }
+    let produit: Produit = Object.assign({}, this.data);
+    produit.nom = this.produitForm.controls['produitName'].value;
+    let categorie: Categorie = this.produitForm.controls['categorie'].value;
+    this._produitService.updateProduit(categorie.id, produit).subscribe(
+      (data) => this._store.dispatch(updateProduitInList({idCategorie: categorie.id, produit: data})),
+      (error) => console.error(error)
+    );
     this._dialogRef.close();
   }
 

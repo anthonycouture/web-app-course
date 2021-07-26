@@ -7,13 +7,13 @@
       Un nom de catégorie est requis
     </div>
     <div *ngIf="categorieName.errors?.minlength">
-      Nom du produit trop petit
+      Nom de la catégorie trop petit
     </div>
   </div>
   <div mat-dialog-content>
     <mat-form-field appearance="fill">
       <mat-label>Nom de la catégorie</mat-label>
-      <input matInput [formControl]="categorieName" class="form-control">
+      <input matInput [formControl]="categorieName">
     </mat-form-field>
   </div>
   <div mat-dialog-actions>
@@ -21,4 +21,3 @@
     <button mat-button type="button" (click)="notEdit()">Annuler</button>
   </div>
 </form>
-<p>Form Status: {{ categorieName.status }}</p>

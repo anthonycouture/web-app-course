@@ -4,7 +4,7 @@ import {CategorieService} from "../../../../core/services/categorie.service";
 import {Categorie} from "../../../../core/models/categorie";
 import {Store} from "@ngrx/store";
 import {updateCategorieInList} from "../../../../core/state/categorie.action";
-import {FormBuilder, FormControl, Validators} from "@angular/forms";
+import {FormControl, Validators} from "@angular/forms";
 
 
 @Component({
@@ -15,15 +15,13 @@ import {FormBuilder, FormControl, Validators} from "@angular/forms";
 export class DialogEditCategorieComponent implements OnInit {
 
 
-  categorieName = new FormControl('',
+  categorieName = new FormControl(this.data.nom,
     [Validators.required, Validators.minLength(2)]);
 
   constructor(private _dialogRef: MatDialogRef<DialogEditCategorieComponent>,
               private _categorieService: CategorieService,
               private _store: Store,
-              private _formBuilder: FormBuilder,
               @Inject(MAT_DIALOG_DATA) public data: Categorie) {
-    this.categorieName.setValue(this.data.nom);
   }
 
   ngOnInit(): void {

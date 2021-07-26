@@ -1,18 +1,33 @@
 <h1 mat-dialog-title>Modifier le produit</h1>
 <form
-  (ngSubmit)="edit()">
+  (ngSubmit)="edit()"
+  [formGroup]="produitForm">
+  <div
+    *ngIf="produitForm.controls['categorie'].invalid && (produitForm.controls['categorie'].dirty || produitForm.controls['categorie'].touched)"
+    class="alert">
+    <div *ngIf="produitForm.controls['categorie'].errors?.required">
+      Une catégorie est requis
+    </div>
+  </div>
   <mat-form-field appearance="fill">
     <mat-label>Catégorie</mat-label>
-    <mat-select [(value)]="categorieSelected" required>
+    <mat-select formControlName="categorie">
       <mat-option [value]="option" *ngFor="let option of categories">{{ option.nom }}</mat-option>
     </mat-select>
   </mat-form-field>
+  <div
+    *ngIf="produitForm.controls['produitName'].invalid && (produitForm.controls['produitName'].dirty || produitForm.controls['produitName'].touched)"
+    class="alert">
+    <div *ngIf="produitForm.controls['produitName'].errors?.required">
+      Un nom de produit est requis
+    </div>
+  </div>
   <mat-form-field appearance="fill">
     <mat-label>Nom du produit</mat-label>
-    <input matInput [(ngModel)]="produit.nom" required name="nomProduit">
+    <input matInput formControlName="produitName" type="text">
   </mat-form-field>
   <div mat-dialog-actions>
-    <button mat-button type="submit">Modifier</button>
+    <button mat-button type="submit" [disabled]="produitForm.invalid">Modifier</button>
     <button mat-button type="button" (click)="notEdit()">Annuler</button>
   </div>
 </form>
