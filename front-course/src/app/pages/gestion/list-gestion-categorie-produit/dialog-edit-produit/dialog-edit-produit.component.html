@@ -27,7 +27,8 @@
     <input matInput formControlName="produitName" type="text">
   </mat-form-field>
   <div mat-dialog-actions>
-    <button mat-button type="submit" [disabled]="produitForm.invalid">Modifier</button>
+    <button mat-button type="submit">Modifier</button>
     <button mat-button type="button" (click)="notEdit()">Annuler</button>
   </div>
 </form>
+{{produitForm.status}}

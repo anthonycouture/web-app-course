@@ -7,6 +7,7 @@ import {Produit} from "../../../../core/models/produit";
 import {updateProduitInList} from "../../../../core/state/categorie.action";
 import {ProduitService} from "../../../../core/services/produit.service";
 import {FormBuilder, Validators} from "@angular/forms";
+import {ProduitExistValidator} from "../../../../shared/validators/produit-exist-validator";
 
 @Component({
   selector: 'app-dialog-edit-produit',
@@ -19,7 +20,13 @@ export class DialogEditProduitComponent implements OnInit {
 
   produitForm = this._formBuilder.group({
     categorie: [undefined, Validators.required],
-    produitName: [this.data.nom, Validators.required]
+    produitName: [this.data.nom,
+      {
+        validators: [Validators.required],
+        asyncValidators: [this._produitExistValidator],
+        updateOn: 'blur'
+      }
+    ]
   });
 
   constructor(
@@ -27,6 +34,7 @@ export class DialogEditProduitComponent implements OnInit {
     private _store: Store,
     private _produitService: ProduitService,
     private _formBuilder: FormBuilder,
+    private _produitExistValidator: ProduitExistValidator,
     @Inject(MAT_DIALOG_DATA) public data: Produit
   ) {
   }
@@ -43,6 +51,7 @@ export class DialogEditProduitComponent implements OnInit {
 
 
   edit(): void {
+    console.log(this.produitForm.status)
     let produit: Produit = Object.assign({}, this.data);
     produit.nom = this.produitForm.controls['produitName'].value;
     let categorie: Categorie = this.produitForm.controls['categorie'].value;
