@@ -21,4 +21,8 @@ export class ProduitService {
   updateProduit(idCategorie: number, produit: Produit): Observable<Produit> {
     return this._http.put<Produit>(this._url + '/' + idCategorie, produit);
   }
+
+  createProduit(idCategorie: number, nameProduit: string): Observable<Produit> {
+    return this._http.post<Produit>(this._url + '/' + idCategorie, {nom: nameProduit});
+  }
 }

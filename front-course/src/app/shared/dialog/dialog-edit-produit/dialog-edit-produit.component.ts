@@ -1,13 +1,13 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Store} from "@ngrx/store";
-import {Categorie} from "../../../../core/models/categorie";
-import {selectCategories} from "../../../../core/state/categorie.selector";
-import {Produit} from "../../../../core/models/produit";
-import {updateProduitInList} from "../../../../core/state/categorie.action";
-import {ProduitService} from "../../../../core/services/produit.service";
+import {Categorie} from "../../../core/models/categorie";
+import {selectCategories} from "../../../core/state/categorie.selector";
+import {Produit} from "../../../core/models/produit";
+import {updateProduitInList} from "../../../core/state/categorie.action";
+import {ProduitService} from "../../../core/services/produit.service";
 import {FormBuilder, Validators} from "@angular/forms";
-import {NameProduitExistValidator} from "../../../../shared/validators/name-produit-exist-validator";
+import {NameProduitExistValidator} from "../../validators/name-produit-exist-validator";
 
 @Component({
   selector: 'app-dialog-edit-produit',

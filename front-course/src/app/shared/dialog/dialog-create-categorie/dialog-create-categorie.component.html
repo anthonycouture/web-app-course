@@ -1,13 +1,13 @@
-<h1 mat-dialog-title>Modifier la catégorie</h1>
+<h1 mat-dialog-title>Création catégorie</h1>
 <form
-  (ngSubmit)="edit()">
+  (ngSubmit)="create()">
   <div *ngIf="categorieName.invalid && (categorieName.dirty || categorieName.touched)"
        class="alert">
     <div *ngIf="categorieName.errors?.required">
       Un nom de catégorie est requis
     </div>
-    <div *ngIf="categorieName.errors?.minlength">
-      Nom de la catégorie trop petit
+    <div *ngIf="categorieName.errors?.notValid">
+      Ce nom est déjà utilisé
     </div>
   </div>
   <div mat-dialog-content>
@@ -18,6 +18,6 @@
   </div>
   <div mat-dialog-actions>
     <button mat-button type="submit" [disabled]="categorieName.invalid">Modifier</button>
-    <button mat-button type="button" (click)="notEdit()">Annuler</button>
+    <button mat-button type="button" (click)="notCreate()">Annuler</button>
   </div>
 </form>

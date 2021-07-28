@@ -32,3 +32,8 @@ export const updateProduitInList = createAction(
   'Met à jour un produit dans la liste',
   props<{ idCategorie: number, produit: Produit }>()
 )
+
+export const addProduitInList = createAction(
+  'Ajoute un produit dans la liste',
+  props<{ idCategorie: number, produit: Produit }>()
+)

@@ -1,0 +1,7 @@
+<button mat-fab color="primary" [matMenuTriggerFor]="aboveMenu">
+  <mat-icon>add</mat-icon>
+</button>
+<mat-menu #aboveMenu="matMenu" yPosition="above">
+  <button mat-menu-item (click)="openDialogCreateCategorie()">Créer une catégorie</button>
+  <button mat-menu-item (click)="openDialogCreateProduit()">Créer un produit</button>
+</mat-menu>

@@ -28,4 +28,8 @@ export class CategorieService {
   editCategorie(categorie: Categorie): Observable<Categorie> {
     return this._http.put<Categorie>(this._url + '/' + categorie.id, categorie);
   }
+
+  createCategorie(nomCategorie: string): Observable<Categorie> {
+    return this._http.post<Categorie>(this._url, {nom: nomCategorie});
+  }
 }

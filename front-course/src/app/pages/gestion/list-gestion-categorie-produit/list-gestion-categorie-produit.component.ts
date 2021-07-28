@@ -1,13 +1,13 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {NestedTreeControl} from "@angular/cdk/tree";
 import {MatTreeNestedDataSource} from "@angular/material/tree";
-import {DialogDeleteCategorieComponent} from "./dialog-delete-categorie/dialog-delete-categorie.component";
+import {DialogDeleteCategorieComponent} from "../../../shared/dialog/dialog-delete-categorie/dialog-delete-categorie.component";
 import {MatDialog} from "@angular/material/dialog";
-import {DialogEditCategorieComponent} from "./dialog-edit-categorie/dialog-edit-categorie.component";
+import {DialogEditCategorieComponent} from "../../../shared/dialog/dialog-edit-categorie/dialog-edit-categorie.component";
 import {Categorie} from "../../../core/models/categorie";
 import {Produit} from "../../../core/models/produit";
-import {DialogDeleteProduitComponent} from "./dialog-delete-produit/dialog-delete-produit.component";
-import {DialogEditProduitComponent} from "./dialog-edit-produit/dialog-edit-produit.component";
+import {DialogDeleteProduitComponent} from "../../../shared/dialog/dialog-delete-produit/dialog-delete-produit.component";
+import {DialogEditProduitComponent} from "../../../shared/dialog/dialog-edit-produit/dialog-edit-produit.component";
 
 @Component({
   selector: 'app-list-gestion-categorie-produit',

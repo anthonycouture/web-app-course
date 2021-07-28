@@ -26,16 +26,20 @@ import {MatInputModule} from "@angular/material/input";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SearchAutocompleteComponent} from './shared/components/search-autocomplete/search-autocomplete.component';
 import {ListGestionCategorieProduitComponent} from './pages/gestion/list-gestion-categorie-produit/list-gestion-categorie-produit.component';
-import {DialogDeleteCategorieComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-delete-categorie/dialog-delete-categorie.component';
+import {DialogDeleteCategorieComponent} from './shared/dialog/dialog-delete-categorie/dialog-delete-categorie.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {DialogEditCategorieComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-edit-categorie/dialog-edit-categorie.component';
-import {DialogDeleteProduitComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-delete-produit/dialog-delete-produit.component';
+import {DialogEditCategorieComponent} from './shared/dialog/dialog-edit-categorie/dialog-edit-categorie.component';
+import {DialogDeleteProduitComponent} from './shared/dialog/dialog-delete-produit/dialog-delete-produit.component';
 import {SnackBarComponent} from './shared/components/snack-bar/snack-bar.component';
-import {DialogEditProduitComponent} from './pages/gestion/list-gestion-categorie-produit/dialog-edit-produit/dialog-edit-produit.component';
+import {DialogEditProduitComponent} from './shared/dialog/dialog-edit-produit/dialog-edit-produit.component';
 import {MatSelectModule} from "@angular/material/select";
 import {SelectSearchComponent} from './shared/components/select-search/select-search.component';
 import {SelectSearchCreateComponent} from './shared/components/select-search-create/select-search-create.component';
+import {MatMenuModule} from "@angular/material/menu";
+import {CreateCategorieProduitComponent} from './pages/gestion/create-categorie-produit/create-categorie-produit.component';
+import {DialogCreateCategorieComponent} from './shared/dialog/dialog-create-categorie/dialog-create-categorie.component';
+import {DialogCreateProduitComponent} from './shared/dialog/dialog-create-produit/dialog-create-produit.component';
 
 const routes = [
   {path: '', component: AccueilComponent},
@@ -56,7 +60,10 @@ const routes = [
     SnackBarComponent,
     DialogEditProduitComponent,
     SelectSearchComponent,
-    SelectSearchCreateComponent
+    SelectSearchCreateComponent,
+    CreateCategorieProduitComponent,
+    DialogCreateCategorieComponent,
+    DialogCreateProduitComponent
   ],
   imports: [
     BrowserModule,
@@ -85,7 +92,8 @@ const routes = [
     MatDialogModule,
     FormsModule,
     MatSnackBarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

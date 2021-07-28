@@ -1,6 +1,7 @@
 import {Action, createReducer, on} from "@ngrx/store";
 import {
   addCategorieInList,
+  addProduitInList,
   deleteCategorieInList,
   deleteProduitInList,
   retrievedCategories,
@@ -36,6 +37,17 @@ const _categoriesReducer = createReducer(
         produitsCategorieState.push(produit)
       }
       return categorieUpdate;
+    })
+  }),
+  on(addProduitInList, (state, {idCategorie, produit}) => {
+    return state.map(categorieState => {
+      if (categorieState.id === idCategorie) {
+        let categorieUpdate = JSON.parse(JSON.stringify(categorieState));
+        let produitsCategorieState = categorieUpdate.produits ?? [];
+        produitsCategorieState.push(produit)
+        return categorieUpdate;
+      }
+      return categorieState;
     })
   })
 );
