@@ -23,14 +23,13 @@ export class NameProduitExistValidator {
     ): ValidationErrors | null => {
       let exist = false;
       this._produits.forEach(produit => {
-        if (produit.nom === ctrl.value && (idProduit === null || idProduit !== produit.id))
+        if (produit.nom === ctrl.value && (idProduit === null || idProduit !== produit.id)) {
           exist = true;
+          return;
+        }
       });
 
-      if (exist)
-        return {notValid: true};
-
-      return null;
+      return exist ? {notValid: true} : null;
     }
   }
 }
