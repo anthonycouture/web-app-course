@@ -21,14 +21,16 @@
     <div *ngIf="produitForm.controls['produitName'].errors?.required">
       Un nom de produit est requis
     </div>
+    <div *ngIf="produitForm.controls['produitName'].errors?.notValid">
+      Ce nom est déjà utilisé
+    </div>
   </div>
   <mat-form-field appearance="fill">
     <mat-label>Nom du produit</mat-label>
     <input matInput formControlName="produitName" type="text">
   </mat-form-field>
   <div mat-dialog-actions>
-    <button mat-button type="submit">Modifier</button>
+    <button mat-button type="submit" [disabled]="!produitForm.valid">Modifier</button>
     <button mat-button type="button" (click)="notEdit()">Annuler</button>
   </div>
 </form>
-{{produitForm.status}}
