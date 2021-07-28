@@ -1,6 +1,6 @@
 import {createAction, props} from "@ngrx/store";
-import {Categorie} from "../models/categorie";
-import {Produit} from "../models/produit";
+import {Categorie} from "../../models/categorie";
+import {Produit} from "../../models/produit";
 
 export const retrievedCategories = createAction(
   'Init de la liste de categories',

@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {CategorieService} from "../../../core/services/categorie.service";
 import {Categorie} from "../../../core/models/categorie";
 import {Store} from "@ngrx/store";
-import {updateCategorieInList} from "../../../core/state/categorie.action";
+import {updateCategorieInList} from "../../../core/state/categorie/categories.action";
 import {FormControl, Validators} from "@angular/forms";
 import {NameCategorieExistValidator} from "../../validators/name-categorie-exist-validator";
 

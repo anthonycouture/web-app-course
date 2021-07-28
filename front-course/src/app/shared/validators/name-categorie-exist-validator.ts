@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {AbstractControl, ValidationErrors, ValidatorFn} from "@angular/forms";
 import {Store} from "@ngrx/store";
-import {selectCategories} from "../../core/state/categorie.selector";
+import {selectCategories} from "../../core/state/categorie/categories.selector";
 import {Categorie} from "../../core/models/categorie";
 
 @Injectable({providedIn: 'root'})

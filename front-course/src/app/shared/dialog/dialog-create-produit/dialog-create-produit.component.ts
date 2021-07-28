@@ -3,8 +3,8 @@ import {Categorie} from "../../../core/models/categorie";
 import {FormBuilder, Validators} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
 import {NameProduitExistValidator} from "../../validators/name-produit-exist-validator";
-import {addProduitInList} from "../../../core/state/categorie.action";
-import {selectCategories} from "../../../core/state/categorie.selector";
+import {addProduitInList} from "../../../core/state/categorie/categories.action";
+import {selectCategories} from "../../../core/state/categorie/categories.selector";
 import {Store} from "@ngrx/store";
 import {ProduitService} from "../../../core/services/produit.service";
 

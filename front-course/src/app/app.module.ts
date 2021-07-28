@@ -2,7 +2,8 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {StoreModule} from '@ngrx/store';
-import {reducer} from './core/state/categorie.reducer';
+import {categoriesReducer} from './core/state/categorie/categories.reducer';
+import {messageReducer} from "./core/state/message/message.reducer";
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 import {AppComponent} from './app.component';
@@ -31,7 +32,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {DialogEditCategorieComponent} from './shared/dialog/dialog-edit-categorie/dialog-edit-categorie.component';
 import {DialogDeleteProduitComponent} from './shared/dialog/dialog-delete-produit/dialog-delete-produit.component';
-import {SnackBarComponent} from './shared/components/snack-bar/snack-bar.component';
+import {SnackBarComponent} from './shared/components/snack-bar/snack-bar-component/snack-bar.component';
 import {DialogEditProduitComponent} from './shared/dialog/dialog-edit-produit/dialog-edit-produit.component';
 import {MatSelectModule} from "@angular/material/select";
 import {SelectSearchComponent} from './shared/components/select-search/select-search.component';
@@ -68,7 +69,7 @@ const routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes, {useHash: true}),
-    StoreModule.forRoot({categories: reducer}
+    StoreModule.forRoot({categories: categoriesReducer, message: messageReducer}
     ),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: false}),
     ServiceWorkerModule.register('ngsw-worker.js', {

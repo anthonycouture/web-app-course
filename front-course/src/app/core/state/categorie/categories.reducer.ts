@@ -7,8 +7,8 @@ import {
   retrievedCategories,
   updateCategorieInList,
   updateProduitInList
-} from "./categorie.action";
-import {Categorie} from "../models/categorie";
+} from "./categories.action";
+import {Categorie} from "../../models/categorie";
 
 
 const _initialState: Categorie[] = [];
@@ -53,6 +53,6 @@ const _categoriesReducer = createReducer(
 );
 
 
-export function reducer(state: Categorie[] | undefined, action: Action) {
+export function categoriesReducer(state: Categorie[] | undefined, action: Action) {
   return _categoriesReducer(state, action);
 }

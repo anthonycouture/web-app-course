@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Store} from "@ngrx/store";
 import {Produit} from "../../../core/models/produit";
-import {deleteProduitInList} from "../../../core/state/categorie.action";
+import {deleteProduitInList} from "../../../core/state/categorie/categories.action";
 import {ProduitService} from "../../../core/services/produit.service";
 
 @Component({

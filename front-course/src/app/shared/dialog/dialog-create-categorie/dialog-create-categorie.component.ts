@@ -3,7 +3,7 @@ import {FormControl, Validators} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
 import {NameCategorieExistValidator} from "../../validators/name-categorie-exist-validator";
 import {CategorieService} from "../../../core/services/categorie.service";
-import {addCategorieInList} from "../../../core/state/categorie.action";
+import {addCategorieInList} from "../../../core/state/categorie/categories.action";
 import {Store} from "@ngrx/store";
 
 @Component({

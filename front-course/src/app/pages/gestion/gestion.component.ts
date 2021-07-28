@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
-import {selectCategories} from "../../core/state/categorie.selector";
-import {retrievedCategories} from "../../core/state/categorie.action";
+import {selectCategories} from "../../core/state/categorie/categories.selector";
+import {retrievedCategories} from "../../core/state/categorie/categories.action";
 import {CategorieService} from "../../core/services/categorie.service";
 import {Categorie} from "../../core/models/categorie";
 
@@ -30,6 +30,7 @@ export class GestionComponent implements OnInit {
         });
       }
     );
+    //this._store.dispatch(addMessage( {message:{message: 'hello', level: 'info'}}))
   }
 
   ngOnInit(): void {
