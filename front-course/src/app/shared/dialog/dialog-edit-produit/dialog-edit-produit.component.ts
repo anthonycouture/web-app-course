@@ -70,6 +70,7 @@ export class DialogEditProduitComponent {
     this._produitService.updateProduit(this.categorie.id, produit).subscribe(
       (data) => {
         this._store.dispatch(updateProduitInList({idCategorie: this.categorie.id, produit: data}));
+        this._store.dispatch(addMessage({message: {message: 'Le produit a été mis à jour', colorTexte: 'white'}}));
         this._dialogRef.close();
       },
       (error) => {

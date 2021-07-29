@@ -27,6 +27,7 @@ export class DialogDeleteCategorieComponent implements OnInit {
     this._categorieService.deleteCategorie(this.data.id).subscribe(
       () => {
         this._store.dispatch(deleteCategorieInList({idCategorie: this.data.id}));
+        this._store.dispatch(addMessage({message: {message: 'La catégorie a été supprimé', colorTexte: 'white'}}));
         this._dialogRef.close();
       },
       (error) => {

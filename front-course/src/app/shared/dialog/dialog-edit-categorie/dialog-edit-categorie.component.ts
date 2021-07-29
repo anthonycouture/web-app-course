@@ -35,6 +35,7 @@ export class DialogEditCategorieComponent implements OnInit {
     this._categorieService.editCategorie(categorie).subscribe(
       (data) => {
         this._store.dispatch(updateCategorieInList({categorie: data}));
+        this._store.dispatch(addMessage({message: {message: 'La catégorie a été mis à jour', colorTexte: 'white'}}));
         this._dialogRef.close();
       },
       (error) => {

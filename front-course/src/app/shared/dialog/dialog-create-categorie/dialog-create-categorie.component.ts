@@ -30,6 +30,7 @@ export class DialogCreateCategorieComponent implements OnInit {
     this._categorieService.createCategorie(this.categorieName.value).subscribe(
       (data) => {
         this._store.dispatch(addCategorieInList({categorie: data}));
+        this._store.dispatch(addMessage({message: {message: 'La catégorie a été créée', colorTexte: 'white'}}));
         this._dialogRef.close();
       },
       (error) => {

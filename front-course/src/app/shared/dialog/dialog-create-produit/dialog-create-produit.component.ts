@@ -61,6 +61,7 @@ export class DialogCreateProduitComponent implements OnInit {
     this._produitService.createProduit(this.categorie.id, this.produitName).subscribe(
       (data) => {
         this._store.dispatch(addProduitInList({idCategorie: this.categorie.id, produit: data}));
+        this._store.dispatch(addMessage({message: {message: 'Le produit a été créé', colorTexte: 'white'}}));
         this._dialogRef.close();
       },
       (error) => {

@@ -27,6 +27,7 @@ export class DialogDeleteProduitComponent implements OnInit {
     this._produitService.deleteProduit(this.data.id).subscribe(
       () => {
         this._store.dispatch(deleteProduitInList({idProduit: this.data.id}));
+        this._store.dispatch(addMessage({message: {message: 'Le produit a été supprimé', colorTexte: 'white'}}));
         this._dialogRef.close();
       },
       (error) => {
