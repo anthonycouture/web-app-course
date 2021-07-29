@@ -2,7 +2,7 @@ import {Categorie} from "../models/categorie";
 
 export interface Message {
   message: String;
-  level: 'info' | 'warn' | 'error'
+  colorTexte: 'white' | 'orange' | 'red'
 }
 
 export interface AppState {
