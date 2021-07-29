@@ -2,7 +2,7 @@ import {Message} from "../app.state";
 import {Action, createReducer, on} from "@ngrx/store";
 import {addMessage} from "./message.action";
 
-const _initialState: Message = {message: 'Bienvenue', level: 'info'};
+const _initialState: Message = {message: 'Bienvenue', colorTexte: 'white'};
 
 const _messageReducer = createReducer(
   _initialState,
