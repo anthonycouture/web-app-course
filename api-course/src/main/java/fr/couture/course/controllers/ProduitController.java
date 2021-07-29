@@ -77,6 +77,12 @@ public class ProduitController {
         }
     }
 
+    /**
+     * Supprime un produit, status HTTP 200 si ok, 404 si le produit n'existe pas
+     * et 409 si le produit est utilisé dans liste de course
+     *
+     * @param idProduit id du produit a supprimer
+     */
     @DeleteMapping("/{idProduit}")
     public void deleteProduit(@PathVariable Long idProduit) {
         try {
