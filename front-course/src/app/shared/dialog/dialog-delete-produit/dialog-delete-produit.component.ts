@@ -4,6 +4,7 @@ import {Store} from "@ngrx/store";
 import {Produit} from "../../../core/models/produit";
 import {deleteProduitInList} from "../../../core/state/categorie/categories.action";
 import {ProduitService} from "../../../core/services/produit.service";
+import {addMessage} from "../../../core/state/message/message.action";
 
 @Component({
   selector: 'app-dialog-delete-produit',
@@ -24,10 +25,34 @@ export class DialogDeleteProduitComponent implements OnInit {
 
   delete(): void {
     this._produitService.deleteProduit(this.data.id).subscribe(
-      () => this._store.dispatch(deleteProduitInList({idProduit: this.data.id})),
-      (error) => console.error(error)
+      () => {
+        this._store.dispatch(deleteProduitInList({idProduit: this.data.id}));
+        this._dialogRef.close();
+      },
+      (error) => {
+        switch (error.status) {
+          case 404:
+            this._store.dispatch(addMessage({message: {message: 'Le produit n\'existe pas', colorTexte: 'red'}}));
+            break;
+          case 409:
+            this._store.dispatch(addMessage({
+              message: {
+                message: 'Le produit est utilisé dans la liste de course',
+                colorTexte: 'red'
+              }
+            }));
+            break;
+          default :
+            this._store.dispatch(addMessage({
+              message: {
+                message: 'Une erreur est survenue lors de la suppression du produit',
+                colorTexte: 'red'
+              }
+            }));
+            break;
+        }
+      }
     )
-    this._dialogRef.close();
   }
 
   notDelete(): void {

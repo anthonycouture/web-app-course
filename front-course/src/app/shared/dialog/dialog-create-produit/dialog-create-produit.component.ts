@@ -7,6 +7,7 @@ import {addProduitInList} from "../../../core/state/categorie/categories.action"
 import {selectCategories} from "../../../core/state/categorie/categories.selector";
 import {Store} from "@ngrx/store";
 import {ProduitService} from "../../../core/services/produit.service";
+import {addMessage} from "../../../core/state/message/message.action";
 
 @Component({
   selector: 'app-dialog-create-produit',
@@ -47,7 +48,7 @@ export class DialogCreateProduitComponent implements OnInit {
     private _produitExistValidator: NameProduitExistValidator,
     private _formBuilder: FormBuilder,
     private _store: Store,
-    private _produitService: ProduitService,
+    private _produitService: ProduitService
   ) {
     // @ts-ignore
     this._store.select(selectCategories).subscribe(
@@ -62,10 +63,29 @@ export class DialogCreateProduitComponent implements OnInit {
 
   create(): void {
     this._produitService.createProduit(this.categorie.id, this.produitName).subscribe(
-      (data) => this._store.dispatch(addProduitInList({idCategorie: this.categorie.id, produit: data})),
-      (error) => console.error(error)
+      (data) => {
+        this._store.dispatch(addProduitInList({idCategorie: this.categorie.id, produit: data}));
+        this._dialogRef.close();
+      },
+      (error) => {
+        switch (error.status) {
+          case 409:
+            this._store.dispatch(addMessage({message: {message: 'Le produit existe déjà', colorTexte: 'red'}}));
+            break;
+          case 412:
+            this._store.dispatch(addMessage({message: {message: 'La catégorie n\'existe pas', colorTexte: 'red'}}));
+            break;
+          default :
+            this._store.dispatch(addMessage({
+              message: {
+                message: 'Une erreur est survenue lors de la création du produit',
+                colorTexte: 'red'
+              }
+            }));
+            break;
+        }
+      }
     )
-    this._dialogRef.close();
   }
 
   notCreate(): void {

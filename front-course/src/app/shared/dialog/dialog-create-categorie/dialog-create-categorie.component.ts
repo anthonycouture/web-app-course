@@ -5,6 +5,7 @@ import {NameCategorieExistValidator} from "../../validators/name-categorie-exist
 import {CategorieService} from "../../../core/services/categorie.service";
 import {addCategorieInList} from "../../../core/state/categorie/categories.action";
 import {Store} from "@ngrx/store";
+import {addMessage} from "../../../core/state/message/message.action";
 
 @Component({
   selector: 'app-dialog-create-categorie',
@@ -27,10 +28,26 @@ export class DialogCreateCategorieComponent implements OnInit {
 
   create() {
     this._categorieService.createCategorie(this.categorieName.value).subscribe(
-      (data) => this._store.dispatch(addCategorieInList({categorie: data})),
-      (error) => console.error(error)
+      (data) => {
+        this._store.dispatch(addCategorieInList({categorie: data}));
+        this._dialogRef.close();
+      },
+      (error) => {
+        switch (error.status) {
+          case 409:
+            this._store.dispatch(addMessage({message: {message: 'La catégorie existe déjà', colorTexte: 'red'}}));
+            break;
+          default :
+            this._store.dispatch(addMessage({
+              message: {
+                message: 'Une erreur est survenue lors de la création de la catégorie',
+                colorTexte: 'red'
+              }
+            }));
+            break;
+        }
+      }
     )
-    this._dialogRef.close();
   }
 
   notCreate() {
