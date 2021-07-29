@@ -4,6 +4,7 @@ import {selectCategories} from "../../core/state/categorie/categories.selector";
 import {retrievedCategories} from "../../core/state/categorie/categories.action";
 import {CategorieService} from "../../core/services/categorie.service";
 import {Categorie} from "../../core/models/categorie";
+import {addMessage} from "../../core/state/message/message.action";
 
 
 @Component({
@@ -30,7 +31,6 @@ export class GestionComponent implements OnInit {
         });
       }
     );
-    //this._store.dispatch(addMessage( {message:{message: 'hello', level: 'info'}}))
   }
 
   ngOnInit(): void {
@@ -38,7 +38,12 @@ export class GestionComponent implements OnInit {
       (data) => {
         this._store.dispatch(retrievedCategories({categories: data}));
       },
-      (error) => console.error(error)
+      () => this._store.dispatch(addMessage({
+        message: {
+          message: 'Problème lors de la récupération des catégories et produits',
+          colorTexte: 'red'
+        }
+      }))
     );
   }
 

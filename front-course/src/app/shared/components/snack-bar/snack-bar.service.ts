@@ -11,15 +11,9 @@ export class SnackBarService {
 
   constructor(private _store: Store,
               private _snackBar: MatSnackBar) {
-    this.runReadMessage();
-  }
-
-
-  runReadMessage() {
     // @ts-ignore
     this._store.select(selectMessages).subscribe(
       (data) => {
-        console.log(data);
         this._snackBar.openFromComponent(
           SnackBarComponent,
           {
@@ -28,6 +22,6 @@ export class SnackBarService {
           }
         )
       }
-    )
+    );
   }
 }
