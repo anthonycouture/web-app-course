@@ -16,7 +16,7 @@ import {DialogEditProduitComponent} from "../../../shared/dialog/dialog-edit-pro
 })
 export class ListGestionCategorieProduitComponent implements OnChanges {
 
-  @Input() categories!: Categorie[];
+  @Input() categories: Categorie[] = [];
 
 
   treeControl = new NestedTreeControl<Categorie>(node => node.produits);

@@ -41,6 +41,8 @@ import {MatMenuModule} from "@angular/material/menu";
 import {CreateCategorieProduitComponent} from './pages/gestion/create-categorie-produit/create-categorie-produit.component';
 import {DialogCreateCategorieComponent} from './shared/dialog/dialog-create-categorie/dialog-create-categorie.component';
 import {DialogCreateProduitComponent} from './shared/dialog/dialog-create-produit/dialog-create-produit.component';
+import {CategoriesFiltrePipe} from './pages/gestion/categories-filtre.pipe';
+import {NameProduitsByCategoriesPipe} from './pages/gestion/name-produits-by-categories.pipe';
 
 const routes = [
   {path: '', component: AccueilComponent},
@@ -64,7 +66,9 @@ const routes = [
     SelectSearchCreateComponent,
     CreateCategorieProduitComponent,
     DialogCreateCategorieComponent,
-    DialogCreateProduitComponent
+    DialogCreateProduitComponent,
+    CategoriesFiltrePipe,
+    NameProduitsByCategoriesPipe
   ],
   imports: [
     BrowserModule,
