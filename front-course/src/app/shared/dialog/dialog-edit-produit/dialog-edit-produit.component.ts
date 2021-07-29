@@ -9,6 +9,8 @@ import {ProduitService} from "../../../core/services/produit.service";
 import {FormBuilder, Validators} from "@angular/forms";
 import {NameProduitExistValidator} from "../../validators/name-produit-exist-validator";
 import {addMessage} from "../../../core/state/message/message.action";
+import {Observable} from "rxjs";
+import {take} from "rxjs/operators";
 
 @Component({
   selector: 'app-dialog-edit-produit',
@@ -17,7 +19,8 @@ import {addMessage} from "../../../core/state/message/message.action";
 })
 export class DialogEditProduitComponent {
 
-  categories: Categorie[] = [];
+  // @ts-ignore
+  categories$: Observable<Categorie[]> = this._store.select(selectCategories);
 
   produitForm = this._formBuilder.group({
     categorie: [undefined,
@@ -53,9 +56,8 @@ export class DialogEditProduitComponent {
     @Inject(MAT_DIALOG_DATA) public data: Produit
   ) {
     // @ts-ignore
-    this._store.select(selectCategories).subscribe(
+    this._store.select(selectCategories).pipe(take(1)).subscribe(
       (data) => {
-        this.categories = data;
         this.categorie = data.filter(item => item.produits?.includes(this.data))[0];
       }
     );

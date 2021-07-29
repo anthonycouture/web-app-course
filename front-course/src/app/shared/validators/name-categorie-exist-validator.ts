@@ -3,17 +3,16 @@ import {AbstractControl, ValidationErrors, ValidatorFn} from "@angular/forms";
 import {Store} from "@ngrx/store";
 import {selectCategories} from "../../core/state/categorie/categories.selector";
 import {Categorie} from "../../core/models/categorie";
+import {Observable} from "rxjs";
+import {take} from "rxjs/operators";
 
 @Injectable({providedIn: 'root'})
 export class NameCategorieExistValidator {
 
-  private _categories: Categorie[] = [];
+  // @ts-ignore
+  private _categories$: Observable<Categorie[]> = this._store.select(selectCategories);
 
   constructor(private _store: Store) {
-    // @ts-ignore
-    this._store.select(selectCategories).subscribe(
-      (data) => this._categories = data
-    );
   }
 
 
@@ -22,15 +21,16 @@ export class NameCategorieExistValidator {
       ctrl: AbstractControl
     ): ValidationErrors | null => {
       let exist = false;
-      this._categories.forEach(categorie => {
-        if (categorie.nom === ctrl.value && (idCategorie === null || idCategorie !== categorie.id)) {
-          exist = true;
-          return;
+      this._categories$.pipe(take(1)).subscribe((categories) => {
+          categories.forEach(categorie => {
+            if (categorie.nom === ctrl.value && (idCategorie === null || idCategorie !== categorie.id)) {
+              exist = true;
+              return;
+            }
+          });
         }
-      });
-
+      );
       return exist ? {notValid: true} : null;
-
     }
   }
 }

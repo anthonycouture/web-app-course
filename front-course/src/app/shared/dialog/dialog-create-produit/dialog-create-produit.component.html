@@ -3,7 +3,7 @@
   (ngSubmit)="create()"
   [formGroup]="produitForm">
   <div
-    *ngIf="produitForm.controls['categorie'].invalid && (produitForm.controls['categorie'].dirty || produitForm.controls['categorie'].touched)"
+    *ngIf="produitForm.controls['categorie'].invalid && (produitForm.controls['categorie'].dirty)"
     class="alert">
     <div *ngIf="produitForm.controls['categorie'].errors?.required">
       Une catégorie est requis
@@ -12,11 +12,11 @@
   <mat-form-field appearance="fill">
     <mat-label>Catégorie</mat-label>
     <mat-select formControlName="categorie">
-      <mat-option [value]="option" *ngFor="let option of categories">{{ option.nom }}</mat-option>
+      <mat-option [value]="option" *ngFor="let option of (categories$ | async)">{{ option.nom }}</mat-option>
     </mat-select>
   </mat-form-field>
   <div
-    *ngIf="produitForm.controls['produitName'].invalid && (produitForm.controls['produitName'].dirty || produitForm.controls['produitName'].touched)"
+    *ngIf="produitForm.controls['produitName'].invalid && (produitForm.controls['produitName'].dirty)"
     class="alert">
     <div *ngIf="produitForm.controls['produitName'].errors?.required">
       Un nom de produit est requis

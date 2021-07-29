@@ -8,6 +8,7 @@ import {selectCategories} from "../../../core/state/categorie/categories.selecto
 import {Store} from "@ngrx/store";
 import {ProduitService} from "../../../core/services/produit.service";
 import {addMessage} from "../../../core/state/message/message.action";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-dialog-create-produit',
@@ -16,7 +17,8 @@ import {addMessage} from "../../../core/state/message/message.action";
 })
 export class DialogCreateProduitComponent implements OnInit {
 
-  categories: Categorie[] = [];
+  // @ts-ignore
+  categories$: Observable<Categorie[]> = this._store.select(selectCategories);
 
   produitForm = this._formBuilder.group({
     categorie: [undefined,
@@ -50,12 +52,6 @@ export class DialogCreateProduitComponent implements OnInit {
     private _store: Store,
     private _produitService: ProduitService
   ) {
-    // @ts-ignore
-    this._store.select(selectCategories).subscribe(
-      (data) => {
-        this.categories = data;
-      }
-    );
   }
 
   ngOnInit(): void {
