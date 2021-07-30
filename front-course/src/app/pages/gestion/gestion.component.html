@@ -2,7 +2,7 @@
   <h1>Gestion des produits et catégorie</h1>
   <app-search-autocomplete
     [listOption]="((categories$ | async) ||[]) | nameProduitsByCategories"
-    (optionValide)="filterByOption($event)">
+    (optionValide)="listOption= $event">
   </app-search-autocomplete>
   <app-list-gestion-categorie-produit
     [categories]="((categories$ | async) ||[]) | categoriesFiltre: listOption">

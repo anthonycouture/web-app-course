@@ -39,9 +39,4 @@ export class GestionComponent implements OnInit {
       ))
     );
   }
-
-
-  filterByOption(valueTab: string[]): void {
-    this.listOption = valueTab;
-  }
 }

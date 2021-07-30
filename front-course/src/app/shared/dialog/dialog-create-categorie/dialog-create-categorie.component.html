@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Création catégorie</h1>
 <form
   (ngSubmit)="create()">
-  <div *ngIf="categorieName.invalid && (categorieName.dirty || categorieName.touched)"
+  <div *ngIf="categorieName.invalid && categorieName.dirty"
        class="alert">
     <div *ngIf="categorieName.errors?.required">
       Un nom de catégorie est requis
@@ -17,7 +17,7 @@
     </mat-form-field>
   </div>
   <div mat-dialog-actions>
-    <button mat-button type="submit" [disabled]="categorieName.invalid">Modifier</button>
+    <button mat-button type="submit" [disabled]="categorieName.invalid">Créer</button>
     <button mat-button type="button" (click)="notCreate()">Annuler</button>
   </div>
 </form>

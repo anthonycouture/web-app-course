@@ -1,37 +1,54 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {Observable} from "rxjs";
-import {map, startWith} from "rxjs/operators";
+import {Subscription} from "rxjs";
+import {startWith} from "rxjs/operators";
 
 @Component({
   selector: 'app-search-autocomplete',
   templateUrl: './search-autocomplete.component.html',
   styleUrls: ['./search-autocomplete.component.css']
 })
-export class SearchAutocompleteComponent implements OnInit {
+export class SearchAutocompleteComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input() listOption!: string[];
+  @Input() listOption: string[] = [];
   @Output() optionValide = new EventEmitter<string[]>();
 
   myControl = new FormControl();
-  filteredOptions: Observable<string[]>;
+  filteredOptions: string[] = [];
+  private _value: string = '';
+
+
+  private _subscribeChangeValue$: Subscription;
+
 
   constructor() {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
+    this._subscribeChangeValue$ = this.myControl.valueChanges.pipe(
+      startWith('')).subscribe(value => {
+      this._value = value;
+      return this._filter()
+    });
   }
 
   ngOnInit(): void {
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    let optionValide = this.listOption.filter(option => option.toLowerCase().startsWith(filterValue));
-    this.optionValide.emit(optionValide);
-    return optionValide;
+  ngOnChanges(changes: SimpleChanges): void {
+    this._filter();
   }
+
+  private _filter() {
+    const filterValue = this._value.toLowerCase();
+    this.filteredOptions = this.listOption.filter(option => option.toLowerCase().startsWith(filterValue));
+    if (this._value === '')
+      this.optionValide.emit(this.listOption);
+    else {
+      this.optionValide.emit(this.filteredOptions);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this._subscribeChangeValue$.unsubscribe();
+  }
+
 
 }
