@@ -8,4 +8,5 @@ export interface Message {
 export interface AppState {
   categories: Categorie[];
   message: Message;
+  spinner: boolean;
 }

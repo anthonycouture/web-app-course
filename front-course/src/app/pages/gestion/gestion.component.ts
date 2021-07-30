@@ -6,6 +6,7 @@ import {CategorieService} from "../../core/services/categorie.service";
 import {Categorie} from "../../core/models/categorie";
 import {addMessage} from "../../core/state/message/message.action";
 import {Observable} from "rxjs";
+import {updateSpinner} from "../../core/state/spinner/spinner.action";
 
 
 @Component({
@@ -26,17 +27,22 @@ export class GestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._store.dispatch(updateSpinner({etat: true}));
     this._categorieService.getCategories().toPromise().then(
       (data) => {
         this._store.dispatch(retrievedCategories({categories: data}));
+
       },
-      () => this._store.dispatch(addMessage({
+      () => {
+        this._store.dispatch(addMessage({
           message: {
             message: 'Problème lors de la récupération des catégories et produits',
             colorTexte: 'red'
           }
-        }
-      ))
+        }));
+        this._store.dispatch(updateSpinner({etat: false}))
+      }
     );
+
   }
 }

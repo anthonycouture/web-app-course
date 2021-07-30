@@ -2,9 +2,10 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {StoreModule} from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {categoriesReducer} from './core/state/categorie/categories.reducer';
 import {messageReducer} from "./core/state/message/message.reducer";
-import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {spinnerReducer} from "./core/state/spinner/spinner.reducer";
 
 import {AppComponent} from './app.component';
 import {ServiceWorkerModule} from '@angular/service-worker';
@@ -43,6 +44,7 @@ import {DialogCreateCategorieComponent} from './shared/dialog/dialog-create-cate
 import {DialogCreateProduitComponent} from './shared/dialog/dialog-create-produit/dialog-create-produit.component';
 import {CategoriesFiltrePipe} from './pages/gestion/categories-filtre.pipe';
 import {NameProduitsByCategoriesPipe} from './pages/gestion/name-produits-by-categories.pipe';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 const routes = [
   {path: '', component: AccueilComponent},
@@ -73,7 +75,11 @@ const routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes, {useHash: true}),
-    StoreModule.forRoot({categories: categoriesReducer, message: messageReducer}
+    StoreModule.forRoot({
+        categories: categoriesReducer,
+        message: messageReducer,
+        spinner: spinnerReducer
+      }
     ),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: false}),
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -98,7 +104,8 @@ const routes = [
     FormsModule,
     MatSnackBarModule,
     MatSelectModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
