@@ -5,5 +5,4 @@ export interface Message {
 
 export interface AppState {
   message: Message;
-  spinner: boolean;
 }

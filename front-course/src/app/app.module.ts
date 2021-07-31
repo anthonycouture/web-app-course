@@ -4,7 +4,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {messageReducer} from "./core/state/message/message.reducer";
-import {spinnerReducer} from "./core/state/spinner/spinner.reducer";
 
 import {AppComponent} from './app.component';
 import {ServiceWorkerModule} from '@angular/service-worker';
@@ -75,8 +74,7 @@ const routes = [
     BrowserModule,
     RouterModule.forRoot(routes, {useHash: true}),
     StoreModule.forRoot({
-        message: messageReducer,
-        spinner: spinnerReducer
+        message: messageReducer
       }
     ),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: false}),

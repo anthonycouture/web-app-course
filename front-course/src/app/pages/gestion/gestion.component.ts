@@ -4,8 +4,8 @@ import {CategorieService} from "../../core/services/categorie.service";
 import {Categorie} from "../../core/models/categorie";
 import {addMessage} from "../../core/state/message/message.action";
 import {Observable} from "rxjs";
-import {updateSpinner} from "../../core/state/spinner/spinner.action";
 import {CategoriesStoreService} from "../../core/state/categories-store.service";
+import {SpinnerStoreService} from "../../core/state/spinner-store.service";
 
 
 @Component({
@@ -22,15 +22,17 @@ export class GestionComponent implements OnInit {
 
   constructor(private _categorieService: CategorieService,
               private _store: Store,
-              private _categoriesStore: CategoriesStoreService) {
+              private _categoriesStore: CategoriesStoreService,
+              private _spinnerStore: SpinnerStoreService) {
 
   }
 
   ngOnInit(): void {
-    this._store.dispatch(updateSpinner({etat: true}));
+    this._spinnerStore.setSpinner(true);
     this._categorieService.getCategories().toPromise().then(
       (data) => {
         this._categoriesStore.setCategories(data);
+        this._spinnerStore.setSpinner(false);
       },
       () => {
         this._store.dispatch(addMessage({
@@ -39,7 +41,7 @@ export class GestionComponent implements OnInit {
             colorTexte: 'red'
           }
         }));
-        this._store.dispatch(updateSpinner({etat: false}))
+        this._spinnerStore.setSpinner(false);
       }
     );
 

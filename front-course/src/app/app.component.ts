@@ -1,30 +1,22 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {SnackBarService} from "./shared/components/snack-bar/snack-bar.service";
-import {Store} from "@ngrx/store";
-import {selectEtatSpinner} from "./core/state/spinner/spinner.selector";
+import {SpinnerStoreService} from "./core/state/spinner-store.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent {
   title = 'front-course';
 
   // @ts-ignore
   spinner: boolean = false;
 
   constructor(private _snackBarService: SnackBarService,
-              private _store: Store) {
-  }
-
-  ngOnInit(): void {
-
-  }
-
-  ngAfterViewInit() {
+              private _spinnerStore: SpinnerStoreService) {
     // @ts-ignore
-    this._store.select(selectEtatSpinner).subscribe(
+    this._spinnerStore.spinner$.subscribe(
       (data) => setTimeout(() => {
         this.spinner = data
       }, 0)
