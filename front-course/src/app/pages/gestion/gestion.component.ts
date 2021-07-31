@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
-import {selectCategories} from "../../core/state/categorie/categories.selector";
-import {retrievedCategories} from "../../core/state/categorie/categories.action";
 import {CategorieService} from "../../core/services/categorie.service";
 import {Categorie} from "../../core/models/categorie";
 import {addMessage} from "../../core/state/message/message.action";
 import {Observable} from "rxjs";
 import {updateSpinner} from "../../core/state/spinner/spinner.action";
+import {CategoriesStoreService} from "../../core/state/categories-store.service";
 
 
 @Component({
@@ -17,12 +16,13 @@ import {updateSpinner} from "../../core/state/spinner/spinner.action";
 export class GestionComponent implements OnInit {
 
   // @ts-ignore
-  categories$: Observable<Categorie[]> = this._store.select(selectCategories);
+  categories$: Observable<Categorie[]> = this._categoriesStore.categories$;
 
   listOption: string[] = [];
 
   constructor(private _categorieService: CategorieService,
-              private _store: Store) {
+              private _store: Store,
+              private _categoriesStore: CategoriesStoreService) {
 
   }
 
@@ -30,8 +30,7 @@ export class GestionComponent implements OnInit {
     this._store.dispatch(updateSpinner({etat: true}));
     this._categorieService.getCategories().toPromise().then(
       (data) => {
-        this._store.dispatch(retrievedCategories({categories: data}));
-
+        this._categoriesStore.setCategories(data);
       },
       () => {
         this._store.dispatch(addMessage({

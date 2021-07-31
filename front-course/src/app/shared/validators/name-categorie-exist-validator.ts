@@ -1,18 +1,17 @@
 import {Injectable} from "@angular/core";
 import {AbstractControl, ValidationErrors, ValidatorFn} from "@angular/forms";
-import {Store} from "@ngrx/store";
-import {selectCategories} from "../../core/state/categorie/categories.selector";
 import {Categorie} from "../../core/models/categorie";
 import {Observable} from "rxjs";
 import {take} from "rxjs/operators";
+import {CategoriesStoreService} from "../../core/state/categories-store.service";
 
 @Injectable({providedIn: 'root'})
 export class NameCategorieExistValidator {
 
   // @ts-ignore
-  private _categories$: Observable<Categorie[]> = this._store.select(selectCategories);
+  private _categories$: Observable<Categorie[]> = this._categoriesStore.categories$;
 
-  constructor(private _store: Store) {
+  constructor(private _categoriesStore: CategoriesStoreService) {
   }
 
 

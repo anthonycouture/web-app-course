@@ -3,7 +3,6 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {categoriesReducer} from './core/state/categorie/categories.reducer';
 import {messageReducer} from "./core/state/message/message.reducer";
 import {spinnerReducer} from "./core/state/spinner/spinner.reducer";
 
@@ -76,7 +75,6 @@ const routes = [
     BrowserModule,
     RouterModule.forRoot(routes, {useHash: true}),
     StoreModule.forRoot({
-        categories: categoriesReducer,
         message: messageReducer,
         spinner: spinnerReducer
       }

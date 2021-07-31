@@ -1,17 +1,16 @@
 import {Injectable} from "@angular/core";
 import {AbstractControl, ValidationErrors, ValidatorFn} from "@angular/forms";
-import {Store} from "@ngrx/store";
-import {selectProduits} from "../../core/state/categorie/categories.selector";
 import {Produit} from "../../core/models/produit";
+import {CategoriesStoreService} from "../../core/state/categories-store.service";
 
 @Injectable({providedIn: 'root'})
 export class NameProduitExistValidator {
 
   private _produits: Produit[] = [];
 
-  constructor(private _store: Store) {
+  constructor(private _categoriesStore: CategoriesStoreService) {
     // @ts-ignore
-    this._store.select(selectProduits).subscribe(
+    this._categoriesStore.categories$.subscribe(
       (data) => this._produits = data
     );
   }

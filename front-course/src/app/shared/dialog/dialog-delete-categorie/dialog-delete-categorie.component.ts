@@ -2,9 +2,9 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {CategorieService} from "../../../core/services/categorie.service";
 import {Store} from "@ngrx/store";
-import {deleteCategorieInList} from "../../../core/state/categorie/categories.action";
 import {Categorie} from "../../../core/models/categorie";
 import {addMessage} from "../../../core/state/message/message.action";
+import {CategoriesStoreService} from "../../../core/state/categories-store.service";
 
 @Component({
   selector: 'app-dialog-delete-categorie',
@@ -17,6 +17,7 @@ export class DialogDeleteCategorieComponent implements OnInit {
   constructor(private _dialogRef: MatDialogRef<DialogDeleteCategorieComponent>,
               private _categorieService: CategorieService,
               private _store: Store,
+              private _categoriesStore: CategoriesStoreService,
               @Inject(MAT_DIALOG_DATA) public data: Categorie) {
   }
 
@@ -26,7 +27,7 @@ export class DialogDeleteCategorieComponent implements OnInit {
   delete(): void {
     this._categorieService.deleteCategorie(this.data.id).subscribe(
       () => {
-        this._store.dispatch(deleteCategorieInList({idCategorie: this.data.id}));
+        this._categoriesStore.removeCategorie(this.data.id);
         this._store.dispatch(addMessage({message: {message: 'La catégorie a été supprimé', colorTexte: 'white'}}));
         this._dialogRef.close();
       },

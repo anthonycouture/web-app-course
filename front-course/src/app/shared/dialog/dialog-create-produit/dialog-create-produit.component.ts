@@ -3,12 +3,11 @@ import {Categorie} from "../../../core/models/categorie";
 import {FormBuilder, Validators} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
 import {NameProduitExistValidator} from "../../validators/name-produit-exist-validator";
-import {addProduitInList} from "../../../core/state/categorie/categories.action";
-import {selectCategories} from "../../../core/state/categorie/categories.selector";
 import {Store} from "@ngrx/store";
 import {ProduitService} from "../../../core/services/produit.service";
 import {addMessage} from "../../../core/state/message/message.action";
 import {Observable} from "rxjs";
+import {CategoriesStoreService} from "../../../core/state/categories-store.service";
 
 @Component({
   selector: 'app-dialog-create-produit',
@@ -18,7 +17,7 @@ import {Observable} from "rxjs";
 export class DialogCreateProduitComponent implements OnInit {
 
   // @ts-ignore
-  categories$: Observable<Categorie[]> = this._store.select(selectCategories);
+  categories$: Observable<Categorie[]> = this._categoriesStore.categories$;
 
   produitForm = this._formBuilder.group({
     categorie: [undefined,
@@ -50,7 +49,8 @@ export class DialogCreateProduitComponent implements OnInit {
     private _produitExistValidator: NameProduitExistValidator,
     private _formBuilder: FormBuilder,
     private _store: Store,
-    private _produitService: ProduitService
+    private _produitService: ProduitService,
+    private _categoriesStore: CategoriesStoreService
   ) {
   }
 
@@ -60,7 +60,7 @@ export class DialogCreateProduitComponent implements OnInit {
   create(): void {
     this._produitService.createProduit(this.categorie.id, this.produitName).subscribe(
       (data) => {
-        this._store.dispatch(addProduitInList({idCategorie: this.categorie.id, produit: data}));
+        this._categoriesStore.addProduitInCategorie(this.categorie.id, data);
         this._store.dispatch(addMessage({message: {message: 'Le produit a été créé', colorTexte: 'white'}}));
         this._dialogRef.close();
       },

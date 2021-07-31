@@ -3,9 +3,9 @@ import {FormControl, Validators} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
 import {NameCategorieExistValidator} from "../../validators/name-categorie-exist-validator";
 import {CategorieService} from "../../../core/services/categorie.service";
-import {addCategorieInList} from "../../../core/state/categorie/categories.action";
 import {Store} from "@ngrx/store";
 import {addMessage} from "../../../core/state/message/message.action";
+import {CategoriesStoreService} from "../../../core/state/categories-store.service";
 
 @Component({
   selector: 'app-dialog-create-categorie',
@@ -20,7 +20,8 @@ export class DialogCreateCategorieComponent implements OnInit {
   constructor(private _dialogRef: MatDialogRef<DialogCreateCategorieComponent>,
               private _nameCategorieExistValidator: NameCategorieExistValidator,
               private _store: Store,
-              private _categorieService: CategorieService) {
+              private _categorieService: CategorieService,
+              private _categoriesStore: CategoriesStoreService) {
   }
 
   ngOnInit(): void {
@@ -29,7 +30,7 @@ export class DialogCreateCategorieComponent implements OnInit {
   create() {
     this._categorieService.createCategorie(this.categorieName.value).subscribe(
       (data) => {
-        this._store.dispatch(addCategorieInList({categorie: data}));
+        this._categoriesStore.addCategories(data);
         this._store.dispatch(addMessage({message: {message: 'La catégorie a été créée', colorTexte: 'white'}}));
         this._dialogRef.close();
       },

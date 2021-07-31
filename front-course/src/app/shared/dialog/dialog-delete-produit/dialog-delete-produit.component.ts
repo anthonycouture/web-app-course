@@ -2,9 +2,9 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Store} from "@ngrx/store";
 import {Produit} from "../../../core/models/produit";
-import {deleteProduitInList} from "../../../core/state/categorie/categories.action";
 import {ProduitService} from "../../../core/services/produit.service";
 import {addMessage} from "../../../core/state/message/message.action";
+import {CategoriesStoreService} from "../../../core/state/categories-store.service";
 
 @Component({
   selector: 'app-dialog-delete-produit',
@@ -16,6 +16,7 @@ export class DialogDeleteProduitComponent implements OnInit {
   constructor(private _dialogRef: MatDialogRef<DialogDeleteProduitComponent>,
               private _store: Store,
               private _produitService: ProduitService,
+              private _categoriesStore: CategoriesStoreService,
               @Inject(MAT_DIALOG_DATA) public data: Produit) {
   }
 
@@ -26,7 +27,7 @@ export class DialogDeleteProduitComponent implements OnInit {
   delete(): void {
     this._produitService.deleteProduit(this.data.id).subscribe(
       () => {
-        this._store.dispatch(deleteProduitInList({idProduit: this.data.id}));
+        this._categoriesStore.deleteProduitInCategorie(this.data.id);
         this._store.dispatch(addMessage({message: {message: 'Le produit a été supprimé', colorTexte: 'white'}}));
         this._dialogRef.close();
       },

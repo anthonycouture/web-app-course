@@ -2,15 +2,13 @@ import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Store} from "@ngrx/store";
 import {Categorie} from "../../../core/models/categorie";
-import {selectCategories} from "../../../core/state/categorie/categories.selector";
 import {Produit} from "../../../core/models/produit";
-import {updateProduitInList} from "../../../core/state/categorie/categories.action";
 import {ProduitService} from "../../../core/services/produit.service";
 import {FormBuilder, Validators} from "@angular/forms";
 import {NameProduitExistValidator} from "../../validators/name-produit-exist-validator";
 import {addMessage} from "../../../core/state/message/message.action";
 import {Observable} from "rxjs";
-import {take} from "rxjs/operators";
+import {CategoriesStoreService} from "../../../core/state/categories-store.service";
 
 @Component({
   selector: 'app-dialog-edit-produit',
@@ -20,7 +18,7 @@ import {take} from "rxjs/operators";
 export class DialogEditProduitComponent {
 
   // @ts-ignore
-  categories$: Observable<Categorie[]> = this._store.select(selectCategories);
+  categories$: Observable<Categorie[]> = this._categoriesStore.categories$;
 
   produitForm = this._formBuilder.group({
     categorie: [undefined,
@@ -53,14 +51,11 @@ export class DialogEditProduitComponent {
     private _produitService: ProduitService,
     private _formBuilder: FormBuilder,
     private _produitExistValidator: NameProduitExistValidator,
+    private _categoriesStore: CategoriesStoreService,
     @Inject(MAT_DIALOG_DATA) public data: Produit
   ) {
     // @ts-ignore
-    this._store.select(selectCategories).pipe(take(1)).subscribe(
-      (data) => {
-        this.categorie = data.filter(item => item.produits?.includes(this.data))[0];
-      }
-    );
+    this.categorie = this._categoriesStore.getCategories().filter(item => item.produits?.includes(this.data))[0];
   }
 
 
@@ -69,7 +64,7 @@ export class DialogEditProduitComponent {
     produit.nom = this.produitName;
     this._produitService.updateProduit(this.categorie.id, produit).subscribe(
       (data) => {
-        this._store.dispatch(updateProduitInList({idCategorie: this.categorie.id, produit: data}));
+        this._categoriesStore.updateProduitInCategorie(this.categorie.id, data);
         this._store.dispatch(addMessage({message: {message: 'Le produit a été mis à jour', colorTexte: 'white'}}));
         this._dialogRef.close();
       },
@@ -94,7 +89,9 @@ export class DialogEditProduitComponent {
     );
   }
 
-  notEdit(): void {
+  notEdit()
+    :
+    void {
     this._dialogRef.close();
   }
 
