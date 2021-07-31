@@ -1,18 +1,17 @@
 import {Injectable} from '@angular/core';
-import {Store} from "@ngrx/store";
-import {selectMessages} from "../../../core/state/message/message.selector";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {SnackBarComponent} from "./snack-bar-component/snack-bar.component";
+import {MessageStoreService} from "../../../core/state/message-store.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SnackBarService {
 
-  constructor(private _store: Store,
+  constructor(private _messageStore: MessageStoreService,
               private _snackBar: MatSnackBar) {
     // @ts-ignore
-    this._store.select(selectMessages).subscribe(
+    this._messageStore.message$.subscribe(
       (data) => {
         this._snackBar.openFromComponent(
           SnackBarComponent,

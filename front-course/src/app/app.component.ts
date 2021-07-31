@@ -11,14 +11,14 @@ export class AppComponent {
   title = 'front-course';
 
   // @ts-ignore
-  spinner: boolean = false;
+  isSpinner: boolean = false;
 
   constructor(private _snackBarService: SnackBarService,
               private _spinnerStore: SpinnerStoreService) {
     // @ts-ignore
     this._spinnerStore.spinner$.subscribe(
       (data) => setTimeout(() => {
-        this.spinner = data
+        this.isSpinner = data
       }, 0)
     );
   }

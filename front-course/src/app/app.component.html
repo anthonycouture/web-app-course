@@ -1,7 +1,8 @@
 <app-toolbar-menu>
-  <div *ngIf="spinner">
+  <div *ngIf="isSpinner">
     <mat-spinner></mat-spinner>
   </div>
-
-  <router-outlet></router-outlet>
+  <div [style.display]="isSpinner ? 'none' : 'block'">
+    <router-outlet></router-outlet>
+  </div>
 </app-toolbar-menu>

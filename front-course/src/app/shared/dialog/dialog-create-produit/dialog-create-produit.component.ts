@@ -3,11 +3,10 @@ import {Categorie} from "../../../core/models/categorie";
 import {FormBuilder, Validators} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
 import {NameProduitExistValidator} from "../../validators/name-produit-exist-validator";
-import {Store} from "@ngrx/store";
 import {ProduitService} from "../../../core/services/produit.service";
-import {addMessage} from "../../../core/state/message/message.action";
 import {Observable} from "rxjs";
 import {CategoriesStoreService} from "../../../core/state/categories-store.service";
+import {MessageStoreService} from "../../../core/state/message-store.service";
 
 @Component({
   selector: 'app-dialog-create-produit',
@@ -48,7 +47,7 @@ export class DialogCreateProduitComponent implements OnInit {
     private _dialogRef: MatDialogRef<DialogCreateProduitComponent>,
     private _produitExistValidator: NameProduitExistValidator,
     private _formBuilder: FormBuilder,
-    private _store: Store,
+    private _messageStore: MessageStoreService,
     private _produitService: ProduitService,
     private _categoriesStore: CategoriesStoreService
   ) {
@@ -61,24 +60,23 @@ export class DialogCreateProduitComponent implements OnInit {
     this._produitService.createProduit(this.categorie.id, this.produitName).subscribe(
       (data) => {
         this._categoriesStore.addProduitInCategorie(this.categorie.id, data);
-        this._store.dispatch(addMessage({message: {message: 'Le produit a été créé', colorTexte: 'white'}}));
+        this._messageStore.setMessage({message: 'Le produit a été créé', colorTexte: 'white'});
         this._dialogRef.close();
       },
       (error) => {
         switch (error.status) {
           case 409:
-            this._store.dispatch(addMessage({message: {message: 'Le produit existe déjà', colorTexte: 'red'}}));
+            this._messageStore.setMessage({message: 'Le produit existe déjà', colorTexte: 'red'});
             break;
           case 412:
-            this._store.dispatch(addMessage({message: {message: 'La catégorie n\'existe pas', colorTexte: 'red'}}));
+            this._messageStore.setMessage({message: 'La catégorie n\'existe pas', colorTexte: 'red'});
             break;
           default :
-            this._store.dispatch(addMessage({
-              message: {
+            this._messageStore.setMessage({
                 message: 'Une erreur est survenue lors de la création du produit',
                 colorTexte: 'red'
               }
-            }));
+            );
             break;
         }
       }

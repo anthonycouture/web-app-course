@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_SNACK_BAR_DATA, MatSnackBar} from "@angular/material/snack-bar";
-import {Message} from "../../../../core/state/app.state";
+import {Message} from "../../../../core/state/message-store.service";
 
 @Component({
   selector: 'app-snack-bar',

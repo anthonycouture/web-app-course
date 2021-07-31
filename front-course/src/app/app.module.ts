@@ -1,10 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
-import {StoreModule} from '@ngrx/store';
-import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {messageReducer} from "./core/state/message/message.reducer";
-
 import {AppComponent} from './app.component';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
@@ -73,11 +69,6 @@ const routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes, {useHash: true}),
-    StoreModule.forRoot({
-        message: messageReducer
-      }
-    ),
-    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: false}),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable

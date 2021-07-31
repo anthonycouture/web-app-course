@@ -3,9 +3,8 @@ import {FormControl, Validators} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
 import {NameCategorieExistValidator} from "../../validators/name-categorie-exist-validator";
 import {CategorieService} from "../../../core/services/categorie.service";
-import {Store} from "@ngrx/store";
-import {addMessage} from "../../../core/state/message/message.action";
 import {CategoriesStoreService} from "../../../core/state/categories-store.service";
+import {MessageStoreService} from "../../../core/state/message-store.service";
 
 @Component({
   selector: 'app-dialog-create-categorie',
@@ -19,7 +18,7 @@ export class DialogCreateCategorieComponent implements OnInit {
 
   constructor(private _dialogRef: MatDialogRef<DialogCreateCategorieComponent>,
               private _nameCategorieExistValidator: NameCategorieExistValidator,
-              private _store: Store,
+              private _messageStore: MessageStoreService,
               private _categorieService: CategorieService,
               private _categoriesStore: CategoriesStoreService) {
   }
@@ -31,21 +30,20 @@ export class DialogCreateCategorieComponent implements OnInit {
     this._categorieService.createCategorie(this.categorieName.value).subscribe(
       (data) => {
         this._categoriesStore.addCategories(data);
-        this._store.dispatch(addMessage({message: {message: 'La catégorie a été créée', colorTexte: 'white'}}));
+        this._messageStore.setMessage({message: 'La catégorie a été créée', colorTexte: 'white'});
         this._dialogRef.close();
       },
       (error) => {
         switch (error.status) {
           case 409:
-            this._store.dispatch(addMessage({message: {message: 'La catégorie existe déjà', colorTexte: 'red'}}));
+            this._messageStore.setMessage({message: 'La catégorie existe déjà', colorTexte: 'red'});
             break;
           default :
-            this._store.dispatch(addMessage({
-              message: {
+            this._messageStore.setMessage({
                 message: 'Une erreur est survenue lors de la création de la catégorie',
                 colorTexte: 'red'
               }
-            }));
+            );
             break;
         }
       }
