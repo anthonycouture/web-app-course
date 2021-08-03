@@ -13,6 +13,9 @@ import {MessageStoreService} from "../../../core/state/message-store.service";
 })
 export class DialogCreateCategorieComponent implements OnInit {
 
+  messageError: string | undefined = undefined;
+  isSpinner: boolean = false;
+
 
   categorieName = new FormControl('', [Validators.required, this._nameCategorieExistValidator.validate(null)]);
 
@@ -27,27 +30,24 @@ export class DialogCreateCategorieComponent implements OnInit {
   }
 
   create() {
-    this._categorieService.createCategorie(this.categorieName.value).subscribe(
-      (data) => {
+    this.messageError = undefined;
+    this.isSpinner = true;
+    this._categorieService.createCategorie(this.categorieName.value).toPromise()
+      .then((data) => {
         this._categoriesStore.addCategories(data);
         this._messageStore.setMessage({message: 'La catégorie a été créée', colorTexte: 'white'});
         this._dialogRef.close();
-      },
-      (error) => {
+      }).catch((error) => {
         switch (error.status) {
           case 409:
-            this._messageStore.setMessage({message: 'La catégorie existe déjà', colorTexte: 'red'});
+            this.messageError = 'La catégorie existe déjà';
             break;
           default :
-            this._messageStore.setMessage({
-                message: 'Une erreur est survenue lors de la création de la catégorie',
-                colorTexte: 'red'
-              }
-            );
+            this.messageError = 'Une erreur est survenue lors de la création de la catégorie';
             break;
         }
       }
-    )
+    ).finally(() => this.isSpinner = false)
   }
 
   notCreate() {

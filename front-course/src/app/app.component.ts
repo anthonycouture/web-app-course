@@ -10,7 +10,6 @@ import {SpinnerStoreService} from "./core/state/spinner-store.service";
 export class AppComponent {
   title = 'front-course';
 
-  // @ts-ignore
   isSpinner: boolean = false;
 
   constructor(private _snackBarService: SnackBarService,

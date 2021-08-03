@@ -15,6 +15,9 @@ import {MessageStoreService} from "../../../core/state/message-store.service";
 })
 export class DialogEditCategorieComponent implements OnInit {
 
+  messageError: string | undefined = undefined;
+  isSpinner: boolean = false;
+
 
   categorieName = new FormControl(this.data.nom, [Validators.required, this._nameCategorieExistValidator.validate(this.data.id)]);
 
@@ -30,29 +33,26 @@ export class DialogEditCategorieComponent implements OnInit {
   }
 
   edit(): void {
+    this.messageError = undefined;
+    this.isSpinner = true;
     let categorie = Object.assign({}, this.data);
     categorie.nom = this.categorieName.value;
-    this._categorieService.editCategorie(categorie).subscribe(
-      (data) => {
+    this._categorieService.editCategorie(categorie).toPromise()
+      .then((data) => {
         this._categoriesStore.updateCategorie(data);
         this._messageStore.setMessage({message: 'La catégorie a été mis à jour', colorTexte: 'white'});
         this._dialogRef.close();
-      },
-      (error) => {
+      }).catch((error) => {
         switch (error.status) {
           case 404:
-            this._messageStore.setMessage({message: 'La catégorie n\'existe pas', colorTexte: 'red'});
+            this.messageError = 'La catégorie n\'existe pas';
             break;
           default :
-            this._messageStore.setMessage({
-                message: 'Une erreur est survenue lors de la modification de la catégorie',
-                colorTexte: 'red'
-              }
-            );
+            this.messageError = 'Une erreur est survenue lors de la modification de la catégorie';
             break;
         }
       }
-    );
+    ).finally(() => this.isSpinner = false);
   }
 
   notEdit(): void {

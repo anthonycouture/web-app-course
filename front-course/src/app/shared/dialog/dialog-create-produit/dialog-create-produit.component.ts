@@ -15,7 +15,9 @@ import {MessageStoreService} from "../../../core/state/message-store.service";
 })
 export class DialogCreateProduitComponent implements OnInit {
 
-  // @ts-ignore
+  messageError: string | undefined = undefined;
+  isSpinner: boolean = false;
+
   categories$: Observable<Categorie[]> = this._categoriesStore.categories$;
 
   produitForm = this._formBuilder.group({
@@ -57,30 +59,27 @@ export class DialogCreateProduitComponent implements OnInit {
   }
 
   create(): void {
-    this._produitService.createProduit(this.categorie.id, this.produitName).subscribe(
-      (data) => {
+    this.messageError = undefined;
+    this.isSpinner = true;
+    this._produitService.createProduit(this.categorie.id, this.produitName).toPromise()
+      .then((data) => {
         this._categoriesStore.addProduitInCategorie(this.categorie.id, data);
         this._messageStore.setMessage({message: 'Le produit a été créé', colorTexte: 'white'});
         this._dialogRef.close();
-      },
-      (error) => {
+      }).catch((error) => {
         switch (error.status) {
           case 409:
-            this._messageStore.setMessage({message: 'Le produit existe déjà', colorTexte: 'red'});
+            this.messageError = 'Le produit existe déjà';
             break;
           case 412:
-            this._messageStore.setMessage({message: 'La catégorie n\'existe pas', colorTexte: 'red'});
+            this.messageError = 'La catégorie n\'existe pas';
             break;
           default :
-            this._messageStore.setMessage({
-                message: 'Une erreur est survenue lors de la création du produit',
-                colorTexte: 'red'
-              }
-            );
+            this.messageError = 'Une erreur est survenue lors de la création du produit';
             break;
         }
       }
-    )
+    ).finally(() => this.isSpinner = false)
   }
 
   notCreate(): void {

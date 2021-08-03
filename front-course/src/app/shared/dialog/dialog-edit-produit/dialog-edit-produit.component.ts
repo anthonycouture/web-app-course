@@ -16,7 +16,9 @@ import {MessageStoreService} from "../../../core/state/message-store.service";
 })
 export class DialogEditProduitComponent {
 
-  // @ts-ignore
+  messageError: string | undefined = undefined;
+  isSpinner: boolean = false;
+
   categories$: Observable<Categorie[]> = this._categoriesStore.categories$;
 
   produitForm = this._formBuilder.group({
@@ -53,37 +55,34 @@ export class DialogEditProduitComponent {
     private _categoriesStore: CategoriesStoreService,
     @Inject(MAT_DIALOG_DATA) public data: Produit
   ) {
-    // @ts-ignore
     this.categorie = this._categoriesStore.getCategories().filter(item => item.produits?.includes(this.data))[0];
   }
 
 
   edit(): void {
+    this.messageError = undefined;
+    this.isSpinner = true;
     let produit: Produit = Object.assign({}, this.data);
     produit.nom = this.produitName;
-    this._produitService.updateProduit(this.categorie.id, produit).subscribe(
-      (data) => {
+    this._produitService.updateProduit(this.categorie.id, produit).toPromise()
+      .then((data) => {
         this._categoriesStore.updateProduitInCategorie(this.categorie.id, data);
         this._messageStore.setMessage({message: 'Le produit a été mis à jour', colorTexte: 'white'});
         this._dialogRef.close();
-      },
-      (error) => {
+      }).catch((error) => {
         switch (error.status) {
           case 404:
-            this._messageStore.setMessage({message: 'La produit n\'existe pas', colorTexte: 'red'});
+            this.messageError = 'La produit n\'existe pas';
             break;
           case 412:
-            this._messageStore.setMessage({message: 'La catégorie n\'existe pas', colorTexte: 'red'});
+            this.messageError = 'La catégorie n\'existe pas';
             break;
           default :
-            this._messageStore.setMessage({
-              message: 'Une erreur est survenue lors de la modification du produit',
-              colorTexte: 'red'
-            });
+            this.messageError = 'Une erreur est survenue lors de la modification du produit';
             break;
         }
       }
-    );
+    ).finally(() => this.isSpinner = false);
   }
 
   notEdit(): void {

@@ -12,6 +12,9 @@ import {MessageStoreService} from "../../../core/state/message-store.service";
 })
 export class DialogDeleteProduitComponent implements OnInit {
 
+  messageError: string | undefined = undefined;
+  isSpinner: boolean = false;
+
   constructor(private _dialogRef: MatDialogRef<DialogDeleteProduitComponent>,
               private _messageStore: MessageStoreService,
               private _produitService: ProduitService,
@@ -24,34 +27,27 @@ export class DialogDeleteProduitComponent implements OnInit {
 
 
   delete(): void {
-    this._produitService.deleteProduit(this.data.id).subscribe(
-      () => {
+    this.messageError = undefined;
+    this.isSpinner = true;
+    this._produitService.deleteProduit(this.data.id).toPromise()
+      .then(() => {
         this._categoriesStore.deleteProduitInCategorie(this.data.id);
         this._messageStore.setMessage({message: 'Le produit a été supprimé', colorTexte: 'white'});
         this._dialogRef.close();
-      },
-      (error) => {
+      }).catch((error) => {
         switch (error.status) {
           case 404:
-            this._messageStore.setMessage({message: 'Le produit n\'existe pas', colorTexte: 'red'});
+            this.messageError = 'Le produit n\'existe pas';
             break;
           case 409:
-            this._messageStore.setMessage({
-                message: 'Le produit est utilisé dans la liste de course',
-                colorTexte: 'red'
-              }
-            );
+            this.messageError = 'Le produit est utilisé dans la liste de course';
             break;
           default :
-            this._messageStore.setMessage({
-                message: 'Une erreur est survenue lors de la suppression du produit',
-                colorTexte: 'red'
-              }
-            );
+            this.messageError = 'Une erreur est survenue lors de la suppression du produit';
             break;
         }
       }
-    )
+    ).finally(() => this.isSpinner = false);
   }
 
   notDelete(): void {

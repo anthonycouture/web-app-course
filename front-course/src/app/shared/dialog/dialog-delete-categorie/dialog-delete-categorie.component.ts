@@ -12,6 +12,9 @@ import {MessageStoreService} from "../../../core/state/message-store.service";
 })
 export class DialogDeleteCategorieComponent implements OnInit {
 
+  messageError: string | undefined = undefined;
+  isSpinner: boolean = false;
+
 
   constructor(private _dialogRef: MatDialogRef<DialogDeleteCategorieComponent>,
               private _categorieService: CategorieService,
@@ -24,34 +27,27 @@ export class DialogDeleteCategorieComponent implements OnInit {
   }
 
   delete(): void {
-    this._categorieService.deleteCategorie(this.data.id).subscribe(
-      () => {
+    this.messageError = undefined;
+    this.isSpinner = true;
+    this._categorieService.deleteCategorie(this.data.id).toPromise()
+      .then(() => {
         this._categoriesStore.removeCategorie(this.data.id);
         this._messageStore.setMessage({message: 'La catégorie a été supprimé', colorTexte: 'white'});
         this._dialogRef.close();
-      },
-      (error) => {
+      }).catch((error) => {
         switch (error.status) {
           case 404:
-            this._messageStore.setMessage({message: 'La catégorie n\'existe pas', colorTexte: 'red'});
+            this.messageError = 'La catégorie n\'existe pas';
             break;
           case 409:
-            this._messageStore.setMessage({
-                message: 'La catégorie est utilisé dans la liste de course',
-                colorTexte: 'red'
-              }
-            );
+            this.messageError = 'La catégorie est utilisé dans la liste de course';
             break;
           default :
-            this._messageStore.setMessage({
-                message: 'Une erreur est survenue lors de la suppression de la catégorie',
-                colorTexte: 'red'
-              }
-            );
+            this.messageError = 'Une erreur est survenue lors de la suppression de la catégorie';
             break;
         }
       }
-    );
+    ).finally(() => this.isSpinner = false);
   }
 
   notDelete(): void {

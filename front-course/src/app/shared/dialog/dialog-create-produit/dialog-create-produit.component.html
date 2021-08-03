@@ -1,36 +1,47 @@
 <h1 mat-dialog-title>Création d'un produit</h1>
-<form
-  (ngSubmit)="create()"
-  [formGroup]="produitForm">
-  <div
-    *ngIf="produitForm.controls['categorie'].invalid && produitForm.controls['categorie'].dirty"
-    class="alert">
-    <div *ngIf="produitForm.controls['categorie'].errors?.required">
-      Une catégorie est requis
-    </div>
+<div *ngIf="isSpinner ; else elseBlock">
+  <div class="spinner">
+    <mat-spinner></mat-spinner>
   </div>
-  <mat-form-field appearance="fill">
-    <mat-label>Catégorie</mat-label>
-    <mat-select formControlName="categorie">
-      <mat-option [value]="option" *ngFor="let option of (categories$ | async)">{{ option.nom }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <div
-    *ngIf="produitForm.controls['produitName'].invalid && (produitForm.controls['produitName'].dirty)"
-    class="alert">
-    <div *ngIf="produitForm.controls['produitName'].errors?.required">
-      Un nom de produit est requis
-    </div>
-    <div *ngIf="produitForm.controls['produitName'].errors?.notValid">
-      Ce nom est déjà utilisé
-    </div>
+</div>
+<ng-template #elseBlock>
+  <div *ngIf="messageError"
+       class="alert">
+    {{messageError}}
   </div>
-  <mat-form-field appearance="fill">
-    <mat-label>Nom du produit</mat-label>
-    <input matInput formControlName="produitName" type="text">
-  </mat-form-field>
-  <div mat-dialog-actions>
-    <button mat-button type="submit" [disabled]="!produitForm.valid">Créer</button>
-    <button mat-button type="button" (click)="notCreate()">Annuler</button>
-  </div>
-</form>
+  <form
+    (ngSubmit)="create()"
+    [formGroup]="produitForm">
+    <div
+      *ngIf="produitForm.controls['categorie'].invalid && produitForm.controls['categorie'].dirty"
+      class="alert">
+      <div *ngIf="produitForm.controls['categorie'].errors?.required">
+        Une catégorie est requis
+      </div>
+    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>Catégorie</mat-label>
+      <mat-select formControlName="categorie">
+        <mat-option [value]="option" *ngFor="let option of (categories$ | async)">{{ option.nom }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div
+      *ngIf="produitForm.controls['produitName'].invalid && (produitForm.controls['produitName'].dirty)"
+      class="alert">
+      <div *ngIf="produitForm.controls['produitName'].errors?.required">
+        Un nom de produit est requis
+      </div>
+      <div *ngIf="produitForm.controls['produitName'].errors?.notValid">
+        Ce nom est déjà utilisé
+      </div>
+    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>Nom du produit</mat-label>
+      <input matInput formControlName="produitName" type="text">
+    </mat-form-field>
+    <div mat-dialog-actions>
+      <button mat-button type="submit" [disabled]="!produitForm.valid">Créer</button>
+      <button mat-button type="button" (click)="notCreate()">Annuler</button>
+    </div>
+  </form>
+</ng-template>

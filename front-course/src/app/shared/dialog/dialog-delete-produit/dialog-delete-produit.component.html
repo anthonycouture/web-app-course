@@ -1,11 +1,22 @@
 <h1 mat-dialog-title>Supprimer le produit ?</h1>
-<div mat-dialog-content>
-  <p>La produit {{data.nom}} sera supprimé</p>
-</div>
-<form
-  (ngSubmit)="delete()">
-  <div mat-dialog-actions>
-    <button mat-button type="submit">Ok</button>
-    <button mat-button type="button" (click)="notDelete()">Annuler</button>
+<div *ngIf="isSpinner ; else elseBlock">
+  <div class="spinner">
+    <mat-spinner></mat-spinner>
   </div>
-</form>
+</div>
+<ng-template #elseBlock>
+  <div *ngIf="messageError"
+       class="alert">
+    {{messageError}}
+  </div>
+  <div mat-dialog-content>
+    <p>La produit {{data.nom}} sera supprimé</p>
+  </div>
+  <form
+    (ngSubmit)="delete()">
+    <div mat-dialog-actions>
+      <button mat-button type="submit">Ok</button>
+      <button mat-button type="button" (click)="notDelete()">Annuler</button>
+    </div>
+  </form>
+</ng-template>

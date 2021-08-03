@@ -1,23 +1,34 @@
 <h1 mat-dialog-title>Création catégorie</h1>
-<form
-  (ngSubmit)="create()">
-  <div *ngIf="categorieName.invalid && categorieName.dirty"
+<div *ngIf="isSpinner ; else elseBlock">
+  <div class="spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+</div>
+<ng-template #elseBlock>
+  <div *ngIf="messageError"
        class="alert">
-    <div *ngIf="categorieName.errors?.required">
-      Un nom de catégorie est requis
+    {{messageError}}
+  </div>
+  <form
+    (ngSubmit)="create()">
+    <div *ngIf="categorieName.invalid && categorieName.dirty"
+         class="alert">
+      <div *ngIf="categorieName.errors?.required">
+        Un nom de catégorie est requis
+      </div>
+      <div *ngIf="categorieName.errors?.notValid">
+        Ce nom est déjà utilisé
+      </div>
     </div>
-    <div *ngIf="categorieName.errors?.notValid">
-      Ce nom est déjà utilisé
+    <div mat-dialog-content>
+      <mat-form-field appearance="fill">
+        <mat-label>Nom de la catégorie</mat-label>
+        <input matInput [formControl]="categorieName">
+      </mat-form-field>
     </div>
-  </div>
-  <div mat-dialog-content>
-    <mat-form-field appearance="fill">
-      <mat-label>Nom de la catégorie</mat-label>
-      <input matInput [formControl]="categorieName">
-    </mat-form-field>
-  </div>
-  <div mat-dialog-actions>
-    <button mat-button type="submit" [disabled]="categorieName.invalid">Créer</button>
-    <button mat-button type="button" (click)="notCreate()">Annuler</button>
-  </div>
-</form>
+    <div mat-dialog-actions>
+      <button mat-button type="submit" [disabled]="categorieName.invalid">Créer</button>
+      <button mat-button type="button" (click)="notCreate()">Annuler</button>
+    </div>
+  </form>
+</ng-template>
