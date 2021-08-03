@@ -12,3 +12,5 @@ spring:
   sql:
     init:
       data-locations: classpath:data-dev.sql
+
+url-front: ${URL_FRONT:http://localhost:4200}
