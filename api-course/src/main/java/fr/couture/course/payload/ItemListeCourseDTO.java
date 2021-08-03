@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ItemListeCourseDTO {
 
-    public Long idListeCourse;
+    public Long id;
     public Long idProduit;
     public Integer quantite;
 
