@@ -19,6 +19,8 @@ export class GestionComponent implements OnInit {
 
   listOption: string[] = [];
 
+  messageError: string | undefined = undefined;
+
   constructor(private _categorieService: CategorieService,
               private _messageStore: MessageStoreService,
               private _categoriesStore: CategoriesStoreService,
@@ -30,11 +32,7 @@ export class GestionComponent implements OnInit {
     this._spinnerStore.setSpinner(true);
     this._categorieService.getCategories().toPromise()
       .then((data) => this._categoriesStore.setCategories(data))
-      .catch(() => this._messageStore.setMessage({
-          message: 'Problème lors de la récupération des catégories et produits',
-          colorTexte: 'red'
-        }
-      ))
+      .catch(() => this.messageError = 'Problème lors de la récupération des catégories et produits')
       .finally(() => this._spinnerStore.setSpinner(false));
   }
 }

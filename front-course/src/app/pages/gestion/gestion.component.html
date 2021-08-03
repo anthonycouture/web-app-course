@@ -1,11 +1,18 @@
-<div class="content">
-  <h1>Gestion des produits et catégorie</h1>
-  <app-search-autocomplete
-    [listOption]="((categories$ | async) ||[]) | nameProduitsByCategories"
-    (optionValide)="listOption= $event">
-  </app-search-autocomplete>
-  <app-list-gestion-categorie-produit
-    [categories]="((categories$ | async) ||[]) | categoriesFiltre: listOption">
-  </app-list-gestion-categorie-produit>
+<h1>Gestion des produits et catégorie</h1>
+<div *ngIf="messageError; else elseBlock"
+     class="alert">
+  {{messageError}}
 </div>
-<app-create-categorie-produit class="create-button"></app-create-categorie-produit>
+<ng-template #elseBlock>
+  <div class="content">
+    <app-search-autocomplete
+      [listOption]="((categories$ | async) ||[]) | nameProduitsByCategories"
+      (optionValide)="listOption= $event">
+    </app-search-autocomplete>
+    <app-list-gestion-categorie-produit
+      [categories]="((categories$ | async) ||[]) | categoriesFiltre: listOption">
+    </app-list-gestion-categorie-produit>
+
+  </div>
+  <app-create-categorie-produit class="create-button"></app-create-categorie-produit>
+</ng-template>
