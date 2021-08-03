@@ -3,12 +3,13 @@ package fr.couture.course.services.impl;
 import fr.couture.course.entity.Produit;
 import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.exceptions.ProductExistException;
-import fr.couture.course.exceptions.ProductIsUseInListException;
+import fr.couture.course.exceptions.ProductInListException;
 import fr.couture.course.exceptions.ProductNotFoundException;
 import fr.couture.course.repository.CategorieRepository;
-import fr.couture.course.repository.ListeCourseRepository;
+import fr.couture.course.repository.ItemListeCourseRepository;
 import fr.couture.course.repository.ProduitRepository;
 import fr.couture.course.services.ProduitService;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class ProduitServiceImpl implements ProduitService {
 
     private ProduitRepository produitRepository;
     private CategorieRepository categorieRepository;
-    private ListeCourseRepository listeCourseRepository;
+    private ItemListeCourseRepository itemListeCourseRepository;
 
     /**
      * Créer un produit
@@ -34,10 +35,9 @@ public class ProduitServiceImpl implements ProduitService {
      * @throws CategoryNotFoundException Impossible de créer un produit si sa catégorie n'existe pas
      */
     @Override
-    public Produit createProduit(String name, Long idCategorie) throws ProductExistException, CategoryNotFoundException {
+    public Produit createProduit(@NonNull String name, @NonNull Long idCategorie) throws ProductExistException, CategoryNotFoundException {
         var categorie = categorieRepository.findById(idCategorie).orElseThrow(CategoryNotFoundException::new);
-        var productOptional = produitRepository.findProduitByNom(name);
-        if (productOptional.isPresent())
+        if (produitRepository.findProduitByNom(name).isPresent())
             throw new ProductExistException();
         var newProduct = new Produit();
         newProduct.setNom(name);
@@ -49,30 +49,26 @@ public class ProduitServiceImpl implements ProduitService {
      * Met à jour un produit
      *
      * @param id          id du produit à mettre à jour
-     * @param name        nouveau nom du produit (null si aucun changement)
-     * @param idCategorie id de la catégorie du produit (null si aucun changement)
+     * @param name        nouveau nom du produit
+     * @param idCategorie id de la catégorie du produit
      * @return le produit après modification
      * @throws ProductNotFoundException  Impossible de modifier le produit si il n'existe pas
      * @throws CategoryNotFoundException Impossible de mettre à jour la catégorie du produit si elle n'existe pas
      */
     @Override
-    public Produit updateProduit(Long id, String name, Long idCategorie) throws ProductNotFoundException, CategoryNotFoundException {
+    public Produit updateProduit(@NonNull Long id, @NonNull String name, @NonNull Long idCategorie) throws ProductNotFoundException, CategoryNotFoundException {
         var produit = produitRepository.findById(id).orElseThrow(ProductNotFoundException::new);
-        if (idCategorie != null) {
-            var categorie = categorieRepository.findCategorieByID(idCategorie).orElseThrow(CategoryNotFoundException::new);
-            produit.setCategorie(categorie);
-        }
-        if (name != null)
-            produit.setNom(name);
+        var categorie = categorieRepository.findCategorieByID(idCategorie).orElseThrow(CategoryNotFoundException::new);
+        produit.setCategorie(categorie);
+        produit.setNom(name);
         return produitRepository.save(produit);
     }
 
     @Override
-    public void deleteProduit(Long id) throws ProductNotFoundException, ProductIsUseInListException {
+    public void deleteProduit(@NonNull Long id) throws ProductNotFoundException, ProductInListException {
         var produit = produitRepository.findById(id).orElseThrow(ProductNotFoundException::new);
-        var listeCourseOptional = listeCourseRepository.findOneByProduit(produit);
-        if (listeCourseOptional.isPresent())
-            throw new ProductIsUseInListException();
+        if (itemListeCourseRepository.findOneByProduit(produit).isPresent())
+            throw new ProductInListException();
         produitRepository.delete(produit);
     }
 
@@ -87,7 +83,7 @@ public class ProduitServiceImpl implements ProduitService {
     }
 
     @Autowired
-    public void setListeCourseRepository(ListeCourseRepository listeCourseRepository) {
-        this.listeCourseRepository = listeCourseRepository;
+    public void setItemListeCourseRepository(ItemListeCourseRepository itemListeCourseRepository) {
+        this.itemListeCourseRepository = itemListeCourseRepository;
     }
 }

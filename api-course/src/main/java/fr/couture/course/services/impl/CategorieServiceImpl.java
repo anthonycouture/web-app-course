@@ -2,12 +2,13 @@ package fr.couture.course.services.impl;
 
 import fr.couture.course.entity.Categorie;
 import fr.couture.course.exceptions.CategoryExistException;
-import fr.couture.course.exceptions.CategoryIsUseInListException;
+import fr.couture.course.exceptions.CategoryInListException;
 import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.repository.CategorieRepository;
-import fr.couture.course.repository.ListeCourseRepository;
+import fr.couture.course.repository.ItemListeCourseRepository;
 import fr.couture.course.repository.ProduitRepository;
 import fr.couture.course.services.CategorieService;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,7 @@ public class CategorieServiceImpl implements CategorieService {
 
     private CategorieRepository categorieRepository;
 
-    private ListeCourseRepository listeCourseRepository;
+    private ItemListeCourseRepository itemListeCourseRepository;
 
     private ProduitRepository produitRepository;
 
@@ -51,9 +52,8 @@ public class CategorieServiceImpl implements CategorieService {
      */
     @Override
     @Transactional
-    public Categorie createCategorie(String nom) throws CategoryExistException {
-        var categorie = categorieRepository.findCategorieByNom(nom);
-        if (categorie.isPresent())
+    public Categorie createCategorie(@NonNull String nom) throws CategoryExistException {
+        if (categorieRepository.findCategorieByNom(nom).isPresent())
             throw new CategoryExistException();
         var newCategorie = new Categorie();
         newCategorie.setNom(nom);
@@ -70,7 +70,7 @@ public class CategorieServiceImpl implements CategorieService {
      */
     @Override
     @Transactional
-    public Categorie updateCategorie(Long id, String nom) throws CategoryNotFoundException {
+    public Categorie updateCategorie(@NonNull Long id, @NonNull String nom) throws CategoryNotFoundException {
         var categorie = categorieRepository.findCategorieByID(id).orElseThrow(CategoryNotFoundException::new);
         categorie.setNom(nom);
         return categorieRepository.save(categorie);
@@ -80,16 +80,15 @@ public class CategorieServiceImpl implements CategorieService {
      * Supprime la catégorie dont l'id est passé en paramètre
      *
      * @param id id de la catégorie à supprimer
-     * @throws CategoryIsUseInListException impossible de supprimer une catégorie si elle est utilisé par la liste
-     * @throws CategoryNotFoundException    impossible de supprimer une catégorie si elle n'existe pas
+     * @throws CategoryInListException   impossible de supprimer une catégorie si elle est utilisé par la liste
+     * @throws CategoryNotFoundException impossible de supprimer une catégorie si elle n'existe pas
      */
     @Override
     @Transactional
-    public void deleteCategorie(Long id) throws CategoryIsUseInListException, CategoryNotFoundException {
+    public void deleteCategorie(@NonNull Long id) throws CategoryInListException, CategoryNotFoundException {
         var categorie = categorieRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
-        var listeCourseOptionnal = listeCourseRepository.findOneByProduit_CategorieIDEquals(id);
-        if (listeCourseOptionnal.isPresent())
-            throw new CategoryIsUseInListException();
+        if (itemListeCourseRepository.findOneByProduit_CategorieIDEquals(id).isPresent())
+            throw new CategoryInListException();
 
         categorie
                 .getProduits()
@@ -105,9 +104,10 @@ public class CategorieServiceImpl implements CategorieService {
     }
 
     @Autowired
-    public void setListeCourseRepository(ListeCourseRepository listeCourseRepository) {
-        this.listeCourseRepository = listeCourseRepository;
+    public void setItemListeCourseRepository(ItemListeCourseRepository itemListeCourseRepository) {
+        this.itemListeCourseRepository = itemListeCourseRepository;
     }
+
 
     @Autowired
     public void setProduitRepository(ProduitRepository produitRepository) {

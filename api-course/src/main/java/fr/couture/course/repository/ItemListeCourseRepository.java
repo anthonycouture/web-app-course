@@ -1,6 +1,6 @@
 package fr.couture.course.repository;
 
-import fr.couture.course.entity.ListeCourse;
+import fr.couture.course.entity.ItemListeCourse;
 import fr.couture.course.entity.Produit;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -13,7 +13,7 @@ import java.util.Optional;
  * <p>Repository pour communiquer avec la BDD sur l'entité ListeCourse</p>
  */
 @Repository
-public interface ListeCourseRepository extends CrudRepository<ListeCourse, Long> {
+public interface ItemListeCourseRepository extends CrudRepository<ItemListeCourse, Long> {
 
     /**
      * Retourne le premier item de ListeCourse dont le produit à la catégorie en paramètre
@@ -21,8 +21,8 @@ public interface ListeCourseRepository extends CrudRepository<ListeCourse, Long>
      * @param idCategorie id de la catégorie qu'on souhaite sur un produit de la liste
      * @return Optional de l'entité ListeCourse
      */
-    Optional<ListeCourse> findOneByProduit_CategorieIDEquals(Long idCategorie);
+    Optional<ItemListeCourse> findOneByProduit_CategorieIDEquals(Long idCategorie);
 
-    Optional<ListeCourse> findOneByProduit(Produit produit);
+    Optional<ItemListeCourse> findOneByProduit(Produit produit);
 
 }

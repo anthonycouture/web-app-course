@@ -2,7 +2,7 @@ package fr.couture.course.controllers;
 
 import fr.couture.course.entity.Categorie;
 import fr.couture.course.exceptions.CategoryExistException;
-import fr.couture.course.exceptions.CategoryIsUseInListException;
+import fr.couture.course.exceptions.CategoryInListException;
 import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.payload.CategorieDTO;
 import fr.couture.course.services.CategorieService;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/categories")
-public class CategorieControlleur {
+public class CategorieController {
 
     private CategorieService categorieService;
 
@@ -71,7 +71,7 @@ public class CategorieControlleur {
     public void deleteCategorie(@PathVariable Long id) {
         try {
             categorieService.deleteCategorie(id);
-        } catch (CategoryIsUseInListException e) {
+        } catch (CategoryInListException e) {
             e.printStackTrace();
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);

@@ -1,8 +1,8 @@
 package fr.couture.course.exceptions;
 
-public class CategoryIsUseInListException extends Exception {
+public class CategoryInListException extends Exception {
 
-    public CategoryIsUseInListException() {
+    public CategoryInListException() {
         super("La catégorie est utilisé dans la liste de course");
     }
 }
