@@ -33,3 +33,15 @@ jobs:
         run: |
           npm clean-install
           npm run build
+
+  deploy_back_heroku:
+    needs: [build_test_back, build_test_front]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.APP_NAME_BACK}}
+          heroku_email: ${{secrets.EMAIL}}
+          appdir: "api-course"
