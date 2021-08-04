@@ -33,5 +33,4 @@ jobs:
           heroku_app_name: ${{secrets.APP_NAME_FRONT}}
           heroku_email: ${{secrets.EMAIL}}
           appdir: "front-course"
-          env_file: ".env"
           procfile: "web: npm run start:prod"
