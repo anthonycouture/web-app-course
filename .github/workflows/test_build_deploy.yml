@@ -4,7 +4,6 @@ on: [ push ]
 
 jobs:
   deploy_back_heroku:
-    needs: [build_test_back, build_test_front]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
