@@ -22,15 +22,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Make envfile
-        uses: SpicyPizza/create-envfile@v1
-        with:
-          envkey_API_URL: ${{secrets.URL_APP_BACK}}
-          envkey_PORT: 8080
-          directory: ./front-course
-          file_name: .env
-      - name: visualise file in folder
         working-directory: ./front-course
-        run: ls
+        run: |
+          touch .env
+          echo API_URL=${{secrets.URL_APP_BACK}} >> .env
+          echo PORT=8080 >> .env
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
