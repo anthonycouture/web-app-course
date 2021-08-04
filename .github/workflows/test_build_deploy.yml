@@ -14,7 +14,7 @@ jobs:
           heroku_email: ${{secrets.EMAIL}}
           appdir: "api-course"
         env:
-          URL_FRONT: ${{secrets.URL_APP_FRONT}}
+          HD_URL_FRONT: ${{secrets.URL_APP_FRONT}}
           
   deploy_front_heroku:
     needs: deploy_back_heroku
