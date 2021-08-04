@@ -45,3 +45,22 @@ jobs:
           heroku_app_name: ${{secrets.APP_NAME_BACK}}
           heroku_email: ${{secrets.EMAIL}}
           appdir: "api-course"
+        env:
+          URL_FRONT: ${{secrets.URL_APP_FRONT}}
+          
+  deploy_front_heroku:
+    needs: [build_test_back, build_test_front]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.APP_NAME_FRONT}}
+          heroku_email: ${{secrets.EMAIL}}
+          appdir: "front-course"
+          procfile: "web: npm start:prod"
+          env_file: ".env"
+        env:
+          API_URL: ${{secrets.URL_APP_BACK}}
+          PORT: 8080
