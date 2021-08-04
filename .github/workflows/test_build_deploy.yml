@@ -56,8 +56,8 @@ jobs:
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v1
         with:
-          API_URL: ${{secrets.URL_APP_BACK}}
-          PORT: 8080
+          envkey_API_URL: ${{secrets.URL_APP_BACK}}
+          envkey_PORT: 8080
           directory: ./front-course
           file_name: .env
       - uses: akhileshns/heroku-deploy@v3.12.12
