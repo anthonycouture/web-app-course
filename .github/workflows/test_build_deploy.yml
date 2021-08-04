@@ -59,7 +59,7 @@ jobs:
           heroku_app_name: ${{secrets.APP_NAME_FRONT}}
           heroku_email: ${{secrets.EMAIL}}
           appdir: "front-course"
-          procfile: "web: npm start:prod"
+          procfile: "web: npm run start:prod"
           env_file: ".env"
         env:
           API_URL: ${{secrets.URL_APP_BACK}}
