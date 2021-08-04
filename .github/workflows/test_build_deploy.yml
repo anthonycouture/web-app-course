@@ -54,11 +54,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Make envfile
+        working-directory: ./front-course
         uses: SpicyPizza/create-envfile@v1
         with:
           API_URL: ${{secrets.URL_APP_BACK}}
           PORT: 8080
-          directory: "front-course"
           file_name: .env
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
