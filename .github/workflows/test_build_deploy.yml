@@ -54,8 +54,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Make envfile
-        working-directory: ./front-course
         uses: SpicyPizza/create-envfile@v1
+        working-directory: ./front-course
         with:
           API_URL: ${{secrets.URL_APP_BACK}}
           PORT: 8080
