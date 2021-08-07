@@ -1,6 +1,9 @@
-name: test_build
+name: build_test_deploy
 
-on: [ push ]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build_test_back:
@@ -35,6 +38,7 @@ jobs:
           npm run build
           
   deploy_back_heroku:
+    needs: [build_test_back,build_test_front]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
