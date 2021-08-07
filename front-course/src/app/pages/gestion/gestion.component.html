@@ -1,4 +1,4 @@
-<h1>Gestion des produits et catégorie</h1>
+<h1 mat-dialog-title>Gestion des produits et catégorie</h1>
 <div *ngIf="messageError; else elseBlock"
      class="alert">
   {{messageError}}
@@ -10,7 +10,7 @@
       (optionValide)="listOption= $event">
     </app-search-autocomplete>
     <app-list-gestion-categorie-produit
-      [categories]="((categories$ | async) ||[]) | categoriesFiltre: listOption">
+      [categories]="((categories$ | async) ||[]) | categoriesFiltreByNameProduit: listOption">
     </app-list-gestion-categorie-produit>
 
   </div>

@@ -36,9 +36,10 @@ import {MatMenuModule} from "@angular/material/menu";
 import {CreateCategorieProduitComponent} from './pages/gestion/create-categorie-produit/create-categorie-produit.component';
 import {DialogCreateCategorieComponent} from './shared/dialog/dialog-create-categorie/dialog-create-categorie.component';
 import {DialogCreateProduitComponent} from './shared/dialog/dialog-create-produit/dialog-create-produit.component';
-import {CategoriesFiltrePipe} from './pages/gestion/categories-filtre.pipe';
-import {NameProduitsByCategoriesPipe} from './pages/gestion/name-produits-by-categories.pipe';
+import {CategoriesFiltreByNameProduitPipe} from './shared/pipes/categories-filtre-by-name-produit.pipe';
+import {NameProduitsByCategoriesPipe} from './shared/pipes/name-produits-by-categories.pipe';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatGridListModule} from "@angular/material/grid-list";
 
 const routes = [
   {path: '', component: AccueilComponent},
@@ -63,7 +64,7 @@ const routes = [
     CreateCategorieProduitComponent,
     DialogCreateCategorieComponent,
     DialogCreateProduitComponent,
-    CategoriesFiltrePipe,
+    CategoriesFiltreByNameProduitPipe,
     NameProduitsByCategoriesPipe
   ],
   imports: [
@@ -92,7 +93,8 @@ const routes = [
     MatSnackBarModule,
     MatSelectModule,
     MatMenuModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

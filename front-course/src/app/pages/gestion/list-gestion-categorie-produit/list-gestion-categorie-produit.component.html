@@ -23,7 +23,7 @@
         <mat-icon>delete</mat-icon>
       </button>
     </div>
-    <div [class.example-tree-invisible]="!treeControl.isExpanded(node)"
+    <div [class.tree-invisible]="!treeControl.isExpanded(node)"
          role="group">
       <ng-container matTreeNodeOutlet></ng-container>
     </div>
