@@ -45,10 +45,10 @@ public class CourseController {
         }
     }
 
-    @PutMapping("/{idItemListeCourse}")
-    public ItemListeCourseDTO updateItemList(@PathVariable Long idItemListeCourse, @RequestBody ListeCourseRequest listeCourseRequest) {
+    @PutMapping
+    public ItemListeCourseDTO updateItemList(@RequestBody ItemListeCourseDTO itemListeCourseDTO) {
         try {
-            return itemListeCourseToItemListeCourseDTO(this.courseService.updateItemList(idItemListeCourse, listeCourseRequest.getIdProduit(), listeCourseRequest.getQuantite()));
+            return itemListeCourseToItemListeCourseDTO(this.courseService.updateItemList(itemListeCourseDTO.id, itemListeCourseDTO.getIdProduit(), itemListeCourseDTO.getQuantite()));
         } catch (ItemListCourseNotFoundException e) {
             e.printStackTrace();
             throw new ResponseStatusException(

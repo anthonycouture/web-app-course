@@ -4,7 +4,11 @@
       <mat-spinner></mat-spinner>
     </div>
   </div>
-  <div [style.display]="isSpinner ? 'none' : 'block'">
+  <div *ngIf="!!messageError"
+       class="alert">
+    {{messageError}}
+  </div>
+  <div [style.display]="isSpinner || !!messageError ? 'none' : 'block'">
     <router-outlet></router-outlet>
   </div>
 </app-toolbar-menu>

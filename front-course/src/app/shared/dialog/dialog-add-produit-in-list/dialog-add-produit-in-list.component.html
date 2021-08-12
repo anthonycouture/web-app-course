@@ -1,0 +1,65 @@
+<h1 mat-dialog-title>Ajout d'un produit à la liste de course</h1>
+<div *ngIf="isSpinner ; else elseBlock">
+  <div class="spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+</div>
+<ng-template #elseBlock>
+  <div *ngIf="!!messageError"
+       class="alert">
+    {{messageError}}
+  </div>
+  <form
+    (ngSubmit)="addProduitInList()"
+    [formGroup]="produitForm">
+    <div
+      *ngIf="produitForm.controls['categorie'].invalid && produitForm.controls['categorie'].dirty"
+      class="alert">
+      <div *ngIf="produitForm.controls['categorie'].errors?.required">
+        Une catégorie est requis
+      </div>
+    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>Catégorie</mat-label>
+      <mat-select formControlName="categorie">
+        <mat-option [value]="option" *ngFor="let option of categories">{{ option.nom }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <div
+      *ngIf="produitForm.controls['produit'].invalid && (produitForm.controls['produit'].dirty)"
+      class="alert">
+      <div *ngIf="produitForm.controls['produit'].errors?.required">
+        Un produit est requis
+      </div>
+    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>Produit</mat-label>
+      <mat-select formControlName="produit">
+        <mat-option [value]="option" *ngFor="let option of produits">{{ option.nom }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div
+      *ngIf="produitForm.controls['quantite'].invalid && (produitForm.controls['quantite'].dirty)"
+      class="alert">
+      <div *ngIf="produitForm.controls['quantite'].errors?.required">
+        Une quantité est requise
+      </div>
+      <div *ngIf="produitForm.controls['quantite'].errors?.min">
+        Une quantité dans la liste ne peux être inférieur à 1
+      </div>
+    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>Quantité</mat-label>
+      <input matInput formControlName="quantite" type="number">
+    </mat-form-field>
+
+
+    <div mat-dialog-actions>
+      <button mat-button type="submit" [disabled]="!produitForm.valid">Ajouter</button>
+      <button mat-button type="button" (click)="notAddProduitInList()">Annuler</button>
+    </div>
+  </form>
+</ng-template>

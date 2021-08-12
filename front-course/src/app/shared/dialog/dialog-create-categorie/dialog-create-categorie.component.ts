@@ -5,6 +5,7 @@ import {NameCategorieExistValidator} from "../../validators/name-categorie-exist
 import {CategorieService} from "../../../core/services/categorie.service";
 import {CategoriesStoreService} from "../../../core/state/categories-store.service";
 import {MessageStoreService} from "../../../core/state/message-store.service";
+import {firstValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-dialog-create-categorie',
@@ -32,7 +33,7 @@ export class DialogCreateCategorieComponent implements OnInit {
   create() {
     this.messageError = undefined;
     this.isSpinner = true;
-    this._categorieService.createCategorie(this.categorieName.value).toPromise()
+    firstValueFrom(this._categorieService.createCategorie(this.categorieName.value))
       .then((data) => {
         this._categoriesStore.addCategories(data);
         this._messageStore.setMessage({message: 'La catégorie a été créée', colorTexte: 'white'});

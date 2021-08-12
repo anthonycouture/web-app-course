@@ -4,7 +4,7 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
 import {NameProduitExistValidator} from "../../validators/name-produit-exist-validator";
 import {ProduitService} from "../../../core/services/produit.service";
-import {Observable} from "rxjs";
+import {firstValueFrom, Observable} from "rxjs";
 import {CategoriesStoreService} from "../../../core/state/categories-store.service";
 import {MessageStoreService} from "../../../core/state/message-store.service";
 
@@ -61,7 +61,7 @@ export class DialogCreateProduitComponent implements OnInit {
   create(): void {
     this.messageError = undefined;
     this.isSpinner = true;
-    this._produitService.createProduit(this.categorie.id, this.produitName).toPromise()
+    firstValueFrom(this._produitService.createProduit(this.categorie.id, this.produitName))
       .then((data) => {
         this._categoriesStore.addProduitInCategorie(this.categorie.id, data);
         this._messageStore.setMessage({message: 'Le produit a été créé', colorTexte: 'white'});

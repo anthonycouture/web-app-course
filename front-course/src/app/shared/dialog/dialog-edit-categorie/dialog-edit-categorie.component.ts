@@ -6,6 +6,7 @@ import {FormControl, Validators} from "@angular/forms";
 import {NameCategorieExistValidator} from "../../validators/name-categorie-exist-validator";
 import {CategoriesStoreService} from "../../../core/state/categories-store.service";
 import {MessageStoreService} from "../../../core/state/message-store.service";
+import {firstValueFrom} from "rxjs";
 
 
 @Component({
@@ -37,7 +38,7 @@ export class DialogEditCategorieComponent implements OnInit {
     this.isSpinner = true;
     let categorie = Object.assign({}, this.data);
     categorie.nom = this.categorieName.value;
-    this._categorieService.editCategorie(categorie).toPromise()
+    firstValueFrom(this._categorieService.editCategorie(categorie))
       .then((data) => {
         this._categoriesStore.updateCategorie(data);
         this._messageStore.setMessage({message: 'La catégorie a été mis à jour', colorTexte: 'white'});

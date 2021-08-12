@@ -1,7 +1,9 @@
-table {
-  width: 100%;
+.add-button {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
 }
 
-.delete-icon {
-  background-color: indianred;
+.content {
+  padding-bottom: 80px;
 }

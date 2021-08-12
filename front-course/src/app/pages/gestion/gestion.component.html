@@ -1,18 +1,14 @@
 <h1 mat-dialog-title>Gestion des produits et catégorie</h1>
-<div *ngIf="messageError; else elseBlock"
-     class="alert">
-  {{messageError}}
-</div>
-<ng-template #elseBlock>
-  <div class="content">
-    <app-search-autocomplete
-      [listOption]="((categories$ | async) ||[]) | nameProduitsByCategories"
-      (optionValide)="listOption= $event">
-    </app-search-autocomplete>
-    <app-list-gestion-categorie-produit
-      [categories]="((categories$ | async) ||[]) | categoriesFiltreByNameProduit: listOption">
-    </app-list-gestion-categorie-produit>
 
-  </div>
-  <app-create-categorie-produit class="create-button"></app-create-categorie-produit>
-</ng-template>
+<div class="content">
+  <app-search-autocomplete
+    [listOption]="(listNameProduit$ | async) ?? []"
+    (optionValide)="listOption= $event">
+  </app-search-autocomplete>
+  <app-list-gestion-categorie-produit
+    [categories]="((categories$ | async) ||[]) | categoriesFiltreByNameProduit: listOption">
+  </app-list-gestion-categorie-produit>
+
+</div>
+<app-create-categorie-produit class="create-button"></app-create-categorie-produit>
+

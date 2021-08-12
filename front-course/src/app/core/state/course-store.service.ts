@@ -23,6 +23,14 @@ export class CourseStoreService {
 
 
   setCourse(itemCourses: ItemCourse[]): void {
-    return this._courseSource.next(itemCourses);
+    this._courseSource.next(itemCourses);
+  }
+
+  updateCourse(itemCourse: ItemCourse): void {
+    this._courseSource.next(this.getCourse().map(item => item.id === itemCourse.id ? itemCourse : item));
+  }
+
+  deleteItemInCourse(idItemCourse: number): void {
+    this._courseSource.next(this.getCourse().filter(item => item.id !== idItemCourse));
   }
 }

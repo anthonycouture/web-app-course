@@ -37,9 +37,11 @@ import {CreateCategorieProduitComponent} from './pages/gestion/create-categorie-
 import {DialogCreateCategorieComponent} from './shared/dialog/dialog-create-categorie/dialog-create-categorie.component';
 import {DialogCreateProduitComponent} from './shared/dialog/dialog-create-produit/dialog-create-produit.component';
 import {CategoriesFiltreByNameProduitPipe} from './shared/pipes/categories-filtre-by-name-produit.pipe';
-import {NameProduitsByCategoriesPipe} from './shared/pipes/name-produits-by-categories.pipe';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatGridListModule} from "@angular/material/grid-list";
+import {ListCourseComponent} from './pages/accueil/list-course/list-course.component';
+import {AddProductInListComponent} from './pages/accueil/add-product-in-list/add-product-in-list.component';
+import {DialogAddProduitInListComponent} from './shared/dialog/dialog-add-produit-in-list/dialog-add-produit-in-list.component';
 
 const routes = [
   {path: '', component: AccueilComponent},
@@ -65,7 +67,9 @@ const routes = [
     DialogCreateCategorieComponent,
     DialogCreateProduitComponent,
     CategoriesFiltreByNameProduitPipe,
-    NameProduitsByCategoriesPipe
+    ListCourseComponent,
+    AddProductInListComponent,
+    DialogAddProduitInListComponent
   ],
   imports: [
     BrowserModule,

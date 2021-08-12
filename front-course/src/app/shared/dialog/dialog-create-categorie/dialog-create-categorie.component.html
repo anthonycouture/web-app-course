@@ -5,7 +5,7 @@
   </div>
 </div>
 <ng-template #elseBlock>
-  <div *ngIf="messageError"
+  <div *ngIf="!!messageError"
        class="alert">
     {{messageError}}
   </div>

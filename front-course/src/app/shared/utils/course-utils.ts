@@ -7,7 +7,7 @@ export interface ListeCourseDetails {
   produits: ItemCourseDetails[];
 }
 
-interface ItemCourseDetails {
+export interface ItemCourseDetails {
   idItemCourse: number;
   idProduit: number;
   nomProduit: string;

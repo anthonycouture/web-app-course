@@ -1,36 +1,5 @@
 <h1>Liste de course</h1>
-<ng-container *ngFor="let item of listeCourseDetails">
-  <h2>{{item.nomCategorie}}</h2>
-  <mat-grid-list cols="5" rowHeight="50px">
-    <mat-grid-tile> Nom du produit</mat-grid-tile>
-    <mat-grid-tile>Quantité</mat-grid-tile>
-    <mat-grid-tile>
-      Plus
-    </mat-grid-tile>
-    <mat-grid-tile>
-      Moins
-    </mat-grid-tile>
-    <mat-grid-tile>
-      Supprimer
-    </mat-grid-tile>
-    <ng-container *ngFor="let produit of item.produits">
-      <mat-grid-tile> {{produit.nomProduit}} </mat-grid-tile>
-      <mat-grid-tile>{{produit.quantite}} </mat-grid-tile>
-      <mat-grid-tile>
-        <button>
-          <mat-icon>add_circle</mat-icon>
-        </button>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <button>
-          <mat-icon>remove_circle</mat-icon>
-        </button>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <button class="delete-icon">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-grid-tile>
-    </ng-container>
-  </mat-grid-list>
-</ng-container>
+<div class="content">
+  <app-list-course></app-list-course>
+</div>
+<app-add-product-in-list class="add-button"></app-add-product-in-list>

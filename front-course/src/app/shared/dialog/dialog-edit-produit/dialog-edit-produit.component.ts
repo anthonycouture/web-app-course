@@ -5,7 +5,7 @@ import {Produit} from "../../../core/models/produit";
 import {ProduitService} from "../../../core/services/produit.service";
 import {FormBuilder, Validators} from "@angular/forms";
 import {NameProduitExistValidator} from "../../validators/name-produit-exist-validator";
-import {Observable} from "rxjs";
+import {firstValueFrom, Observable} from "rxjs";
 import {CategoriesStoreService} from "../../../core/state/categories-store.service";
 import {MessageStoreService} from "../../../core/state/message-store.service";
 
@@ -64,7 +64,7 @@ export class DialogEditProduitComponent {
     this.isSpinner = true;
     let produit: Produit = Object.assign({}, this.data);
     produit.nom = this.produitName;
-    this._produitService.updateProduit(this.categorie.id, produit).toPromise()
+    firstValueFrom(this._produitService.updateProduit(this.categorie.id, produit))
       .then((data) => {
         this._categoriesStore.updateProduitInCategorie(this.categorie.id, data);
         this._messageStore.setMessage({message: 'Le produit a été mis à jour', colorTexte: 'white'});
