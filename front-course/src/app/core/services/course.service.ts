@@ -4,6 +4,11 @@ import {Observable} from "rxjs";
 import {ItemCourse} from "../models/item-course";
 import {HttpClient} from "@angular/common/http";
 
+interface ItemCourseNotId {
+  idProduit: number;
+  quantite: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,5 +30,9 @@ export class CourseService {
 
   updateItemCourseInList(itemCourse: ItemCourse): Observable<ItemCourse> {
     return this._http.put<ItemCourse>(this._url, itemCourse);
+  }
+
+  addItemCourseInList(itemCourse: ItemCourseNotId): Observable<ItemCourse> {
+    return this._http.post<ItemCourse>(this._url, itemCourse);
   }
 }

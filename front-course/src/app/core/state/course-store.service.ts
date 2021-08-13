@@ -33,4 +33,8 @@ export class CourseStoreService {
   deleteItemInCourse(idItemCourse: number): void {
     this._courseSource.next(this.getCourse().filter(item => item.id !== idItemCourse));
   }
+
+  addItemInCourse(itemCourse: ItemCourse): void {
+    this._courseSource.next([...this.getCourse(), itemCourse]);
+  }
 }

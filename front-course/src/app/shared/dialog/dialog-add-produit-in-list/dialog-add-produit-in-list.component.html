@@ -12,44 +12,27 @@
   <form
     (ngSubmit)="addProduitInList()"
     [formGroup]="produitForm">
-    <div
-      *ngIf="produitForm.controls['categorie'].invalid && produitForm.controls['categorie'].dirty"
-      class="alert">
-      <div *ngIf="produitForm.controls['categorie'].errors?.required">
-        Une catégorie est requis
-      </div>
-    </div>
     <mat-form-field appearance="fill">
       <mat-label>Catégorie</mat-label>
       <mat-select formControlName="categorie">
+        <mat-option [value]="null"></mat-option>
         <mat-option [value]="option" *ngFor="let option of categories">{{ option.nom }}</mat-option>
       </mat-select>
     </mat-form-field>
 
-
-    <div
-      *ngIf="produitForm.controls['produit'].invalid && (produitForm.controls['produit'].dirty)"
-      class="alert">
-      <div *ngIf="produitForm.controls['produit'].errors?.required">
-        Un produit est requis
-      </div>
-    </div>
     <mat-form-field appearance="fill">
       <mat-label>Produit</mat-label>
       <mat-select formControlName="produit">
-        <mat-option [value]="option" *ngFor="let option of produits">{{ option.nom }}</mat-option>
+        <mat-option [value]="option" *ngFor="let option of produitsDisplay">{{ option.nom }}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <div
-      *ngIf="produitForm.controls['quantite'].invalid && (produitForm.controls['quantite'].dirty)"
+      *ngIf="produitForm.controls['quantite'].invalid && (produitForm.controls['quantite'].dirty) &&
+      produitForm.controls['quantite'].errors?.min"
       class="alert">
-      <div *ngIf="produitForm.controls['quantite'].errors?.required">
-        Une quantité est requise
-      </div>
-      <div *ngIf="produitForm.controls['quantite'].errors?.min">
-        Une quantité dans la liste ne peux être inférieur à 1
-      </div>
+
+      Une quantité dans la liste ne peux être inférieur à 1
     </div>
     <mat-form-field appearance="fill">
       <mat-label>Quantité</mat-label>
