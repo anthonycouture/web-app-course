@@ -14,6 +14,8 @@ public interface CoursePreDefinedService {
 
     ItemListeCoursePreDefined createItemPreDefinedListeCourse(@NonNull Long idProduit, int quantite) throws ProductNotFoundException, ProductInListException;
 
+    ItemListeCoursePreDefined updateItemPreDefinedListeCourse(@NonNull Long id, @NonNull Long idProduit, int quantite) throws ProductNotFoundException, ItemListCourseNotFoundException, ProductInListException;
+
     void deleteItemPreDefinedListeCourse(@NonNull Long idItem) throws ItemListCourseNotFoundException;
 
     void loadPreDefinedListInListeCourse() throws ProductInListException, ProductNotFoundException;

@@ -5,9 +5,9 @@ import fr.couture.course.exceptions.ItemListCourseNotFoundException;
 import fr.couture.course.exceptions.ProductInListException;
 import fr.couture.course.exceptions.ProductNotFoundException;
 import fr.couture.course.repository.CoursePreDefinedRepository;
+import fr.couture.course.repository.ProduitRepository;
 import fr.couture.course.services.CoursePreDefinedService;
 import fr.couture.course.services.CourseService;
-import fr.couture.course.services.ProduitService;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import java.util.stream.StreamSupport;
 public class CoursePreDefinedServiceImpl implements CoursePreDefinedService {
 
     private CoursePreDefinedRepository coursePreDefinedRepository;
-    private ProduitService produitService;
+    private ProduitRepository produitRepository;
     private CourseService courseService;
 
     @Override
@@ -34,13 +34,24 @@ public class CoursePreDefinedServiceImpl implements CoursePreDefinedService {
 
     @Override
     public ItemListeCoursePreDefined createItemPreDefinedListeCourse(@NonNull Long idProduit, int quantite) throws ProductNotFoundException, ProductInListException {
-        var produit = this.produitService.findProduitById(idProduit).orElseThrow(ProductNotFoundException::new);
+        var produit = this.produitRepository.findById(idProduit).orElseThrow(ProductNotFoundException::new);
         if (this.coursePreDefinedRepository.findOneByProduit(produit).isPresent())
             throw new ProductInListException();
         var itemListeCourse = new ItemListeCoursePreDefined();
         itemListeCourse.setProduit(produit);
         itemListeCourse.setQuantite(quantite);
         return this.coursePreDefinedRepository.save(itemListeCourse);
+    }
+
+    @Override
+    public ItemListeCoursePreDefined updateItemPreDefinedListeCourse(@NonNull Long id, @NonNull Long idProduit, int quantite) throws ProductNotFoundException, ItemListCourseNotFoundException, ProductInListException {
+        var item = this.coursePreDefinedRepository.findById(id).orElseThrow(ItemListCourseNotFoundException::new);
+        var produit = this.produitRepository.findById(idProduit).orElseThrow(ProductNotFoundException::new);
+        if (this.coursePreDefinedRepository.findOneByProduit(produit).isPresent())
+            throw new ProductInListException();
+        item.setProduit(produit);
+        item.setQuantite(quantite);
+        return this.coursePreDefinedRepository.save(item);
     }
 
     @Override
@@ -63,14 +74,14 @@ public class CoursePreDefinedServiceImpl implements CoursePreDefinedService {
         this.coursePreDefinedRepository = coursePreDefinedRepository;
     }
 
-    @Autowired
-    public void setProduitService(ProduitService produitService) {
-        this.produitService = produitService;
-    }
-
 
     @Autowired
     public void setCourseService(CourseService courseService) {
         this.courseService = courseService;
+    }
+
+    @Autowired
+    public void setProduitRepository(ProduitRepository produitRepository) {
+        this.produitRepository = produitRepository;
     }
 }

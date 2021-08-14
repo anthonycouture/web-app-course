@@ -50,6 +50,38 @@ public class CourePreDefinedController {
         }
     }
 
+    @PutMapping
+    public ItemListeCourseDTO updateItemCoursePreDefined(@RequestBody ItemListeCourseDTO itemListeCourseDTO) {
+        try {
+            return itemListeCoursePreDefinedToItemListeCourseDTO(
+                    this.coursePreDefinedService.updateItemPreDefinedListeCourse(itemListeCourseDTO.id, itemListeCourseDTO.getIdProduit(), itemListeCourseDTO.quantite)
+            );
+        } catch (ProductNotFoundException e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(
+                    HttpStatus.PRECONDITION_FAILED, e.getMessage(), e);
+        } catch (ItemListCourseNotFoundException e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, e.getMessage(), e);
+        } catch (ProductInListException e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT, e.getMessage(), e);
+        }
+    }
+
+    @DeleteMapping("/{idItemCoursePreDefined}")
+    public void deleteItemInPreDefinedList(@PathVariable Long idItemCoursePreDefined) {
+        try {
+            this.coursePreDefinedService.deleteItemPreDefinedListeCourse(idItemCoursePreDefined);
+        } catch (ItemListCourseNotFoundException e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+    }
+
     @PostMapping("/load")
     public void loadListPredefinedInListeCourse() {
         try {
@@ -59,17 +91,6 @@ public class CourePreDefinedController {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);
         } catch (ProductNotFoundException e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, e.getMessage(), e);
-        }
-    }
-
-    @DeleteMapping("/{idItemCoursePreDefined}")
-    public void deleteItemInPreDefinedList(@PathVariable Long idItemCoursePreDefined) {
-        try {
-            this.coursePreDefinedService.deleteItemPreDefinedListeCourse(idItemCoursePreDefined);
-        } catch (ItemListCourseNotFoundException e) {
             e.printStackTrace();
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);

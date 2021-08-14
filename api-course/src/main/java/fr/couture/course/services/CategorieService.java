@@ -8,13 +8,10 @@ import fr.couture.course.exceptions.ProductNotFoundException;
 import lombok.NonNull;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CategorieService {
 
     List<Categorie> findAllCategories();
-
-    Optional<Categorie> findCategorieById(@NonNull Long id);
 
     Categorie createCategorie(@NonNull String nom) throws CategoryExistException;
 

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -43,12 +42,6 @@ public class CategorieServiceImpl implements CategorieService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<Categorie> findCategorieById(@NonNull Long id) {
-        return this.categorieRepository.findById(id);
-    }
-
     /**
      * Création d'une catégorie
      *
@@ -74,7 +67,7 @@ public class CategorieServiceImpl implements CategorieService {
      */
     @Override
     public Categorie updateCategorie(@NonNull Long id, @NonNull String nom) throws CategoryNotFoundException {
-        var categorie = this.findCategorieById(id).orElseThrow(CategoryNotFoundException::new);
+        var categorie = this.categorieRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
         categorie.setNom(nom);
         return categorieRepository.save(categorie);
     }
@@ -90,7 +83,7 @@ public class CategorieServiceImpl implements CategorieService {
     @Override
     @Transactional(rollbackFor = {ProductInListException.class, ProductNotFoundException.class})
     public void deleteCategorie(@NonNull Long id) throws CategoryNotFoundException, ProductInListException, ProductNotFoundException {
-        var categorie = this.findCategorieById(id).orElseThrow(CategoryNotFoundException::new);
+        var categorie = this.categorieRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
 
         for (var produit : categorie.getProduits()) {
             produitService.deleteProduit(produit.getID());
