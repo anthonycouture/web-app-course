@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ItemListeCoursePreDefinedRepository extends CrudRepository<ItemListeCoursePreDefined, Long> {
+public interface CoursePreDefinedRepository extends CrudRepository<ItemListeCoursePreDefined, Long> {
 
 
     Optional<ItemListeCoursePreDefined> findOneByProduit(Produit produit);

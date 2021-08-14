@@ -22,4 +22,10 @@ public class Produit implements Serializable {
 
     @ManyToOne(optional = false)
     private Categorie categorie;
+
+    @OneToOne(mappedBy = "produit")
+    private ItemListeCourse itemListeCourse;
+
+    @OneToOne(orphanRemoval = true, mappedBy = "produit")
+    private ItemListeCoursePreDefined itemListeCoursePreDefined;
 }

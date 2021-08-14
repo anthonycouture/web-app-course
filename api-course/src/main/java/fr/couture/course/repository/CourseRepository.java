@@ -13,15 +13,7 @@ import java.util.Optional;
  * <p>Repository pour communiquer avec la BDD sur l'entité ListeCourse</p>
  */
 @Repository
-public interface ItemListeCourseRepository extends CrudRepository<ItemListeCourse, Long> {
-
-    /**
-     * Retourne le premier item de ListeCourse dont le produit à la catégorie en paramètre
-     *
-     * @param idCategorie id de la catégorie qu'on souhaite sur un produit de la liste
-     * @return Optional de l'entité ListeCourse
-     */
-    Optional<ItemListeCourse> findOneByProduit_CategorieIDEquals(Long idCategorie);
+public interface CourseRepository extends CrudRepository<ItemListeCourse, Long> {
 
     /**
      * Retourne le premier item de ListeCourse dont le produit est passé en paramètre
@@ -29,6 +21,6 @@ public interface ItemListeCourseRepository extends CrudRepository<ItemListeCours
      * @param produit produit sur lequel on cherche
      * @return Optional de l'entité ListeCourse
      */
-    Optional<ItemListeCourse> findOneByProduit(Produit produit);
+    Optional<ItemListeCourse> findItemListeCourseByProduit(Produit produit);
 
 }

@@ -4,10 +4,11 @@ import fr.couture.course.entity.ItemListeCoursePreDefined;
 import fr.couture.course.exceptions.ItemListCourseNotFoundException;
 import fr.couture.course.exceptions.ProductInListException;
 import fr.couture.course.exceptions.ProductNotFoundException;
-import fr.couture.course.repository.ItemListeCoursePreDefinedRepository;
-import fr.couture.course.repository.ProduitRepository;
+import fr.couture.course.repository.CoursePreDefinedRepository;
 import fr.couture.course.services.CoursePreDefinedService;
 import fr.couture.course.services.CourseService;
+import fr.couture.course.services.ProduitService;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,54 +20,54 @@ import java.util.stream.StreamSupport;
 @Service
 public class CoursePreDefinedServiceImpl implements CoursePreDefinedService {
 
-    private ItemListeCoursePreDefinedRepository itemListeCoursePreDefinedRepository;
-    private ProduitRepository produitRepository;
+    private CoursePreDefinedRepository coursePreDefinedRepository;
+    private ProduitService produitService;
     private CourseService courseService;
 
     @Override
     @Transactional(readOnly = true)
     public List<ItemListeCoursePreDefined> findAllPreDefinedListeCourse() {
         return StreamSupport
-                .stream(itemListeCoursePreDefinedRepository.findAll().spliterator(), false)
+                .stream(coursePreDefinedRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public ItemListeCoursePreDefined createItemPreDefinedListeCourse(Long idProduit, int quantite) throws ProductNotFoundException, ProductInListException {
-        var produit = this.produitRepository.findById(idProduit).orElseThrow(ProductNotFoundException::new);
-        if (this.itemListeCoursePreDefinedRepository.findOneByProduit(produit).isPresent())
+    public ItemListeCoursePreDefined createItemPreDefinedListeCourse(@NonNull Long idProduit, int quantite) throws ProductNotFoundException, ProductInListException {
+        var produit = this.produitService.findProduitById(idProduit).orElseThrow(ProductNotFoundException::new);
+        if (this.coursePreDefinedRepository.findOneByProduit(produit).isPresent())
             throw new ProductInListException();
         var itemListeCourse = new ItemListeCoursePreDefined();
         itemListeCourse.setProduit(produit);
         itemListeCourse.setQuantite(quantite);
-        return this.itemListeCoursePreDefinedRepository.save(itemListeCourse);
+        return this.coursePreDefinedRepository.save(itemListeCourse);
     }
 
     @Override
-    public void deleteItemPreDefinedListeCourse(Long idItem) throws ItemListCourseNotFoundException {
-        var item = this.itemListeCoursePreDefinedRepository.findById(idItem).orElseThrow(ItemListCourseNotFoundException::new);
-        this.itemListeCoursePreDefinedRepository.delete(item);
+    public void deleteItemPreDefinedListeCourse(@NonNull Long idItem) throws ItemListCourseNotFoundException {
+        var item = this.coursePreDefinedRepository.findById(idItem).orElseThrow(ItemListCourseNotFoundException::new);
+        this.coursePreDefinedRepository.delete(item);
     }
 
     @Override
     @Transactional(rollbackFor = {ProductInListException.class, ProductNotFoundException.class})
     public void loadPreDefinedListInListeCourse() throws ProductInListException, ProductNotFoundException {
         var itemList = this.findAllPreDefinedListeCourse();
-
         for (var item : itemList) {
             this.courseService.ajoutProduitListe(item.getProduit().getID(), item.getQuantite());
         }
     }
 
     @Autowired
-    public void setItemListeCoursePreDefinedRepository(ItemListeCoursePreDefinedRepository itemListeCoursePreDefinedRepository) {
-        this.itemListeCoursePreDefinedRepository = itemListeCoursePreDefinedRepository;
+    public void setItemListeCoursePreDefinedRepository(CoursePreDefinedRepository coursePreDefinedRepository) {
+        this.coursePreDefinedRepository = coursePreDefinedRepository;
     }
 
     @Autowired
-    public void setProduitRepository(ProduitRepository produitRepository) {
-        this.produitRepository = produitRepository;
+    public void setProduitService(ProduitService produitService) {
+        this.produitService = produitService;
     }
+
 
     @Autowired
     public void setCourseService(CourseService courseService) {

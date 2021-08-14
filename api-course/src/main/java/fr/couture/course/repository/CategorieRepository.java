@@ -21,12 +21,4 @@ public interface CategorieRepository extends CrudRepository<Categorie, Long> {
      * @return Optional de l'entité Categorie
      */
     Optional<Categorie> findCategorieByNom(String nom);
-
-    /**
-     * Retourne la catégorie selon son id et si elle est actif
-     *
-     * @param id id de la catégorie rechercher
-     * @return Optional de l'entité Categorie
-     */
-    Optional<Categorie> findCategorieByID(Long id);
 }

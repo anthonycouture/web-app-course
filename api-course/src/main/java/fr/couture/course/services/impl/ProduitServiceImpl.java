@@ -5,13 +5,16 @@ import fr.couture.course.exceptions.CategoryNotFoundException;
 import fr.couture.course.exceptions.ProductExistException;
 import fr.couture.course.exceptions.ProductInListException;
 import fr.couture.course.exceptions.ProductNotFoundException;
-import fr.couture.course.repository.CategorieRepository;
-import fr.couture.course.repository.ItemListeCourseRepository;
 import fr.couture.course.repository.ProduitRepository;
+import fr.couture.course.services.CategorieService;
+import fr.couture.course.services.CourseService;
 import fr.couture.course.services.ProduitService;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * @author Anthony Couture
@@ -22,8 +25,15 @@ import org.springframework.stereotype.Service;
 public class ProduitServiceImpl implements ProduitService {
 
     private ProduitRepository produitRepository;
-    private CategorieRepository categorieRepository;
-    private ItemListeCourseRepository itemListeCourseRepository;
+    private CategorieService categorieService;
+    private CourseService courseService;
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Produit> findProduitById(@NonNull Long id) {
+        return this.produitRepository.findById(id);
+    }
 
     /**
      * Créer un produit
@@ -36,7 +46,7 @@ public class ProduitServiceImpl implements ProduitService {
      */
     @Override
     public Produit createProduit(@NonNull String name, @NonNull Long idCategorie) throws ProductExistException, CategoryNotFoundException {
-        var categorie = categorieRepository.findById(idCategorie).orElseThrow(CategoryNotFoundException::new);
+        var categorie = categorieService.findCategorieById(idCategorie).orElseThrow(CategoryNotFoundException::new);
         if (produitRepository.findProduitByNom(name).isPresent())
             throw new ProductExistException();
         var newProduct = new Produit();
@@ -58,7 +68,7 @@ public class ProduitServiceImpl implements ProduitService {
     @Override
     public Produit updateProduit(@NonNull Long id, @NonNull String name, @NonNull Long idCategorie) throws ProductNotFoundException, CategoryNotFoundException {
         var produit = produitRepository.findById(id).orElseThrow(ProductNotFoundException::new);
-        var categorie = categorieRepository.findCategorieByID(idCategorie).orElseThrow(CategoryNotFoundException::new);
+        var categorie = categorieService.findCategorieById(idCategorie).orElseThrow(CategoryNotFoundException::new);
         produit.setCategorie(categorie);
         produit.setNom(name);
         return produitRepository.save(produit);
@@ -67,7 +77,7 @@ public class ProduitServiceImpl implements ProduitService {
     @Override
     public void deleteProduit(@NonNull Long id) throws ProductNotFoundException, ProductInListException {
         var produit = produitRepository.findById(id).orElseThrow(ProductNotFoundException::new);
-        if (itemListeCourseRepository.findOneByProduit(produit).isPresent())
+        if (courseService.findListeCourseByProduit(produit).isPresent())
             throw new ProductInListException();
         produitRepository.delete(produit);
     }
@@ -78,12 +88,13 @@ public class ProduitServiceImpl implements ProduitService {
     }
 
     @Autowired
-    public void setCategorieRepository(CategorieRepository categorieRepository) {
-        this.categorieRepository = categorieRepository;
+    public void setCategorieService(CategorieService categorieService) {
+        this.categorieService = categorieService;
     }
 
+
     @Autowired
-    public void setItemListeCourseRepository(ItemListeCourseRepository itemListeCourseRepository) {
-        this.itemListeCourseRepository = itemListeCourseRepository;
+    public void setCourseService(CourseService courseService) {
+        this.courseService = courseService;
     }
 }

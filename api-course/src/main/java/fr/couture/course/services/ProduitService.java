@@ -7,7 +7,11 @@ import fr.couture.course.exceptions.ProductInListException;
 import fr.couture.course.exceptions.ProductNotFoundException;
 import lombok.NonNull;
 
+import java.util.Optional;
+
 public interface ProduitService {
+
+    Optional<Produit> findProduitById(@NonNull Long id);
 
     Produit createProduit(@NonNull String name, @NonNull Long idCategorie) throws ProductExistException, CategoryNotFoundException;
 

@@ -14,10 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 /**
  * @author Anthony Couture
  *
@@ -98,13 +94,6 @@ public class ProduitController {
         }
     }
 
-
-    private List<ProduitDTO> listProduitToListProduitDTO(@NonNull List<Produit> listProduit) {
-        return listProduit.stream()
-                .filter(Objects::nonNull)
-                .map(this::produitToProduitDTO)
-                .collect(Collectors.toList());
-    }
 
     private ProduitDTO produitToProduitDTO(@NonNull Produit produit) {
         return modelMapper.map(produit, ProduitDTO.class);

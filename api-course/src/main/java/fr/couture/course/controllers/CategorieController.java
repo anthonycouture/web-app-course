@@ -2,8 +2,9 @@ package fr.couture.course.controllers;
 
 import fr.couture.course.entity.Categorie;
 import fr.couture.course.exceptions.CategoryExistException;
-import fr.couture.course.exceptions.CategoryInListException;
 import fr.couture.course.exceptions.CategoryNotFoundException;
+import fr.couture.course.exceptions.ProductInListException;
+import fr.couture.course.exceptions.ProductNotFoundException;
 import fr.couture.course.payload.CategorieDTO;
 import fr.couture.course.services.CategorieService;
 import lombok.NonNull;
@@ -71,7 +72,7 @@ public class CategorieController {
     public void deleteCategorie(@PathVariable Long id) {
         try {
             categorieService.deleteCategorie(id);
-        } catch (CategoryInListException e) {
+        } catch (ProductInListException e) {
             e.printStackTrace();
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);
@@ -79,6 +80,10 @@ public class CategorieController {
             e.printStackTrace();
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);
+        } catch (ProductNotFoundException e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }
 
