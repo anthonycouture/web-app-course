@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ListeCourseRequest {
+public class ItemListeCourseNotIdDTO {
 
     private Long idProduit;
 

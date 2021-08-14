@@ -5,7 +5,7 @@ import fr.couture.course.exceptions.ItemListCourseNotFoundException;
 import fr.couture.course.exceptions.ProductInListException;
 import fr.couture.course.exceptions.ProductNotFoundException;
 import fr.couture.course.payload.ItemListeCourseDTO;
-import fr.couture.course.payload.ListeCourseRequest;
+import fr.couture.course.payload.ItemListeCourseNotIdDTO;
 import fr.couture.course.services.CourseService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +31,9 @@ public class CourseController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemListeCourseDTO addProduitListeCourse(@RequestBody ListeCourseRequest listeCourseRequest) {
+    public ItemListeCourseDTO addProduitListeCourse(@RequestBody ItemListeCourseNotIdDTO itemListeCourseNotIdDTO) {
         try {
-            return itemListeCourseToItemListeCourseDTO(this.courseService.ajoutProduitListe(listeCourseRequest.getIdProduit(), listeCourseRequest.getQuantite()));
+            return itemListeCourseToItemListeCourseDTO(this.courseService.ajoutProduitListe(itemListeCourseNotIdDTO.getIdProduit(), itemListeCourseNotIdDTO.getQuantite()));
         } catch (ProductNotFoundException e) {
             e.printStackTrace();
             throw new ResponseStatusException(

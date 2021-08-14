@@ -23,6 +23,12 @@ public interface ItemListeCourseRepository extends CrudRepository<ItemListeCours
      */
     Optional<ItemListeCourse> findOneByProduit_CategorieIDEquals(Long idCategorie);
 
+    /**
+     * Retourne le premier item de ListeCourse dont le produit est passé en paramètre
+     *
+     * @param produit produit sur lequel on cherche
+     * @return Optional de l'entité ListeCourse
+     */
     Optional<ItemListeCourse> findOneByProduit(Produit produit);
 
 }
