@@ -12,13 +12,15 @@ import java.util.Optional;
 
 public interface CourseService {
 
-    ItemListeCourse ajoutProduitListe(@NonNull Long idProduit, int quantite) throws ProductNotFoundException, ProductInListException;
+    Optional<ItemListeCourse> findListeCourseByProduit(@NonNull Produit produit);
 
     List<ItemListeCourse> getListeCourse();
 
+    ItemListeCourse ajoutProduitListe(@NonNull Long idProduit, int quantite) throws ProductNotFoundException, ProductInListException;
+
+
     ItemListeCourse updateItemList(@NonNull Long idItemList, @NonNull Long idProduit, int quantite) throws ItemListCourseNotFoundException, ProductNotFoundException, ProductInListException;
 
-    Optional<ItemListeCourse> findListeCourseByProduit(@NonNull Produit produit);
 
     void deleteItemInList(@NonNull Long idItemList) throws ItemListCourseNotFoundException;
 }

@@ -25,6 +25,19 @@ public class CourseServiceImpl implements CourseService {
     private CourseRepository courseRepository;
 
     @Override
+    @Transactional(readOnly = true)
+    public List<ItemListeCourse> getListeCourse() {
+        return StreamSupport
+                .stream(this.courseRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<ItemListeCourse> findListeCourseByProduit(@NonNull Produit produit) {
+        return this.courseRepository.findItemListeCourseByProduit(produit);
+    }
+
+    @Override
     public ItemListeCourse ajoutProduitListe(@NonNull Long idProduit, int quantite) throws ProductNotFoundException, ProductInListException {
         var produit = this.produitService.findProduitById(idProduit).orElseThrow(ProductNotFoundException::new);
         if (this.findListeCourseByProduit(produit).isPresent()) {
@@ -34,14 +47,6 @@ public class CourseServiceImpl implements CourseService {
         itemListeCourse.setProduit(produit);
         itemListeCourse.setQuantite(quantite);
         return this.courseRepository.save(itemListeCourse);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<ItemListeCourse> getListeCourse() {
-        return StreamSupport
-                .stream(this.courseRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
     }
 
     @Override
@@ -56,11 +61,6 @@ public class CourseServiceImpl implements CourseService {
         }
         itemListeCourse.setQuantite(quantite);
         return this.courseRepository.save(itemListeCourse);
-    }
-
-    @Override
-    public Optional<ItemListeCourse> findListeCourseByProduit(@NonNull Produit produit) {
-        return this.courseRepository.findItemListeCourseByProduit(produit);
     }
 
     @Override
