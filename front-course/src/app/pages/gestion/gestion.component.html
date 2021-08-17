@@ -1,23 +1,27 @@
 <h1 mat-dialog-title>Gestion des produits et catégorie</h1>
-
-<div class="content">
-  <app-search-autocomplete
-    [listOption]="(listNameProduit$ | async) ?? []"
-    (optionValide)="listOption= $event">
-  </app-search-autocomplete>
-  <app-list-gestion-categorie-produit
-    [categories]="((categories$ | async) ||[]) | categoriesFiltreByNameProduit: listOption">
-  </app-list-gestion-categorie-produit>
-
+<div *ngIf="!!messageError ; else content"
+     class="alert">
+  {{messageError}}
 </div>
-<div class="create-button">
-  <button mat-fab color="primary" [matMenuTriggerFor]="aboveMenu">
-    <mat-icon>add</mat-icon>
-  </button>
-  <mat-menu #aboveMenu="matMenu" yPosition="above">
-    <button mat-menu-item (click)="openDialogCreateCategorie()">Créer une catégorie</button>
-    <button mat-menu-item (click)="openDialogCreateProduit()">Créer un produit</button>
-  </mat-menu>
+<ng-template #content>
+  <div class="content">
+    <app-search-autocomplete
+      [listOption]="(listNameProduit$ | async) ?? []"
+      (optionValide)="listOption= $event">
+    </app-search-autocomplete>
+    <app-list-gestion-categorie-produit
+      [categories]="((categories$ | async) ||[]) | categoriesFiltreByNameProduit: listOption">
+    </app-list-gestion-categorie-produit>
 
-</div>
+  </div>
+  <div class="create-button">
+    <button mat-fab color="primary" [matMenuTriggerFor]="aboveMenu">
+      <mat-icon>add</mat-icon>
+    </button>
+    <mat-menu #aboveMenu="matMenu" yPosition="above">
+      <button mat-menu-item (click)="openDialogCreateCategorie()">Créer une catégorie</button>
+      <button mat-menu-item (click)="openDialogCreateProduit()">Créer un produit</button>
+    </mat-menu>
 
+  </div>
+</ng-template>

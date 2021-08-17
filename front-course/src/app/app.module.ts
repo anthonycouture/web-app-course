@@ -63,8 +63,8 @@ const routes = [
     DialogCreateProduitComponent,
     CategoriesFiltreByNameProduitPipe,
     DialogAddProduitInListComponent,
-    ListeCourseComponent,
-    ListeCousePredefinedComponent
+    ListeCousePredefinedComponent,
+    ListeCourseComponent
   ],
   imports: [
     BrowserModule,

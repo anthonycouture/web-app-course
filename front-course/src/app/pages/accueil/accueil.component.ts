@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CourseService} from "../../core/services/course.service";
 import {CategorieService} from "../../core/services/categorie.service";
 import {CategoriesStoreService} from "../../core/state/categories-store.service";
 import {CourseStoreService} from "../../core/state/course-store.service";
 import {SpinnerStoreService} from "../../core/state/spinner-store.service";
-import {firstValueFrom, map, Observable} from "rxjs";
+import {firstValueFrom, forkJoin, map, Observable} from "rxjs";
 import {
   ItemCourseDetails,
   itemCourseTabToListeCourseDetailsTab,
@@ -20,10 +20,12 @@ import {MatDialog} from "@angular/material/dialog";
   templateUrl: './accueil.component.html',
   styleUrls: ['./accueil.component.css']
 })
-export class AccueilComponent {
+export class AccueilComponent implements OnInit {
 
 
   listeCourseDetails$: Observable<ListeCourseDetails[]>;
+
+  messageError: string | undefined;
 
 
   constructor(private _courseService: CourseService,
@@ -39,6 +41,22 @@ export class AccueilComponent {
           itemCourseTabToListeCourseDetailsTab(itemCourses, this._categoriesStore.getCategories()))
       );
   }
+
+  ngOnInit(): void {
+    this._spinnerStore.setSpinner(true);
+    firstValueFrom(forkJoin(
+      [
+        this._categorieService.getCategories(),
+        this._courseService.getListeCourse()
+      ]
+    ))
+      .then((result) => {
+        this._categoriesStore.setCategories(result[0]);
+        this._courseStore.setCourse(result[1]);
+      }).catch(() => this.messageError = 'Problème de communication avec le serveur')
+      .finally(() => this._spinnerStore.setSpinner(false))
+  }
+
 
   addQuantityItemCourse(produit: ItemCourseDetails): void {
     let itemCourse: ItemCourse = new ItemCourse(produit.idItemCourse, produit.idProduit, produit.quantite + 1);

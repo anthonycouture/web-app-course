@@ -6,10 +6,11 @@ import {
   ListeCourseDetails
 } from "../../shared/utils/course-utils";
 import {ItemCourse} from "../../core/models/item-course";
-import {firstValueFrom, map, Observable} from "rxjs";
-import {PreDefinedCourseStoreService} from "../../core/state/pre-defined-course-store.service";
-import {CategoriesStoreService} from "../../core/state/categories-store.service";
+import {firstValueFrom, forkJoin} from "rxjs";
 import {SpinnerStoreService} from "../../core/state/spinner-store.service";
+import {MessageStoreService} from "../../core/state/message-store.service";
+import {CategorieService} from "../../core/services/categorie.service";
+import {Categorie} from "../../core/models/categorie";
 
 @Component({
   selector: 'app-liste-couse-predefined',
@@ -18,30 +19,37 @@ import {SpinnerStoreService} from "../../core/state/spinner-store.service";
 })
 export class ListeCousePredefinedComponent implements OnInit {
 
-  listeCourseDetails$: Observable<ListeCourseDetails[]>;
+  listeCoursePreDetails: ListeCourseDetails[];
+
+  private _listCategorie: Categorie[];
+  private _listeItemCoursePre: ItemCourse[];
 
   messageError: string | undefined;
 
 
-  constructor(private preDefinedCourseService: PreDefinedCourseService,
-              private preDefinedCourseStore: PreDefinedCourseStoreService,
-              private _categoriesStore: CategoriesStoreService,
-              private _spinnerStore: SpinnerStoreService) {
-    this.listeCourseDetails$ = this.preDefinedCourseStore.course$
-      .pipe(map(itemCourses => {
-          console.log(itemCourses);
-          return itemCourseTabToListeCourseDetailsTab(itemCourses, this._categoriesStore.getCategories());
-        }
-      ));
+  constructor(private _preDefinedCourseService: PreDefinedCourseService,
+              private _categorieService: CategorieService,
+              private _spinnerStore: SpinnerStoreService,
+              private _messageStore: MessageStoreService) {
+    this.listeCoursePreDetails = [];
+    this._listCategorie = [];
+    this._listeItemCoursePre = [];
   }
 
   ngOnInit(): void {
     this._spinnerStore.setSpinner(true)
-    firstValueFrom(this.preDefinedCourseService.getPreDefinedListeCours())
-      .then((itemCourses) => this.preDefinedCourseStore.setCourse(itemCourses))
+    firstValueFrom(forkJoin([
+        this._preDefinedCourseService.getPreDefinedListeCourse(),
+        this._categorieService.getCategories()
+      ]
+    ))
+      .then((result) => {
+        this._listCategorie = result[1];
+        this._listeItemCoursePre = result[0];
+        this._updateView();
+      })
       .catch(() => this.messageError = "Problème de communication avec le serveur")
       .finally(() => this._spinnerStore.setSpinner(false));
-    console.log('ici')
   }
 
 
@@ -56,21 +64,23 @@ export class ListeCousePredefinedComponent implements OnInit {
   }
 
   deleteItemCourse(idItemCourse: number): void {
-    /*firstValueFrom(this._courseService.deleteItemCourseInList(idItemCourse))
+    firstValueFrom(this._preDefinedCourseService.deleteItemCoursePreDefinedListe(idItemCourse))
       .then(() => {
-        this._courseStore.deleteItemInCourse(idItemCourse);
+        this._listeItemCoursePre = this._listeItemCoursePre.filter((item) => item.id !== idItemCourse);
+        this._updateView();
         this._messageStore.setMessage({
           message: 'Le produit a été supprimé de la liste de course',
           colorTexte: 'white'
         });
-      })*/
+      })
   }
 
 
   private _updateItemInListCourse(itemCourseUpdate: ItemCourse): void {
-    /*firstValueFrom(this._courseService.updateItemCourseInList(itemCourseUpdate))
+    firstValueFrom(this._preDefinedCourseService.updateItemCoursePreDefinedListe(itemCourseUpdate))
       .then((data) => {
-        this._courseStore.updateCourse(data);
+        this._listeItemCoursePre = this._listeItemCoursePre.map((item) => item.id !== data.id ? item : data);
+        this._updateView();
         this._messageStore.setMessage({
           message: 'Le produit a été mis à jour dans la liste de course',
           colorTexte: 'white'
@@ -97,7 +107,11 @@ export class ListeCousePredefinedComponent implements OnInit {
             });
             break;
         }
-      });*/
+      });
+  }
+
+  private _updateView() {
+    this.listeCoursePreDetails = itemCourseTabToListeCourseDetailsTab(this._listeItemCoursePre, this._listCategorie);
   }
 
 }

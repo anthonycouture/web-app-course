@@ -3,8 +3,10 @@
   {{messageError}}
 </div>
 <ng-template #content>
-  <app-liste-course [listeCourseDetails]="(listeCourseDetails$ | async) ?? []"
-                    (addQuantityItemCourse)="addQuantityItemCourse($event)"
-                    (lessQuantityItemCourse)="lessQuantityItemCourse($event)"
-                    (deleteItemCourse)="deleteItemCourse($event)"></app-liste-course>
+  <div>
+    <app-liste-course [listeCourseDetails]="listeCoursePreDetails"
+                      (addQuantityItemCourse)="addQuantityItemCourse($event)"
+                      (lessQuantityItemCourse)="lessQuantityItemCourse($event)"
+                      (deleteItemCourse)="deleteItemCourse($event)"></app-liste-course>
+  </div>
 </ng-template>

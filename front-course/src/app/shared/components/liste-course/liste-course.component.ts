@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ItemCourseDetails, ListeCourseDetails} from "../../utils/course-utils";
 
 @Component({
@@ -6,7 +6,7 @@ import {ItemCourseDetails, ListeCourseDetails} from "../../utils/course-utils";
   templateUrl: './liste-course.component.html',
   styleUrls: ['./liste-course.component.css']
 })
-export class ListeCourseComponent implements OnInit {
+export class ListeCourseComponent {
 
   @Input() listeCourseDetails: ListeCourseDetails[];
 
@@ -20,7 +20,5 @@ export class ListeCourseComponent implements OnInit {
     this.listeCourseDetails = [];
   }
 
-  ngOnInit(): void {
-  }
 
 }
