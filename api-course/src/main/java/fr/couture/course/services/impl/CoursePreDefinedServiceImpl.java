@@ -46,10 +46,12 @@ public class CoursePreDefinedServiceImpl implements CoursePreDefinedService {
     @Override
     public ItemListeCoursePreDefined updateItemPreDefinedListeCourse(@NonNull Long id, @NonNull Long idProduit, int quantite) throws ProductNotFoundException, ItemListCourseNotFoundException, ProductInListException {
         var item = this.coursePreDefinedRepository.findById(id).orElseThrow(ItemListCourseNotFoundException::new);
-        var produit = this.produitRepository.findById(idProduit).orElseThrow(ProductNotFoundException::new);
-        if (this.coursePreDefinedRepository.findOneByProduit(produit).isPresent())
-            throw new ProductInListException();
-        item.setProduit(produit);
+        if (!item.getProduit().getID().equals(idProduit)) {
+            var produit = this.produitRepository.findById(idProduit).orElseThrow(ProductNotFoundException::new);
+            if (this.coursePreDefinedRepository.findOneByProduit(produit).isPresent())
+                throw new ProductInListException();
+            item.setProduit(produit);
+        }
         item.setQuantite(quantite);
         return this.coursePreDefinedRepository.save(item);
     }

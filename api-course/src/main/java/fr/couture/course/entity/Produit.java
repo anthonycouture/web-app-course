@@ -23,6 +23,6 @@ public class Produit implements Serializable {
     @ManyToOne(optional = false)
     private Categorie categorie;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "produit")
+    @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "produit")
     private ItemListeCoursePreDefined itemListeCoursePreDefined;
 }
