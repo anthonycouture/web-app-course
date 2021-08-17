@@ -1,9 +1,12 @@
 spring:
+  config:
+    activate:
+      on-profile: dev
   datasource:
     url: jdbc:h2:mem:apiCourse;DB_CLOSE_DELAY=-1
     driver-class-name: org.h2.Driver
   jpa:
-    show-sql: false
+    show-sql: true
     defer-datasource-initialization: true
     open-in-view: false
     hibernate:
@@ -13,4 +16,4 @@ spring:
     init:
       data-locations: classpath:data-dev.sql
 
-url-front: ${URL_FRONT}
+url-front: ${URL_FRONT:http://localhost:4200}

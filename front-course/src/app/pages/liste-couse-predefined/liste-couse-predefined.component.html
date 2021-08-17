@@ -1,13 +1,10 @@
-<h1>Liste de course</h1>
-<div class="content">
+<div *ngIf="!!messageError ; else content"
+     class="alert">
+  {{messageError}}
+</div>
+<ng-template #content>
   <app-liste-course [listeCourseDetails]="(listeCourseDetails$ | async) ?? []"
                     (addQuantityItemCourse)="addQuantityItemCourse($event)"
                     (lessQuantityItemCourse)="lessQuantityItemCourse($event)"
                     (deleteItemCourse)="deleteItemCourse($event)"></app-liste-course>
-
-</div>
-<div class="add-button">
-  <button mat-fab color="primary" (click)="openDialogAddProduitInList()">
-    <mat-icon>add</mat-icon>
-  </button>
-</div>
+</ng-template>

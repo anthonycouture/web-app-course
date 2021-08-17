@@ -1,38 +1,49 @@
 import {Component, OnInit} from '@angular/core';
-import {firstValueFrom, map, Observable, of} from "rxjs";
+import {PreDefinedCourseService} from "../../core/services/pre-defined-course.service";
 import {
   ItemCourseDetails,
   itemCourseTabToListeCourseDetailsTab,
   ListeCourseDetails
-} from "../../../shared/utils/course-utils";
-import {CourseStoreService} from "../../../core/state/course-store.service";
-import {CategoriesStoreService} from "../../../core/state/categories-store.service";
-import {ItemCourse} from "../../../core/models/item-course";
-import {CourseService} from "../../../core/services/course.service";
-import {MessageStoreService} from "../../../core/state/message-store.service";
+} from "../../shared/utils/course-utils";
+import {ItemCourse} from "../../core/models/item-course";
+import {firstValueFrom, map, Observable} from "rxjs";
+import {PreDefinedCourseStoreService} from "../../core/state/pre-defined-course-store.service";
+import {CategoriesStoreService} from "../../core/state/categories-store.service";
+import {SpinnerStoreService} from "../../core/state/spinner-store.service";
 
 @Component({
-  selector: 'app-list-course',
-  templateUrl: './list-course.component.html',
-  styleUrls: ['./list-course.component.css']
+  selector: 'app-liste-couse-predefined',
+  templateUrl: './liste-couse-predefined.component.html',
+  styleUrls: ['./liste-couse-predefined.component.css']
 })
-export class ListCourseComponent implements OnInit {
+export class ListeCousePredefinedComponent implements OnInit {
 
-  listeCourseDetails$: Observable<ListeCourseDetails[]> = of([]);
+  listeCourseDetails$: Observable<ListeCourseDetails[]>;
 
-  constructor(private _courseService: CourseService,
-              private _courseStore: CourseStoreService,
+  messageError: string | undefined;
+
+
+  constructor(private preDefinedCourseService: PreDefinedCourseService,
+              private preDefinedCourseStore: PreDefinedCourseStoreService,
               private _categoriesStore: CategoriesStoreService,
-              private _messageStore: MessageStoreService) {
+              private _spinnerStore: SpinnerStoreService) {
+    this.listeCourseDetails$ = this.preDefinedCourseStore.course$
+      .pipe(map(itemCourses => {
+          console.log(itemCourses);
+          return itemCourseTabToListeCourseDetailsTab(itemCourses, this._categoriesStore.getCategories());
+        }
+      ));
   }
 
   ngOnInit(): void {
-    this.listeCourseDetails$ = this._courseStore.course$
-      .pipe(
-        map(itemCourses =>
-          itemCourseTabToListeCourseDetailsTab(itemCourses, this._categoriesStore.getCategories()))
-      );
+    this._spinnerStore.setSpinner(true)
+    firstValueFrom(this.preDefinedCourseService.getPreDefinedListeCours())
+      .then((itemCourses) => this.preDefinedCourseStore.setCourse(itemCourses))
+      .catch(() => this.messageError = "Problème de communication avec le serveur")
+      .finally(() => this._spinnerStore.setSpinner(false));
+    console.log('ici')
   }
+
 
   addQuantityItemCourse(produit: ItemCourseDetails): void {
     let itemCourse: ItemCourse = new ItemCourse(produit.idItemCourse, produit.idProduit, produit.quantite + 1);
@@ -45,19 +56,19 @@ export class ListCourseComponent implements OnInit {
   }
 
   deleteItemCourse(idItemCourse: number): void {
-    firstValueFrom(this._courseService.deleteItemCourseInList(idItemCourse))
+    /*firstValueFrom(this._courseService.deleteItemCourseInList(idItemCourse))
       .then(() => {
         this._courseStore.deleteItemInCourse(idItemCourse);
         this._messageStore.setMessage({
           message: 'Le produit a été supprimé de la liste de course',
           colorTexte: 'white'
         });
-      })
+      })*/
   }
 
 
   private _updateItemInListCourse(itemCourseUpdate: ItemCourse): void {
-    firstValueFrom(this._courseService.updateItemCourseInList(itemCourseUpdate))
+    /*firstValueFrom(this._courseService.updateItemCourseInList(itemCourseUpdate))
       .then((data) => {
         this._courseStore.updateCourse(data);
         this._messageStore.setMessage({
@@ -86,7 +97,7 @@ export class ListCourseComponent implements OnInit {
             });
             break;
         }
-      });
+      });*/
   }
 
 }

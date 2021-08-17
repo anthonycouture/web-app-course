@@ -30,22 +30,20 @@ import {DialogDeleteProduitComponent} from './shared/dialog/dialog-delete-produi
 import {SnackBarComponent} from './shared/components/snack-bar/snack-bar-component/snack-bar.component';
 import {DialogEditProduitComponent} from './shared/dialog/dialog-edit-produit/dialog-edit-produit.component';
 import {MatSelectModule} from "@angular/material/select";
-import {SelectSearchComponent} from './shared/components/select-search/select-search.component';
-import {SelectSearchCreateComponent} from './shared/components/select-search-create/select-search-create.component';
 import {MatMenuModule} from "@angular/material/menu";
-import {CreateCategorieProduitComponent} from './pages/gestion/create-categorie-produit/create-categorie-produit.component';
 import {DialogCreateCategorieComponent} from './shared/dialog/dialog-create-categorie/dialog-create-categorie.component';
 import {DialogCreateProduitComponent} from './shared/dialog/dialog-create-produit/dialog-create-produit.component';
 import {CategoriesFiltreByNameProduitPipe} from './shared/pipes/categories-filtre-by-name-produit.pipe';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatGridListModule} from "@angular/material/grid-list";
-import {ListCourseComponent} from './pages/accueil/list-course/list-course.component';
-import {AddProductInListComponent} from './pages/accueil/add-product-in-list/add-product-in-list.component';
 import {DialogAddProduitInListComponent} from './shared/dialog/dialog-add-produit-in-list/dialog-add-produit-in-list.component';
+import {ListeCourseComponent} from './shared/components/liste-course/liste-course.component';
+import {ListeCousePredefinedComponent} from './pages/liste-couse-predefined/liste-couse-predefined.component';
 
 const routes = [
   {path: '', component: AccueilComponent},
-  {path: 'gestion', component: GestionComponent}
+  {path: 'gestion', component: GestionComponent},
+  {path: 'course-pre-defined', component: ListeCousePredefinedComponent}
 ];
 
 @NgModule({
@@ -61,15 +59,12 @@ const routes = [
     DialogDeleteProduitComponent,
     SnackBarComponent,
     DialogEditProduitComponent,
-    SelectSearchComponent,
-    SelectSearchCreateComponent,
-    CreateCategorieProduitComponent,
     DialogCreateCategorieComponent,
     DialogCreateProduitComponent,
     CategoriesFiltreByNameProduitPipe,
-    ListCourseComponent,
-    AddProductInListComponent,
-    DialogAddProduitInListComponent
+    DialogAddProduitInListComponent,
+    ListeCourseComponent,
+    ListeCousePredefinedComponent
   ],
   imports: [
     BrowserModule,

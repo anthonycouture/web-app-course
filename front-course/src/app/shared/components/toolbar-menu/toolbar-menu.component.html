@@ -1,13 +1,18 @@
 <mat-drawer-container autosize>
   <mat-drawer #drawer class="side-nav" mode="side">
-    <button mat-icon-button routerLink="">
+    <button mat-icon-button routerLink="" (click)="drawer.toggle()">
       <mat-icon>list</mat-icon>
       Liste
     </button>
     <br/>
-    <button mat-icon-button routerLink="gestion">
+    <button mat-icon-button routerLink="gestion" (click)="drawer.toggle()">
       <mat-icon>settings</mat-icon>
       Gestion
+    </button>
+    <br/>
+    <button mat-icon-button routerLink="course-pre-defined" (click)="drawer.toggle()">
+      <mat-icon>flag</mat-icon>
+      Liste sauvegardée
     </button>
   </mat-drawer>
 
