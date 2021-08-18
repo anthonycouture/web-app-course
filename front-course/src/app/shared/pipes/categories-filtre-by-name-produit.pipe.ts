@@ -11,18 +11,18 @@ export class CategoriesFiltreByNameProduitPipe implements PipeTransform {
 
     value.forEach(categorie => {
       let categorieFiltrer = JSON.parse(JSON.stringify(categorie));
-      categorieFiltrer.produits = categorie.produits?.filter(produit => {
+      categorieFiltrer.produits = categorie.produits.filter(produit => {
         let nomProduit = produit.nom.toLowerCase();
         let responseFilter = false;
         filtreNameProduit.forEach(value => {
-              if (nomProduit === value.toLowerCase()) {
-                responseFilter = true;
-                return;
-              }
+            if (nomProduit === value.toLowerCase()) {
+              responseFilter = true;
+              return;
             }
-          );
-          return responseFilter;
-        });
+          }
+        );
+        return responseFilter;
+      });
         valueFilter.push(categorieFiltrer);
       }
     );

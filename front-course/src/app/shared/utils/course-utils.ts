@@ -20,7 +20,7 @@ export function itemCourseTabToListeCourseDetailsTab(itemCourses: ItemCourse[], 
 
   itemCourses.forEach((itemCourse) => {
     categories.every((categorie) => {
-      return categorie.produits?.every((produit) => {
+      return categorie.produits.every((produit) => {
         if (produit.id === itemCourse.idProduit) {
           let listeCourseDetails: ListeCourseDetails = response
               .find(listeCourseDetails => listeCourseDetails.idCategorie === categorie.id)

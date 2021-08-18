@@ -9,6 +9,12 @@ import {Produit} from "../../../core/models/produit";
 import {DialogDeleteProduitComponent} from "../../../shared/dialog/dialog-delete-produit/dialog-delete-produit.component";
 import {DialogEditProduitComponent} from "../../../shared/dialog/dialog-edit-produit/dialog-edit-produit.component";
 
+
+interface GestionNode {
+  item: Produit | Categorie;
+  children?: GestionNode[];
+}
+
 @Component({
   selector: 'app-list-gestion-categorie-produit',
   templateUrl: './list-gestion-categorie-produit.component.html',
@@ -19,28 +25,36 @@ export class ListGestionCategorieProduitComponent implements OnChanges {
   @Input() categories: Categorie[] = [];
 
 
-  treeControl = new NestedTreeControl<Categorie>(node => node.produits);
-  dataSource = new MatTreeNestedDataSource<Categorie>();
+  treeControl = new NestedTreeControl<GestionNode>(node => node.children);
+  dataSource = new MatTreeNestedDataSource<GestionNode>();
 
   constructor(private _dialog: MatDialog) {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    let expandedNodes = new Array<Categorie>();
+    let expandedNodes = new Array<GestionNode>();
     this.dataSource.data.forEach(node => {
       if (this.treeControl.isExpanded(node))
         expandedNodes.push(node)
     });
     this.dataSource.data = [];
-    this.dataSource.data = this.categories;
+    this.dataSource.data = this._categoriesToGestionNode(this.categories);
     this.dataSource.data.forEach(node => {
-      if (expandedNodes.find(item => item.id === node.id))
+      if (expandedNodes.find(nodeExpand => nodeExpand.item.id === node.item.id))
         this.treeControl.expand(node);
     })
   }
 
+  private _categoriesToGestionNode(categories: Categorie[]): GestionNode[] {
+    return categories.map((categorie) => {
+      let children: GestionNode[] = [];
+      categorie.produits.forEach((produit) => children.push({item: produit, children: []}));
+      return {item: categorie, children: children};
+    })
+  }
 
-  hasChild = (_: number, node: Categorie) => node.produits && node.produits.length >= 0;
+
+  hasChild = (_: number, node: GestionNode) => node.children && node.children.length > 0;
 
   collapse_all(): void {
     this.dataSource.data.forEach(node => {

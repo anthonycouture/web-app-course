@@ -86,7 +86,7 @@ export class DialogAddProduitInListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.categories.forEach((categorie) =>
-      categorie.produits?.forEach((produit) => {
+      categorie.produits.forEach((produit) => {
         this.produitsDisplay.push(produit);
         this._allProduits.push(produit);
       })
@@ -95,7 +95,7 @@ export class DialogAddProduitInListComponent implements OnInit, OnDestroy {
     this._subcribes.push(this.produitForm.valueChanges.subscribe((form) => {
       if (!!form.categorie && form.categorie !== this._categorieSelected) {
         const categorie: Categorie = this._categoriesStore.getCategories().filter(categorie => categorie.id === form.categorie.id)[0];
-        this.produitsDisplay = categorie.produits ?? [];
+        this.produitsDisplay = categorie.produits;
         this._categorieSelected = categorie;
         if (!!this._produitSelected && !this.produitsDisplay.includes(this._produitSelected)) {
           this._produitSelected = null;
@@ -108,7 +108,7 @@ export class DialogAddProduitInListComponent implements OnInit, OnDestroy {
         this.produit = null;
       } else if (!!form.produit && form.produit !== this._produitSelected) {
         this._categoriesStore.getCategories().every((categorie) => {
-          return categorie.produits?.every((produit) => {
+          return categorie.produits.every((produit) => {
             if (produit.id === form.produit.id) {
               this._produitSelected = produit;
               this.categorie = categorie;
@@ -128,7 +128,7 @@ export class DialogAddProduitInListComponent implements OnInit, OnDestroy {
     if (!this.produit) {
       this.messageError = 'Le produit n\'existe pas';
     } else {
-      firstValueFrom(this._courseService.addItemCourseInList({
+      firstValueFrom(this._courseService.createItemCourseInList({
         idProduit: this.produit.id,
         quantite: this.quantite
       })).then((data) => {

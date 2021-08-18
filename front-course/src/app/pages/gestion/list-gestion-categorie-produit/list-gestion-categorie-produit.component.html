@@ -10,16 +10,16 @@
   <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
     <div class="node">
       <button mat-icon-button matTreeNodeToggle
-              [attr.aria-label]="'Toggle ' + node.nom">
+              [attr.aria-label]="'Toggle ' + node.item.nom">
         <mat-icon class="mat-icon-rtl-mirror">
           {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
         </mat-icon>
       </button>
-      {{node.nom}}
-      <button class="edit-icon" (click)="openDialogEditCategorie(node)">
+      {{node.item.nom}}
+      <button class="edit-icon" (click)="openDialogEditCategorie(node.item)">
         <mat-icon>edit</mat-icon>
       </button>
-      <button class="delete-icon" (click)="openDialogDeleteCategorie(node)">
+      <button class="delete-icon" (click)="openDialogDeleteCategorie(node.item)">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
@@ -29,11 +29,11 @@
     </div>
   </mat-nested-tree-node>
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
-    {{node.nom}}
-    <button class="edit-icon" (click)="openDialogEditProduit(node)">
+    {{node.item.nom}}
+    <button class="edit-icon" (click)="openDialogEditProduit(node.item)">
       <mat-icon>edit</mat-icon>
     </button>
-    <button class="delete-icon" (click)="openDialogDeleteProduit(node)">
+    <button class="delete-icon" (click)="openDialogDeleteProduit(node.item)">
       <mat-icon>delete</mat-icon>
     </button>
   </mat-tree-node>

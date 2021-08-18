@@ -19,7 +19,7 @@ export class NameProduitExistValidator {
       let exist = false;
 
       this._categoriesStore.getCategories().forEach((categorie) =>
-        categorie.produits?.forEach(produit => {
+        categorie.produits.forEach(produit => {
           if (produit.nom === ctrl.value && (idProduit === null || idProduit !== produit.id)) {
             exist = true;
             return;

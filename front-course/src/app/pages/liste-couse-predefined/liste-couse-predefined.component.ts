@@ -19,6 +19,7 @@ import {Categorie} from "../../core/models/categorie";
 })
 export class ListeCousePredefinedComponent implements OnInit {
 
+  // TODO faire un pipe pour supprimer ce champs qu'on doit refresh à chaque fois
   listeCoursePreDetails: ListeCourseDetails[];
 
   private _listCategorie: Categorie[];

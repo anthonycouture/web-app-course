@@ -55,7 +55,7 @@ export class DialogEditProduitComponent {
     private _categoriesStore: CategoriesStoreService,
     @Inject(MAT_DIALOG_DATA) public data: Produit
   ) {
-    this.categorie = this._categoriesStore.getCategories().filter(item => item.produits?.includes(this.data))[0];
+    this.categorie = this._categoriesStore.getCategories().filter(item => item.produits.includes(this.data))[0];
   }
 
 

@@ -51,7 +51,7 @@ export class CategoriesStoreService {
   deleteProduitInCategorie(produitId: number): void {
     const categories = this.getCategories().map(categorie => {
       let categorieUpdate = Object.assign({}, categorie);
-      categorieUpdate.produits = categorieUpdate.produits?.filter(item => item.id !== produitId)
+      categorieUpdate.produits = categorieUpdate.produits.filter(item => item.id !== produitId)
       return categorieUpdate;
     });
     this.setCategories(categories);
@@ -60,10 +60,9 @@ export class CategoriesStoreService {
   updateProduitInCategorie(categorieId: number, produit: Produit): void {
     const categories = this.getCategories().map(categorie => {
       let categorieUpdate = Object.assign({}, categorie);
-      categorieUpdate.produits = categorie.produits?.filter(item => item.id !== produit.id)
+      categorieUpdate.produits = categorie.produits.filter(item => item.id !== produit.id)
       if (categorieUpdate.id === categorieId) {
-        let produitsCategorieState = categorieUpdate.produits ?? [];
-        produitsCategorieState.push(produit)
+        categorieUpdate.produits.push(produit)
       }
       return categorieUpdate;
     });
