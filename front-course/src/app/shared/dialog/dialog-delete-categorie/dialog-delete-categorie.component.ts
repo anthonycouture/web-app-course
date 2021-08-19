@@ -4,6 +4,7 @@ import {CategorieService} from "../../../core/services/categorie.service";
 import {Categorie} from "../../../core/models/categorie";
 import {CategoriesStoreService} from "../../../core/state/categories-store.service";
 import {MessageStoreService} from "../../../core/state/message-store.service";
+import {firstValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-dialog-delete-categorie',
@@ -29,7 +30,7 @@ export class DialogDeleteCategorieComponent implements OnInit {
   delete(): void {
     this.messageError = undefined;
     this.isSpinner = true;
-    this._categorieService.deleteCategorie(this.data.id).toPromise()
+    firstValueFrom(this._categorieService.deleteCategorie(this.data.id))
       .then(() => {
         this._categoriesStore.removeCategorie(this.data.id);
         this._messageStore.setMessage({message: 'La catégorie a été supprimé', colorTexte: 'white'});
