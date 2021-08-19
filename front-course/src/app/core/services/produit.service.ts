@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {map, Observable} from "rxjs";
 import {Produit} from "../models/produit";
-import {CacheService} from "../cache/cache.service";
+import {CacheHttpService} from "../cache/cache-http.service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class ProduitService {
   private _url = environment.apiUrl + '/produits';
 
   constructor(private _http: HttpClient,
-              private _cacheService: CacheService) {
+              private _cacheService: CacheHttpService) {
   }
 
   deleteProduit(idProduit: number): Observable<void> {

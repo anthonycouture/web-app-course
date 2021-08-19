@@ -7,7 +7,7 @@ import {Produit} from "../models/produit";
 @Injectable({
   providedIn: 'root'
 })
-export class CacheService {
+export class CacheHttpService {
 
   private _cacheCategorie: Categorie[];
   private _cacheItemCourse: ItemCourse[];

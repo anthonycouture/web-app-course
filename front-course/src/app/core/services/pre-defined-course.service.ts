@@ -3,7 +3,7 @@ import {environment} from "../../../environments/environment";
 import {map, Observable, of} from "rxjs";
 import {ItemCourse} from "../models/item-course";
 import {HttpClient} from "@angular/common/http";
-import {CacheService, cacheValide} from "../cache/cache.service";
+import {CacheHttpService, cacheValide} from "../cache/cache-http.service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class PreDefinedCourseService {
   private _timeCache: number | undefined;
 
   constructor(private _http: HttpClient,
-              private _cacheService: CacheService) {
+              private _cacheService: CacheHttpService) {
   }
 
   getPreDefinedListeCourse(): Observable<ItemCourse[]> {

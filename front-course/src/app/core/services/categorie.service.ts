@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {map, Observable, of} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {Categorie} from "../models/categorie";
-import {CacheService, cacheValide} from "../cache/cache.service";
+import {CacheHttpService, cacheValide} from "../cache/cache-http.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class CategorieService {
   private _timeCache: number | undefined;
 
   constructor(private _http: HttpClient,
-              private _cacheService: CacheService) {
+              private _cacheService: CacheHttpService) {
   }
 
 
