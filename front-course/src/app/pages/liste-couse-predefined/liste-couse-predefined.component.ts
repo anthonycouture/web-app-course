@@ -1,10 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PreDefinedCourseService} from "../../core/services/pre-defined-course.service";
-import {
-  ItemCourseDetails,
-  itemCourseTabToListeCourseDetailsTab,
-  ListeCourseDetails
-} from "../../shared/utils/course-utils";
+import {ItemCourseDetails} from "../../shared/utils/course-utils";
 import {ItemCourse} from "../../core/models/item-course";
 import {firstValueFrom, forkJoin} from "rxjs";
 import {SpinnerStoreService} from "../../core/state/spinner-store.service";
@@ -19,11 +15,9 @@ import {Categorie} from "../../core/models/categorie";
 })
 export class ListeCousePredefinedComponent implements OnInit {
 
-  // TODO faire un pipe pour supprimer ce champs qu'on doit refresh à chaque fois
-  listeCoursePreDetails: ListeCourseDetails[];
 
-  private _listCategorie: Categorie[];
-  private _listeItemCoursePre: ItemCourse[];
+  listCategorie: Categorie[];
+  listeItemCoursePre: ItemCourse[];
 
   messageError: string | undefined;
 
@@ -32,9 +26,8 @@ export class ListeCousePredefinedComponent implements OnInit {
               private _categorieService: CategorieService,
               private _spinnerStore: SpinnerStoreService,
               private _messageStore: MessageStoreService) {
-    this.listeCoursePreDetails = [];
-    this._listCategorie = [];
-    this._listeItemCoursePre = [];
+    this.listCategorie = [];
+    this.listeItemCoursePre = [];
   }
 
   ngOnInit(): void {
@@ -45,9 +38,8 @@ export class ListeCousePredefinedComponent implements OnInit {
       ]
     ))
       .then((result) => {
-        this._listCategorie = result[1];
-        this._listeItemCoursePre = result[0];
-        this._updateView();
+        this.listCategorie = result[1];
+        this.listeItemCoursePre = result[0];
       })
       .catch(() => this.messageError = "Problème de communication avec le serveur")
       .finally(() => this._spinnerStore.setSpinner(false));
@@ -67,8 +59,7 @@ export class ListeCousePredefinedComponent implements OnInit {
   deleteItemCourse(idItemCourse: number): void {
     firstValueFrom(this._preDefinedCourseService.deleteItemCoursePreDefinedListe(idItemCourse))
       .then(() => {
-        this._listeItemCoursePre = this._listeItemCoursePre.filter((item) => item.id !== idItemCourse);
-        this._updateView();
+        this.listeItemCoursePre = this.listeItemCoursePre.filter((item) => item.id !== idItemCourse);
         this._messageStore.setMessage({
           message: 'Le produit a été supprimé de la liste de course',
           colorTexte: 'white'
@@ -80,8 +71,7 @@ export class ListeCousePredefinedComponent implements OnInit {
   private _updateItemInListCourse(itemCourseUpdate: ItemCourse): void {
     firstValueFrom(this._preDefinedCourseService.updateItemCoursePreDefinedListe(itemCourseUpdate))
       .then((data) => {
-        this._listeItemCoursePre = this._listeItemCoursePre.map((item) => item.id !== data.id ? item : data);
-        this._updateView();
+        this.listeItemCoursePre = this.listeItemCoursePre.map((item) => item.id !== data.id ? item : data);
         this._messageStore.setMessage({
           message: 'Le produit a été mis à jour dans la liste de course',
           colorTexte: 'white'
@@ -109,10 +99,6 @@ export class ListeCousePredefinedComponent implements OnInit {
             break;
         }
       });
-  }
-
-  private _updateView() {
-    this.listeCoursePreDetails = itemCourseTabToListeCourseDetailsTab(this._listeItemCoursePre, this._listCategorie);
   }
 
 }

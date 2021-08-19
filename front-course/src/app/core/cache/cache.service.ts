@@ -9,8 +9,6 @@ import {Produit} from "../models/produit";
 })
 export class CacheService {
 
-  // TODO faire des classes qui extends pour séparer les logiques métier de chaque cache
-
   private _cacheCategorie: Categorie[];
   private _cacheItemCourse: ItemCourse[];
   private _cacheItemPreDefinedCourse: ItemCourse[];

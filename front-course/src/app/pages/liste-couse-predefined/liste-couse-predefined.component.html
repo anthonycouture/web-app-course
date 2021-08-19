@@ -4,7 +4,7 @@
 </div>
 <ng-template #content>
   <div>
-    <app-liste-course [listeCourseDetails]="listeCoursePreDetails"
+    <app-liste-course [listeCourseDetails]="listeItemCoursePre | transformDataListePredefined : listCategorie"
                       (addQuantityItemCourse)="addQuantityItemCourse($event)"
                       (lessQuantityItemCourse)="lessQuantityItemCourse($event)"
                       (deleteItemCourse)="deleteItemCourse($event)"></app-liste-course>
