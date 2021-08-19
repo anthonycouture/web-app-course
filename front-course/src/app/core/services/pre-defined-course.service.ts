@@ -3,7 +3,7 @@ import {environment} from "../../../environments/environment";
 import {map, Observable, of} from "rxjs";
 import {ItemCourse} from "../models/item-course";
 import {HttpClient} from "@angular/common/http";
-import {CacheService, cacheValide} from "./cache.service";
+import {CacheService, cacheValide} from "../cache/cache.service";
 
 @Injectable({
   providedIn: 'root'
