@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {NestedTreeControl} from "@angular/cdk/tree";
 import {MatTreeNestedDataSource} from "@angular/material/tree";
 import {DialogDeleteCategorieComponent} from "../../../shared/dialog/dialog-delete-categorie/dialog-delete-categorie.component";
@@ -36,7 +36,7 @@ export class ListGestionCategorieProduitComponent implements OnChanges {
   constructor(private _dialog: MatDialog) {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     let expandedNodes = new Array<GestionNode>();
     this.dataSource.data.forEach(node => {
       if (this.treeControl.isExpanded(node))

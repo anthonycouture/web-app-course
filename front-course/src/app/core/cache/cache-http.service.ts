@@ -28,22 +28,22 @@ export class CacheHttpService {
   }
 
   deleteCategorie(idCategorie: number) {
-    const categorieDelete: Categorie | undefined = this._cacheCategorie.find((item) => item.id === idCategorie);
+    const categorieDelete: Categorie | undefined = this.cacheCategorie.find((item) => item.id === idCategorie);
     if (!!categorieDelete) {
       this._cacheItemPreDefinedCourse = this._cacheItemPreDefinedCourse
         .filter((item) => !categorieDelete.produits
           .every((produit) => !(produit.id === item.id))
         );
-      this._cacheCategorie = this._cacheCategorie.filter((item) => item.id !== categorieDelete.id);
+      this.cacheCategorie = this.cacheCategorie.filter((item) => item.id !== categorieDelete.id);
     }
   }
 
   editCategorie(categorie: Categorie) {
-    this._cacheCategorie = this._cacheCategorie.map((item) => item.id !== categorie.id ? item : categorie);
+    this.cacheCategorie = this.cacheCategorie.map((item) => item.id !== categorie.id ? item : categorie);
   }
 
   addCategorie(categorie: Categorie) {
-    this._cacheCategorie = [...this._cacheCategorie, categorie];
+    this.cacheCategorie = [...this.cacheCategorie, categorie];
   }
 
   get cacheItemCourse(): ItemCourse[] {
@@ -55,15 +55,15 @@ export class CacheHttpService {
   }
 
   deleteItemCourse(idItemCourse: number) {
-    this._cacheItemCourse = this._cacheItemCourse.filter((item) => item.id !== idItemCourse);
+    this.cacheItemCourse = this.cacheItemCourse.filter((item) => item.id !== idItemCourse);
   }
 
   updateItemCourse(itemCourse: ItemCourse) {
-    this._cacheItemCourse = this._cacheItemCourse.map((item) => item.id !== itemCourse.id ? item : itemCourse);
+    this.cacheItemCourse = this.cacheItemCourse.map((item) => item.id !== itemCourse.id ? item : itemCourse);
   }
 
   addItemCourse(itemCourse: ItemCourse) {
-    this._cacheItemCourse = [...this._cacheItemCourse, itemCourse];
+    this.cacheItemCourse = [...this.cacheItemCourse, itemCourse];
   }
 
   get cacheItemPreDefinedCourse(): ItemCourse[] {
@@ -75,28 +75,28 @@ export class CacheHttpService {
   }
 
   updateItemCoursePreDefinedCourse(itemCourse: ItemCourse) {
-    this._cacheItemPreDefinedCourse = this._cacheItemPreDefinedCourse.map((item) => item.id !== itemCourse.id ? item : itemCourse);
+    this.cacheItemPreDefinedCourse = this.cacheItemPreDefinedCourse.map((item) => item.id !== itemCourse.id ? item : itemCourse);
   }
 
   deleteItemCoursePreDefinedCourse(idItemCourse: number) {
-    this._cacheItemPreDefinedCourse = this._cacheItemPreDefinedCourse.filter((item) => item.id !== idItemCourse);
+    this.cacheItemPreDefinedCourse = this.cacheItemPreDefinedCourse.filter((item) => item.id !== idItemCourse);
   }
 
   addItemCoursePreDefined(itemCourse: ItemCourse) {
-    this._cacheItemPreDefinedCourse = [...this._cacheItemPreDefinedCourse, itemCourse];
+    this.cacheItemPreDefinedCourse = [...this.cacheItemPreDefinedCourse, itemCourse];
   }
 
   deleteProduit(idProduit: number) {
-    this._cacheCategorie = this._cacheCategorie.map(categorie => {
+    this.cacheCategorie = this.cacheCategorie.map(categorie => {
       categorie.produits = categorie.produits.filter(item => item.id !== idProduit)
       return categorie;
     });
-    this._cacheItemPreDefinedCourse = this._cacheItemPreDefinedCourse
+    this.cacheItemPreDefinedCourse = this.cacheItemPreDefinedCourse
       .filter((item) => item.idProduit !== idProduit);
   }
 
   updateProduit(produit: Produit, idCategorie: number) {
-    this._cacheCategorie = this._cacheCategorie.map(categorie => {
+    this.cacheCategorie = this.cacheCategorie.map(categorie => {
       categorie.produits = categorie.produits.filter(item => item.id !== produit.id)
       if (categorie.id === idCategorie) {
         categorie.produits.push(produit)
@@ -106,10 +106,9 @@ export class CacheHttpService {
   }
 
   addProduit(produit: Produit, idCategorie: number) {
-    this._cacheCategorie = this._cacheCategorie.map(categorie => {
+    this.cacheCategorie = this.cacheCategorie.map(categorie => {
       if (categorie.id === idCategorie) {
-        categorie.produits.push(produit)
-        return categorie;
+        categorie.produits = [...categorie.produits, produit];
       }
       return categorie;
     });

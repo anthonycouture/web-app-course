@@ -1,6 +1,6 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {Categorie} from "../../../core/models/categorie";
-import {FormBuilder, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {NameProduitExistValidator} from "../../validators/name-produit-exist-validator";
 import {ProduitService} from "../../../core/services/produit.service";
@@ -12,25 +12,14 @@ import {MessageStoreService} from "../../../core/state/message-store.service";
   templateUrl: './dialog-create-produit.component.html',
   styleUrls: ['./dialog-create-produit.component.css']
 })
-export class DialogCreateProduitComponent implements OnInit {
+export class DialogCreateProduitComponent {
 
-  messageError: string | undefined = undefined;
-  isSpinner: boolean = false;
+  messageError: string | undefined;
+  isSpinner: boolean;
 
   categories: Categorie[];
 
-  produitForm = this._formBuilder.group({
-    categorie: [undefined,
-      {
-        validators: Validators.required
-      }
-    ],
-    produitName: ['',
-      {
-        validators: [Validators.required, this._produitExistValidator.validate(null)]
-      }
-    ]
-  });
+  produitForm: FormGroup;
 
   get categorie(): Categorie {
     return this.produitForm.controls['categorie'].value
@@ -52,10 +41,20 @@ export class DialogCreateProduitComponent implements OnInit {
     private _produitService: ProduitService,
     @Inject(MAT_DIALOG_DATA) data: Categorie[]
   ) {
-    this.categories = data;
-  }
-
-  ngOnInit(): void {
+    this.categories = data.slice();
+    this.isSpinner = false;
+    this.produitForm = this._formBuilder.group({
+      categorie: [undefined,
+        {
+          validators: Validators.required
+        }
+      ],
+      produitName: ['',
+        {
+          validators: [Validators.required, this._produitExistValidator.validate(null, this.categories)]
+        }
+      ]
+    });
   }
 
   create(): void {

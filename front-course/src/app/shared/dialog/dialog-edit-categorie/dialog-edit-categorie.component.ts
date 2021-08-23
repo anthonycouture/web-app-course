@@ -15,20 +15,25 @@ import {firstValueFrom} from "rxjs";
 })
 export class DialogEditCategorieComponent implements OnInit {
 
-  messageError: string | undefined = undefined;
-  isSpinner: boolean = false;
+  messageError: string | undefined;
+  isSpinner: boolean;
+  categories: Categorie[];
 
 
-  categorieName = new FormControl(this.data.nom, [Validators.required, this._nameCategorieExistValidator.validate(this.data.id)]);
+  categorieName: FormControl;
 
   constructor(private _dialogRef: MatDialogRef<DialogEditCategorieComponent>,
               private _categorieService: CategorieService,
               private _messageStore: MessageStoreService,
               private _nameCategorieExistValidator: NameCategorieExistValidator,
               @Inject(MAT_DIALOG_DATA) public data: Categorie) {
+    this.categories = [];
+    this.isSpinner = false;
+    this.categorieName = new FormControl(this.data.nom, [Validators.required, this._nameCategorieExistValidator.validate(this.data.id, this.categories)]);
   }
 
   ngOnInit(): void {
+    firstValueFrom(this._categorieService.getCategories()).then((data) => this.categories = data);
   }
 
   edit(): void {

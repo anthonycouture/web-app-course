@@ -5,6 +5,7 @@ import {NameCategorieExistValidator} from "../../validators/name-categorie-exist
 import {CategorieService} from "../../../core/services/categorie.service";
 import {MessageStoreService} from "../../../core/state/message-store.service";
 import {firstValueFrom} from "rxjs";
+import {Categorie} from "../../../core/models/categorie";
 
 @Component({
   selector: 'app-dialog-create-categorie',
@@ -13,19 +14,24 @@ import {firstValueFrom} from "rxjs";
 })
 export class DialogCreateCategorieComponent implements OnInit {
 
-  messageError: string | undefined = undefined;
-  isSpinner: boolean = false;
+  messageError: string | undefined;
+  isSpinner: boolean;
+  categories: Categorie[];
 
 
-  categorieName = new FormControl('', [Validators.required, this._nameCategorieExistValidator.validate(null)]);
+  categorieName: FormControl;
 
   constructor(private _dialogRef: MatDialogRef<DialogCreateCategorieComponent>,
               private _nameCategorieExistValidator: NameCategorieExistValidator,
               private _messageStore: MessageStoreService,
               private _categorieService: CategorieService) {
+    this.categories = [];
+    this.isSpinner = false;
+    this.categorieName = new FormControl('', [Validators.required, this._nameCategorieExistValidator.validate(null, this.categories)]);
   }
 
   ngOnInit(): void {
+    firstValueFrom(this._categorieService.getCategories()).then((data) => this.categories = data);
   }
 
   create() {

@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Categorie} from "../../../core/models/categorie";
 import {Produit} from "../../../core/models/produit";
 import {ProduitService} from "../../../core/services/produit.service";
-import {FormBuilder, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NameProduitExistValidator} from "../../validators/name-produit-exist-validator";
 import {firstValueFrom} from "rxjs";
 import {MessageStoreService} from "../../../core/state/message-store.service";
@@ -15,23 +15,13 @@ import {MessageStoreService} from "../../../core/state/message-store.service";
 })
 export class DialogEditProduitComponent {
 
-  messageError: string | undefined = undefined;
-  isSpinner: boolean = false;
+  messageError: string | undefined;
+  isSpinner: boolean;
 
   categories: Categorie[];
+  produit: Produit;
 
-  produitForm = this._formBuilder.group({
-    categorie: [undefined,
-      {
-        validators: Validators.required
-      }
-    ],
-    produitName: [this.data.produit.nom,
-      {
-        validators: [Validators.required, this._produitExistValidator.validate(this.data.produit.id)]
-      }
-    ]
-  });
+  produitForm: FormGroup;
 
   get categorie(): Categorie {
     return this.produitForm.controls['categorie'].value
@@ -51,17 +41,31 @@ export class DialogEditProduitComponent {
     private _produitService: ProduitService,
     private _formBuilder: FormBuilder,
     private _produitExistValidator: NameProduitExistValidator,
-    @Inject(MAT_DIALOG_DATA) public data: { produit: Produit, categories: Categorie[] }
+    @Inject(MAT_DIALOG_DATA) data: { produit: Produit, categories: Categorie[] }
   ) {
-    this.categorie = data.categories.filter(item => item.produits.includes(data.produit))[0];
     this.categories = data.categories;
+    this.produit = data.produit;
+    this.isSpinner = false;
+    this.produitForm = this._formBuilder.group({
+      categorie: [undefined,
+        {
+          validators: Validators.required
+        }
+      ],
+      produitName: [this.produit.nom,
+        {
+          validators: [Validators.required, this._produitExistValidator.validate(this.produit.id, this.categories)]
+        }
+      ]
+    });
+    this.categorie = data.categories.filter(item => item.produits.includes(data.produit))[0];
   }
 
 
   edit(): void {
     this.messageError = undefined;
     this.isSpinner = true;
-    let produit: Produit = Object.assign({}, this.data.produit);
+    let produit: Produit = this.produit;
     produit.nom = this.produitName;
     firstValueFrom(this._produitService.updateProduit(this.categorie.id, produit))
       .then((data) => {

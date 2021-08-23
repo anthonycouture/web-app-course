@@ -71,16 +71,17 @@ export class GestionComponent implements OnInit {
       data: this.categories
     });
 
-    firstValueFrom(dialogRef.afterClosed()).then(result => {
+    firstValueFrom(dialogRef.afterClosed()).then(async result => {
       if (!!result && result !== false) {
-        this.categories = this.categories
+        this.categories = await this.categories
           .map(categorie => {
+            categorie.produits = categorie.produits.filter(item => item.id !== result.produit.id)
             if (categorie.id === result.idCategorie) {
-              categorie.produits.push(result.produit);
-              return categorie;
+              categorie.produits = [...categorie.produits, result.produit];
             }
             return categorie;
           });
+
         this._updateListOption();
       }
     });
