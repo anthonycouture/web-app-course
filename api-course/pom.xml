@@ -29,6 +29,12 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.23</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -61,6 +67,10 @@
 						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
+						</exclude>
+						<exclude>
+							<groupId>com.h2database</groupId>
+							<artifactId>h2</artifactId>
 						</exclude>
 					</excludes>
 				</configuration>

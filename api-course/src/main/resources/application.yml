@@ -1,16 +1,15 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:apiCourse;DB_CLOSE_DELAY=-1
-    driver-class-name: org.h2.Driver
+    url: jdbc:postgresql://${BDD_URL}
+    username: ${BDD_USER}
+    password: ${BDD_PWD}
+    driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: false
     defer-datasource-initialization: true
     open-in-view: false
     hibernate:
-      ddl-auto: create-drop
-    database-platform: org.hibernate.dialect.H2Dialect
-  sql:
-    init:
-      data-locations: classpath:data-dev.sql
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 url-front: ${URL_FRONT}

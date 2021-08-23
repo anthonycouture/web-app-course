@@ -50,6 +50,9 @@ jobs:
           appdir: "api-course"
         env:
           HD_URL_FRONT: ${{secrets.URL_APP_FRONT}}
+          HD_BDD_URL: ${{secrets.BDD_URL}}
+          HD_BDD_USER: ${{secrets.BDD_USER}}
+          HD_BDD_PWD: ${{secrets.BDD_PWD}}
           
   deploy_front_heroku:
     needs: deploy_back_heroku
