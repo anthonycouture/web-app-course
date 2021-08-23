@@ -3,7 +3,6 @@ import {FormControl, Validators} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
 import {NameCategorieExistValidator} from "../../validators/name-categorie-exist-validator";
 import {CategorieService} from "../../../core/services/categorie.service";
-import {CategoriesStoreService} from "../../../core/state/categories-store.service";
 import {MessageStoreService} from "../../../core/state/message-store.service";
 import {firstValueFrom} from "rxjs";
 
@@ -23,8 +22,7 @@ export class DialogCreateCategorieComponent implements OnInit {
   constructor(private _dialogRef: MatDialogRef<DialogCreateCategorieComponent>,
               private _nameCategorieExistValidator: NameCategorieExistValidator,
               private _messageStore: MessageStoreService,
-              private _categorieService: CategorieService,
-              private _categoriesStore: CategoriesStoreService) {
+              private _categorieService: CategorieService) {
   }
 
   ngOnInit(): void {
@@ -35,9 +33,8 @@ export class DialogCreateCategorieComponent implements OnInit {
     this.isSpinner = true;
     firstValueFrom(this._categorieService.createCategorie(this.categorieName.value))
       .then((data) => {
-        this._categoriesStore.addCategories(data);
         this._messageStore.setMessage({message: 'La catégorie a été créée', colorTexte: 'white'});
-        this._dialogRef.close();
+        this._dialogRef.close(data);
       }).catch((error) => {
         switch (error.status) {
           case 409:
@@ -52,7 +49,7 @@ export class DialogCreateCategorieComponent implements OnInit {
   }
 
   notCreate() {
-    this._dialogRef.close();
+    this._dialogRef.close(false);
   }
 
 }

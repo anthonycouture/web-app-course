@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {Subscription} from "rxjs";
 import {startWith} from "rxjs/operators";
@@ -8,7 +8,7 @@ import {startWith} from "rxjs/operators";
   templateUrl: './search-autocomplete.component.html',
   styleUrls: ['./search-autocomplete.component.css']
 })
-export class SearchAutocompleteComponent implements OnInit, OnChanges, OnDestroy {
+export class SearchAutocompleteComponent implements OnChanges, OnDestroy {
 
   @Input() listOption: string[] = [];
   @Output() optionValide = new EventEmitter<string[]>();
@@ -27,9 +27,6 @@ export class SearchAutocompleteComponent implements OnInit, OnChanges, OnDestroy
       this._value = value;
       return this._filter()
     });
-  }
-
-  ngOnInit(): void {
   }
 
   ngOnChanges(changes: SimpleChanges): void {

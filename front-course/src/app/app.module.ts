@@ -39,7 +39,6 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {DialogAddProduitInListComponent} from './shared/dialog/dialog-add-produit-in-list/dialog-add-produit-in-list.component';
 import {ListeCourseComponent} from './shared/components/liste-course/liste-course.component';
 import {ListeCousePredefinedComponent} from './pages/liste-couse-predefined/liste-couse-predefined.component';
-import {TransformDataListePredefinedPipe} from './pages/liste-couse-predefined/transform-data-liste-predefined.pipe';
 
 const routes = [
   {path: '', component: AccueilComponent},
@@ -65,8 +64,7 @@ const routes = [
     CategoriesFiltreByNameProduitPipe,
     DialogAddProduitInListComponent,
     ListeCousePredefinedComponent,
-    ListeCourseComponent,
-    TransformDataListePredefinedPipe
+    ListeCourseComponent
   ],
   imports: [
     BrowserModule,

@@ -1,19 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {CourseService} from "../../core/services/course.service";
 import {CategorieService} from "../../core/services/categorie.service";
-import {CategoriesStoreService} from "../../core/state/categories-store.service";
-import {CourseStoreService} from "../../core/state/course-store.service";
 import {SpinnerStoreService} from "../../core/state/spinner-store.service";
-import {firstValueFrom, forkJoin, map, Observable} from "rxjs";
-import {
-  ItemCourseDetails,
-  itemCourseTabToListeCourseDetailsTab,
-  ListeCourseDetails
-} from "../../shared/utils/course-utils";
+import {firstValueFrom, forkJoin} from "rxjs";
 import {ItemCourse} from "../../core/models/item-course";
 import {MessageStoreService} from "../../core/state/message-store.service";
 import {DialogAddProduitInListComponent} from "../../shared/dialog/dialog-add-produit-in-list/dialog-add-produit-in-list.component";
 import {MatDialog} from "@angular/material/dialog";
+import {Categorie} from "../../core/models/categorie";
 
 @Component({
   selector: 'app-accueil',
@@ -22,24 +16,21 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class AccueilComponent implements OnInit {
 
-
-  listeCourseDetails$: Observable<ListeCourseDetails[]>;
+  categories: Categorie[];
+  itemsCourse: ItemCourse[];
 
   messageError: string | undefined;
 
 
   constructor(private _courseService: CourseService,
               private _categorieService: CategorieService,
-              private _categoriesStore: CategoriesStoreService,
-              private _courseStore: CourseStoreService,
               private _spinnerStore: SpinnerStoreService,
               private _messageStore: MessageStoreService,
               private _dialog: MatDialog) {
-    this.listeCourseDetails$ = this._courseStore.course$
-      .pipe(
-        map(itemCourses =>
-          itemCourseTabToListeCourseDetailsTab(itemCourses, this._categoriesStore.getCategories()))
-      );
+
+    this.categories = [];
+    this.itemsCourse = [];
+
   }
 
   ngOnInit(): void {
@@ -51,27 +42,33 @@ export class AccueilComponent implements OnInit {
       ]
     ))
       .then((result) => {
-        this._categoriesStore.setCategories(result[0]);
-        this._courseStore.setCourse(result[1]);
+        this.categories = result[0];
+        this.itemsCourse = result[1];
       }).catch(() => this.messageError = 'Problème de communication avec le serveur')
       .finally(() => this._spinnerStore.setSpinner(false))
   }
 
 
-  addQuantityItemCourse(produit: ItemCourseDetails): void {
-    let itemCourse: ItemCourse = new ItemCourse(produit.idItemCourse, produit.idProduit, produit.quantite + 1);
-    this._updateItemInListCourse(itemCourse);
+  addQuantityItemCourse(idItemCourse: number): void {
+    const itemCourse: ItemCourse | undefined = this.itemsCourse.find(item => item.id === idItemCourse);
+    if (!!itemCourse) {
+      itemCourse.quantite += 1;
+      this._updateItemInListCourse(itemCourse);
+    }
   }
 
-  lessQuantityItemCourse(produit: ItemCourseDetails): void {
-    let itemCourse: ItemCourse = new ItemCourse(produit.idItemCourse, produit.idProduit, produit.quantite - 1);
-    this._updateItemInListCourse(itemCourse);
+  lessQuantityItemCourse(idItemCourse: number): void {
+    const itemCourse: ItemCourse | undefined = this.itemsCourse.find(item => item.id === idItemCourse);
+    if (!!itemCourse) {
+      itemCourse.quantite -= 1;
+      this._updateItemInListCourse(itemCourse);
+    }
   }
 
   deleteItemCourse(idItemCourse: number): void {
     firstValueFrom(this._courseService.deleteItemCourseInList(idItemCourse))
       .then(() => {
-        this._courseStore.deleteItemInCourse(idItemCourse);
+        this.itemsCourse = this.itemsCourse.filter(item => item.id !== idItemCourse);
         this._messageStore.setMessage({
           message: 'Le produit a été supprimé de la liste de course',
           colorTexte: 'white'
@@ -83,7 +80,7 @@ export class AccueilComponent implements OnInit {
   private _updateItemInListCourse(itemCourseUpdate: ItemCourse): void {
     firstValueFrom(this._courseService.updateItemCourseInList(itemCourseUpdate))
       .then((data) => {
-        this._courseStore.updateCourse(data);
+        this.itemsCourse = this.itemsCourse.map((item, index) => index === index ? data : item);
         this._messageStore.setMessage({
           message: 'Le produit a été mis à jour dans la liste de course',
           colorTexte: 'white'
@@ -115,8 +112,15 @@ export class AccueilComponent implements OnInit {
 
 
   openDialogAddProduitInList(): void {
-    this._dialog.open(DialogAddProduitInListComponent, {
+    const dialogRef = this._dialog.open(DialogAddProduitInListComponent, {
       width: '350px',
+      data: {categories: this.categories, listType: 'list'}
+    });
+
+    firstValueFrom(dialogRef.afterClosed()).then(result => {
+      if (!!result && result !== false) {
+        this.itemsCourse = [...this.itemsCourse, result]
+      }
     });
   }
 

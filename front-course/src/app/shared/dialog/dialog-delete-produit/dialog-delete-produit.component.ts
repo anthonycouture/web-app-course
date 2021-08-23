@@ -2,8 +2,8 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Produit} from "../../../core/models/produit";
 import {ProduitService} from "../../../core/services/produit.service";
-import {CategoriesStoreService} from "../../../core/state/categories-store.service";
 import {MessageStoreService} from "../../../core/state/message-store.service";
+import {firstValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-dialog-delete-produit',
@@ -18,7 +18,6 @@ export class DialogDeleteProduitComponent implements OnInit {
   constructor(private _dialogRef: MatDialogRef<DialogDeleteProduitComponent>,
               private _messageStore: MessageStoreService,
               private _produitService: ProduitService,
-              private _categoriesStore: CategoriesStoreService,
               @Inject(MAT_DIALOG_DATA) public data: Produit) {
   }
 
@@ -29,11 +28,10 @@ export class DialogDeleteProduitComponent implements OnInit {
   delete(): void {
     this.messageError = undefined;
     this.isSpinner = true;
-    this._produitService.deleteProduit(this.data.id).toPromise()
+    firstValueFrom(this._produitService.deleteProduit(this.data.id))
       .then(() => {
-        this._categoriesStore.deleteProduitInCategorie(this.data.id);
         this._messageStore.setMessage({message: 'Le produit a été supprimé', colorTexte: 'white'});
-        this._dialogRef.close();
+        this._dialogRef.close(this.data.id);
       }).catch((error) => {
         switch (error.status) {
           case 404:
@@ -51,6 +49,6 @@ export class DialogDeleteProduitComponent implements OnInit {
   }
 
   notDelete(): void {
-    this._dialogRef.close();
+    this._dialogRef.close(false);
   }
 }

@@ -5,12 +5,12 @@
       <mat-grid-tile> {{produit.nomProduit}} </mat-grid-tile>
       <mat-grid-tile>{{produit.quantite}} </mat-grid-tile>
       <mat-grid-tile>
-        <button (click)="addQuantityItemCourse.emit(produit)">
+        <button (click)="addQuantityItemCourse.emit(produit.idItemCourse)">
           <mat-icon>add_circle</mat-icon>
         </button>
       </mat-grid-tile>
       <mat-grid-tile>
-        <button (click)="lessQuantityItemCourse.emit(produit)" [disabled]="produit.quantite<2">
+        <button (click)="lessQuantityItemCourse.emit(produit.idItemCourse)" [disabled]="produit.quantite<2">
           <mat-icon>remove_circle</mat-icon>
         </button>
       </mat-grid-tile>

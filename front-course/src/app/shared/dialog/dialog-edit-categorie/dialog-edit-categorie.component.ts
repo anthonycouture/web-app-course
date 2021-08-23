@@ -4,7 +4,6 @@ import {CategorieService} from "../../../core/services/categorie.service";
 import {Categorie} from "../../../core/models/categorie";
 import {FormControl, Validators} from "@angular/forms";
 import {NameCategorieExistValidator} from "../../validators/name-categorie-exist-validator";
-import {CategoriesStoreService} from "../../../core/state/categories-store.service";
 import {MessageStoreService} from "../../../core/state/message-store.service";
 import {firstValueFrom} from "rxjs";
 
@@ -26,7 +25,6 @@ export class DialogEditCategorieComponent implements OnInit {
               private _categorieService: CategorieService,
               private _messageStore: MessageStoreService,
               private _nameCategorieExistValidator: NameCategorieExistValidator,
-              private _categoriesStore: CategoriesStoreService,
               @Inject(MAT_DIALOG_DATA) public data: Categorie) {
   }
 
@@ -40,9 +38,8 @@ export class DialogEditCategorieComponent implements OnInit {
     categorie.nom = this.categorieName.value;
     firstValueFrom(this._categorieService.editCategorie(categorie))
       .then((data) => {
-        this._categoriesStore.updateCategorie(data);
         this._messageStore.setMessage({message: 'La catégorie a été mis à jour', colorTexte: 'white'});
-        this._dialogRef.close();
+        this._dialogRef.close(data);
       }).catch((error) => {
         switch (error.status) {
           case 404:
@@ -57,7 +54,7 @@ export class DialogEditCategorieComponent implements OnInit {
   }
 
   notEdit(): void {
-    this._dialogRef.close();
+    this._dialogRef.close(false);
   }
 
 }

@@ -5,7 +5,8 @@
 </div>
 <ng-template #content>
   <div class="content">
-    <app-liste-course [listeCourseDetails]="(listeCourseDetails$ | async) ?? []"
+    <app-liste-course [categories]="categories"
+                      [itemsCourse]="this.itemsCourse"
                       (addQuantityItemCourse)="addQuantityItemCourse($event)"
                       (lessQuantityItemCourse)="lessQuantityItemCourse($event)"
                       (deleteItemCourse)="deleteItemCourse($event)"></app-liste-course>

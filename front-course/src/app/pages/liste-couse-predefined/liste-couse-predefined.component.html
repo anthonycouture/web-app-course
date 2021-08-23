@@ -3,10 +3,17 @@
   {{messageError}}
 </div>
 <ng-template #content>
-  <div>
-    <app-liste-course [listeCourseDetails]="listeItemCoursePre | transformDataListePredefined : listCategorie"
+  <div class="content">
+    <app-liste-course [categories]="categories"
+                      [itemsCourse]="itemsCourse"
                       (addQuantityItemCourse)="addQuantityItemCourse($event)"
                       (lessQuantityItemCourse)="lessQuantityItemCourse($event)"
                       (deleteItemCourse)="deleteItemCourse($event)"></app-liste-course>
+  </div>
+
+  <div class="add-button">
+    <button mat-fab color="primary" (click)="openDialogAddProduitInList()">
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
 </ng-template>

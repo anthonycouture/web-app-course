@@ -6,11 +6,15 @@
 <ng-template #content>
   <div class="content">
     <app-search-autocomplete
-      [listOption]="(listNameProduit$ | async) ?? []"
+      [listOption]="listNameProduit"
       (optionValide)="listOption= $event">
     </app-search-autocomplete>
     <app-list-gestion-categorie-produit
-      [categories]="((categories$ | async) ||[]) | categoriesFiltreByNameProduit: listOption">
+      [categories]="categories | categoriesFiltreByNameProduit: listOption"
+      (deleteCategorie)="deleteCategorie($event)"
+      (editCategorie)="editCategorie($event)"
+      (deleteProduit)="deleteProduit($event)"
+      (editProduit)="editProduit($event)">
     </app-list-gestion-categorie-produit>
 
   </div>

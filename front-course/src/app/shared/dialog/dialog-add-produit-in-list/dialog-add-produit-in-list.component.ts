@@ -1,13 +1,17 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MatDialogRef} from "@angular/material/dialog";
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Categorie} from "../../../core/models/categorie";
-import {CategoriesStoreService} from "../../../core/state/categories-store.service";
 import {Produit} from "../../../core/models/produit";
 import {firstValueFrom, Subscription} from "rxjs";
 import {CourseService} from "../../../core/services/course.service";
-import {CourseStoreService} from "../../../core/state/course-store.service";
 import {MessageStoreService} from "../../../core/state/message-store.service";
+import {PreDefinedCourseService} from "../../../core/services/pre-defined-course.service";
+
+interface DataInputAddProduitInList {
+  categories: Categorie[];
+  listType: 'list' | 'pre-list';
+}
 
 @Component({
   selector: 'app-dialog-add-produit-in-list',
@@ -22,6 +26,8 @@ export class DialogAddProduitInListComponent implements OnInit, OnDestroy {
   categories: Categorie[];
   produitsDisplay: Produit[];
 
+  listType: 'list' | 'pre-list';
+
   private _allProduits: Produit[];
   private _categorieSelected: Categorie | null;
   private _produitSelected: Produit | null;
@@ -32,11 +38,12 @@ export class DialogAddProduitInListComponent implements OnInit, OnDestroy {
   constructor(private _dialogRef: MatDialogRef<DialogAddProduitInListComponent>,
               private _formBuilder: FormBuilder,
               private _courseService: CourseService,
-              private _categoriesStore: CategoriesStoreService,
-              private _courseStore: CourseStoreService,
-              private _messageStore: MessageStoreService) {
+              private _preDefinedCourseService: PreDefinedCourseService,
+              private _messageStore: MessageStoreService,
+              @Inject(MAT_DIALOG_DATA) data: DataInputAddProduitInList) {
     this.isSpinner = false;
-    this.categories = this._categoriesStore.getCategories();
+    this.categories = data.categories;
+    this.listType = data.listType;
     this.produitsDisplay = [];
     this._allProduits = [];
     this._categorieSelected = null;
@@ -94,7 +101,7 @@ export class DialogAddProduitInListComponent implements OnInit, OnDestroy {
 
     this._subcribes.push(this.produitForm.valueChanges.subscribe((form) => {
       if (!!form.categorie && form.categorie !== this._categorieSelected) {
-        const categorie: Categorie = this._categoriesStore.getCategories().filter(categorie => categorie.id === form.categorie.id)[0];
+        const categorie: Categorie = this.categories.filter(categorie => categorie.id === form.categorie.id)[0];
         this.produitsDisplay = categorie.produits;
         this._categorieSelected = categorie;
         if (!!this._produitSelected && !this.produitsDisplay.includes(this._produitSelected)) {
@@ -107,7 +114,7 @@ export class DialogAddProduitInListComponent implements OnInit, OnDestroy {
         this._categorieSelected = null;
         this.produit = null;
       } else if (!!form.produit && form.produit !== this._produitSelected) {
-        this._categoriesStore.getCategories().every((categorie) => {
+        this.categories.every((categorie) => {
           return categorie.produits.every((produit) => {
             if (produit.id === form.produit.id) {
               this._produitSelected = produit;
@@ -124,38 +131,65 @@ export class DialogAddProduitInListComponent implements OnInit, OnDestroy {
   }
 
   addProduitInList(): void {
-    this.isSpinner = true;
     if (!this.produit) {
       this.messageError = 'Le produit n\'existe pas';
     } else {
-      firstValueFrom(this._courseService.createItemCourseInList({
-        idProduit: this.produit.id,
-        quantite: this.quantite
-      })).then((data) => {
-        this._courseStore.addItemInCourse(data);
-        this._messageStore.setMessage({
-          message: 'Le produit a été ajouté à la liste de course',
-          colorTexte: "white"
-        });
-        this._dialogRef.close();
-      }).catch((error) => {
-        switch (error.status) {
-          case 404:
-            this.messageError = 'Le produit n\'existe pas';
-            break;
-          case 409:
-            this.messageError = 'La produit est déjà dans la liste de course';
-            break;
-          default :
-            this.messageError = 'Une erreur est survenue lors de l\'ajout de produit dans la liste de course';
-            break;
-        }
-      }).finally(() => this.isSpinner = false)
+      this.isSpinner = true;
+      if (this.listType === 'list') {
+        firstValueFrom(this._courseService.createItemCourseInList({
+          idProduit: this.produit.id,
+          quantite: this.quantite
+        })).then((data) => {
+          this._messageStore.setMessage({
+            message: 'Le produit a été ajouté à la liste de course',
+            colorTexte: "white"
+          });
+          this._dialogRef.close(data);
+        }).catch((error) => {
+          switch (error.status) {
+            case 404:
+              this.messageError = 'Le produit n\'existe pas';
+              break;
+            case 409:
+              this.messageError = 'La produit est déjà dans la liste de course';
+              break;
+            default :
+              this.messageError = 'Une erreur est survenue lors de l\'ajout de produit dans la liste de course';
+              break;
+          }
+        }).finally(() => this.isSpinner = false)
+      } else if (this.listType === 'pre-list') {
+        firstValueFrom(this._preDefinedCourseService.createItemCourseInPreDefinedListe({
+          idProduit: this.produit.id,
+          quantite: this.quantite
+        })).then((data) => {
+          this._messageStore.setMessage({
+            message: 'Le produit a été ajouté à la liste de course pré définie',
+            colorTexte: "white"
+          });
+          this._dialogRef.close(data);
+        }).catch((error) => {
+          switch (error.status) {
+            case 404:
+              this.messageError = 'Le produit n\'existe pas';
+              break;
+            case 409:
+              this.messageError = 'La produit est déjà dans la liste de course pré définie';
+              break;
+            default :
+              this.messageError = 'Une erreur est survenue lors de l\'ajout de produit dans la liste de course pré définie';
+              break;
+          }
+        }).finally(() => this.isSpinner = false)
+      } else {
+        this.isSpinner = false
+        this.messageError = 'Une erreur est survenue';
+      }
     }
   }
 
   notAddProduitInList(): void {
-    this._dialogRef.close();
+    this._dialogRef.close(false);
   }
 
   ngOnDestroy(): void {

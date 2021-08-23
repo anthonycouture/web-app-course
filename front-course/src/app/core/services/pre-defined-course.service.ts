@@ -5,6 +5,11 @@ import {ItemCourse} from "../models/item-course";
 import {HttpClient} from "@angular/common/http";
 import {CacheHttpService, cacheValide} from "../cache/cache-http.service";
 
+interface ItemCourseNotId {
+  idProduit: number;
+  quantite: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -48,5 +53,15 @@ export class PreDefinedCourseService {
         this._cacheService.deleteItemCoursePreDefinedCourse(idItemCourse);
       })
     )
+  }
+
+  createItemCourseInPreDefinedListe(itemCourse: ItemCourseNotId): Observable<ItemCourse> {
+    return this._http.post<ItemCourse>(this._url, itemCourse)
+      .pipe(
+        map((itemCourse) => {
+          this._cacheService.addItemCoursePreDefined(itemCourse);
+          return itemCourse;
+        })
+      );
   }
 }

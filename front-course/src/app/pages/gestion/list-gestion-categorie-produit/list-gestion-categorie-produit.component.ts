@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {NestedTreeControl} from "@angular/cdk/tree";
 import {MatTreeNestedDataSource} from "@angular/material/tree";
 import {DialogDeleteCategorieComponent} from "../../../shared/dialog/dialog-delete-categorie/dialog-delete-categorie.component";
@@ -8,6 +8,7 @@ import {Categorie} from "../../../core/models/categorie";
 import {Produit} from "../../../core/models/produit";
 import {DialogDeleteProduitComponent} from "../../../shared/dialog/dialog-delete-produit/dialog-delete-produit.component";
 import {DialogEditProduitComponent} from "../../../shared/dialog/dialog-edit-produit/dialog-edit-produit.component";
+import {firstValueFrom} from "rxjs";
 
 
 interface GestionNode {
@@ -23,6 +24,10 @@ interface GestionNode {
 export class ListGestionCategorieProduitComponent implements OnChanges {
 
   @Input() categories: Categorie[] = [];
+  @Output() deleteCategorie = new EventEmitter<number>();
+  @Output() editCategorie = new EventEmitter<Categorie>();
+  @Output() deleteProduit = new EventEmitter<number>();
+  @Output() editProduit = new EventEmitter<{ produit: Produit, idCategorie: number }>();
 
 
   treeControl = new NestedTreeControl<GestionNode>(node => node.children);
@@ -48,13 +53,13 @@ export class ListGestionCategorieProduitComponent implements OnChanges {
   private _categoriesToGestionNode(categories: Categorie[]): GestionNode[] {
     return categories.map((categorie) => {
       let children: GestionNode[] = [];
-      categorie.produits.forEach((produit) => children.push({item: produit, children: []}));
+      categorie.produits.forEach((produit) => children.push({item: produit}));
       return {item: categorie, children: children};
     })
   }
 
 
-  hasChild = (_: number, node: GestionNode) => node.children && node.children.length > 0;
+  hasChild = (_: number, node: GestionNode) => node.children;
 
   collapse_all(): void {
     this.dataSource.data.forEach(node => {
@@ -70,31 +75,56 @@ export class ListGestionCategorieProduitComponent implements OnChanges {
 
 
   openDialogDeleteCategorie(categorie: Categorie): void {
-    this._dialog.open(DialogDeleteCategorieComponent, {
+    const dialogRef = this._dialog.open(DialogDeleteCategorieComponent, {
       width: '350px',
       data: categorie
+    });
+
+    firstValueFrom(dialogRef.afterClosed()).then(result => {
+      if (!!result && result !== false) {
+        this.deleteCategorie.emit(result);
+      }
     });
   }
 
 
   openDialogEditCategorie(categorie: Categorie): void {
-    this._dialog.open(DialogEditCategorieComponent, {
+    const dialogRef = this._dialog.open(DialogEditCategorieComponent, {
       width: '350px',
       data: categorie
+    });
+
+    firstValueFrom(dialogRef.afterClosed()).then(result => {
+      if (!!result && result !== false) {
+        this.editCategorie.emit(result);
+      }
     });
   }
 
   openDialogDeleteProduit(produit: Produit): void {
-    this._dialog.open(DialogDeleteProduitComponent, {
+    const dialogRef = this._dialog.open(DialogDeleteProduitComponent, {
       width: '350px',
       data: produit
+    });
+
+
+    firstValueFrom(dialogRef.afterClosed()).then(result => {
+      if (!!result && result !== false) {
+        this.deleteProduit.emit(result);
+      }
     });
   }
 
   openDialogEditProduit(produit: Produit): void {
-    this._dialog.open(DialogEditProduitComponent, {
+    const dialogRef = this._dialog.open(DialogEditProduitComponent, {
       width: '350px',
-      data: produit
+      data: {produit: produit, categories: this.categories}
+    });
+
+    firstValueFrom(dialogRef.afterClosed()).then(result => {
+      if (!!result && result !== false) {
+        this.editProduit.emit(result);
+      }
     });
   }
 }

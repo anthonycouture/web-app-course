@@ -34,7 +34,7 @@ export class CacheHttpService {
         .filter((item) => !categorieDelete.produits
           .every((produit) => !(produit.id === item.id))
         );
-      this._cacheCategorie = this._cacheCategorie.filter((item) => item.id === categorieDelete.id);
+      this._cacheCategorie = this._cacheCategorie.filter((item) => item.id !== categorieDelete.id);
     }
   }
 
@@ -75,11 +75,15 @@ export class CacheHttpService {
   }
 
   updateItemCoursePreDefinedCourse(itemCourse: ItemCourse) {
-    this._cacheItemCourse = this._cacheItemCourse.map((item) => item.id !== itemCourse.id ? item : itemCourse);
+    this._cacheItemPreDefinedCourse = this._cacheItemPreDefinedCourse.map((item) => item.id !== itemCourse.id ? item : itemCourse);
   }
 
   deleteItemCoursePreDefinedCourse(idItemCourse: number) {
-    this._cacheItemCourse = this._cacheItemCourse.filter((item) => item.id !== idItemCourse);
+    this._cacheItemPreDefinedCourse = this._cacheItemPreDefinedCourse.filter((item) => item.id !== idItemCourse);
+  }
+
+  addItemCoursePreDefined(itemCourse: ItemCourse) {
+    this._cacheItemPreDefinedCourse = [...this._cacheItemPreDefinedCourse, itemCourse];
   }
 
   deleteProduit(idProduit: number) {
@@ -87,6 +91,8 @@ export class CacheHttpService {
       categorie.produits = categorie.produits.filter(item => item.id !== idProduit)
       return categorie;
     });
+    this._cacheItemPreDefinedCourse = this._cacheItemPreDefinedCourse
+      .filter((item) => item.idProduit !== idProduit);
   }
 
   updateProduit(produit: Produit, idCategorie: number) {

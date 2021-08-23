@@ -2,7 +2,6 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {CategorieService} from "../../../core/services/categorie.service";
 import {Categorie} from "../../../core/models/categorie";
-import {CategoriesStoreService} from "../../../core/state/categories-store.service";
 import {MessageStoreService} from "../../../core/state/message-store.service";
 import {firstValueFrom} from "rxjs";
 
@@ -20,7 +19,6 @@ export class DialogDeleteCategorieComponent implements OnInit {
   constructor(private _dialogRef: MatDialogRef<DialogDeleteCategorieComponent>,
               private _categorieService: CategorieService,
               private _messageStore: MessageStoreService,
-              private _categoriesStore: CategoriesStoreService,
               @Inject(MAT_DIALOG_DATA) public data: Categorie) {
   }
 
@@ -32,9 +30,8 @@ export class DialogDeleteCategorieComponent implements OnInit {
     this.isSpinner = true;
     firstValueFrom(this._categorieService.deleteCategorie(this.data.id))
       .then(() => {
-        this._categoriesStore.removeCategorie(this.data.id);
         this._messageStore.setMessage({message: 'La catégorie a été supprimé', colorTexte: 'white'});
-        this._dialogRef.close();
+        this._dialogRef.close(this.data.id);
       }).catch((error) => {
         switch (error.status) {
           case 404:
@@ -52,7 +49,7 @@ export class DialogDeleteCategorieComponent implements OnInit {
   }
 
   notDelete(): void {
-    this._dialogRef.close();
+    this._dialogRef.close(false);
   }
 
 }

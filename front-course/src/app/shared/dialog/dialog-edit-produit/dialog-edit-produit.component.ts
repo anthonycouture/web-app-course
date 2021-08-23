@@ -5,8 +5,7 @@ import {Produit} from "../../../core/models/produit";
 import {ProduitService} from "../../../core/services/produit.service";
 import {FormBuilder, Validators} from "@angular/forms";
 import {NameProduitExistValidator} from "../../validators/name-produit-exist-validator";
-import {firstValueFrom, Observable} from "rxjs";
-import {CategoriesStoreService} from "../../../core/state/categories-store.service";
+import {firstValueFrom} from "rxjs";
 import {MessageStoreService} from "../../../core/state/message-store.service";
 
 @Component({
@@ -19,7 +18,7 @@ export class DialogEditProduitComponent {
   messageError: string | undefined = undefined;
   isSpinner: boolean = false;
 
-  categories$: Observable<Categorie[]> = this._categoriesStore.categories$;
+  categories: Categorie[];
 
   produitForm = this._formBuilder.group({
     categorie: [undefined,
@@ -27,9 +26,9 @@ export class DialogEditProduitComponent {
         validators: Validators.required
       }
     ],
-    produitName: [this.data.nom,
+    produitName: [this.data.produit.nom,
       {
-        validators: [Validators.required, this._produitExistValidator.validate(this.data.id)]
+        validators: [Validators.required, this._produitExistValidator.validate(this.data.produit.id)]
       }
     ]
   });
@@ -52,23 +51,22 @@ export class DialogEditProduitComponent {
     private _produitService: ProduitService,
     private _formBuilder: FormBuilder,
     private _produitExistValidator: NameProduitExistValidator,
-    private _categoriesStore: CategoriesStoreService,
-    @Inject(MAT_DIALOG_DATA) public data: Produit
+    @Inject(MAT_DIALOG_DATA) public data: { produit: Produit, categories: Categorie[] }
   ) {
-    this.categorie = this._categoriesStore.getCategories().filter(item => item.produits.includes(this.data))[0];
+    this.categorie = data.categories.filter(item => item.produits.includes(data.produit))[0];
+    this.categories = data.categories;
   }
 
 
   edit(): void {
     this.messageError = undefined;
     this.isSpinner = true;
-    let produit: Produit = Object.assign({}, this.data);
+    let produit: Produit = Object.assign({}, this.data.produit);
     produit.nom = this.produitName;
     firstValueFrom(this._produitService.updateProduit(this.categorie.id, produit))
       .then((data) => {
-        this._categoriesStore.updateProduitInCategorie(this.categorie.id, data);
         this._messageStore.setMessage({message: 'Le produit a été mis à jour', colorTexte: 'white'});
-        this._dialogRef.close();
+        this._dialogRef.close({produit: data, idCategorie: this.categorie.id});
       }).catch((error) => {
         switch (error.status) {
           case 404:
@@ -86,7 +84,7 @@ export class DialogEditProduitComponent {
   }
 
   notEdit(): void {
-    this._dialogRef.close();
+    this._dialogRef.close(false);
   }
 
 }
