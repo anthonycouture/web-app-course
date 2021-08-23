@@ -80,7 +80,7 @@ export class AccueilComponent implements OnInit {
   private _updateItemInListCourse(itemCourseUpdate: ItemCourse): void {
     firstValueFrom(this._courseService.updateItemCourseInList(itemCourseUpdate))
       .then((data) => {
-        this.itemsCourse = this.itemsCourse.map((item, index) => index === index ? data : item);
+        this.itemsCourse = this.itemsCourse.map((item) => item.id === data.id ? data : item);
         this._messageStore.setMessage({
           message: 'Le produit a été mis à jour dans la liste de course',
           colorTexte: 'white'
