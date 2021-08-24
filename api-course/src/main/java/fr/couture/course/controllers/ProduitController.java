@@ -9,6 +9,8 @@ import fr.couture.course.payload.ProduitDTO;
 import fr.couture.course.services.ProduitService;
 import lombok.NonNull;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,8 @@ public class ProduitController {
 
     private ModelMapper modelMapper;
 
+    Logger logger = LoggerFactory.getLogger(ProduitController.class);
+
     /**
      * Créer un produit, status HTTP 201 si ok, 419 si la catégorie n'existe pas et
      * 409 si le produit existe
@@ -40,11 +44,11 @@ public class ProduitController {
         try {
             return produitToProduitDTO(produitService.createProduit(produitRequest.getNom(), idCategorie));
         } catch (CategoryNotFoundException e) {
-            e.printStackTrace();
+            this.logger.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.PRECONDITION_FAILED, e.getMessage(), e);
         } catch (ProductExistException e) {
-            e.printStackTrace();
+            this.logger.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);
         }
@@ -63,11 +67,11 @@ public class ProduitController {
         try {
             return produitToProduitDTO(produitService.updateProduit(produitRequest.getId(), produitRequest.getNom(), idCategorie));
         } catch (ProductNotFoundException e) {
-            e.printStackTrace();
+            this.logger.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);
         } catch (CategoryNotFoundException e) {
-            e.printStackTrace();
+            this.logger.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.PRECONDITION_FAILED, e.getMessage(), e);
         }
@@ -84,11 +88,11 @@ public class ProduitController {
         try {
             produitService.deleteProduit(idProduit);
         } catch (ProductNotFoundException e) {
-            e.printStackTrace();
+            this.logger.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);
         } catch (ProductInListException e) {
-            e.printStackTrace();
+            this.logger.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);
         }

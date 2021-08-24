@@ -9,6 +9,8 @@ import fr.couture.course.payload.CategorieDTO;
 import fr.couture.course.services.CategorieService;
 import lombok.NonNull;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,8 @@ public class CategorieController {
     private CategorieService categorieService;
 
     private ModelMapper modelMapper;
+
+    Logger logger = LoggerFactory.getLogger(CategorieController.class);
 
     /**
      * Retourne les catégories
@@ -56,7 +60,7 @@ public class CategorieController {
         try {
             return categorieToCategorieDTO(categorieService.createCategorie(categorieRequest.getNom()));
         } catch (CategoryExistException e) {
-            e.printStackTrace();
+            this.logger.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);
         }
@@ -73,15 +77,15 @@ public class CategorieController {
         try {
             categorieService.deleteCategorie(id);
         } catch (ProductInListException e) {
-            e.printStackTrace();
+            this.logger.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);
         } catch (CategoryNotFoundException e) {
-            e.printStackTrace();
+            this.logger.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);
         } catch (ProductNotFoundException e) {
-            e.printStackTrace();
+            this.logger.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
@@ -101,7 +105,7 @@ public class CategorieController {
         try {
             return categorieToCategorieDTO(categorieService.updateCategorie(id, categorieRequest.getNom()));
         } catch (CategoryNotFoundException e) {
-            e.printStackTrace();
+            this.logger.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
