@@ -52,7 +52,6 @@ export class DialogEditCategorieComponent implements OnInit {
             break;
           default :
             this.messageError = 'Une erreur est survenue lors de la modification de la catégorie';
-            break;
         }
       }
     ).finally(() => this.isSpinner = false);

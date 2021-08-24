@@ -1,9 +1,13 @@
-.add-button {
+.button-fixe {
   position: fixed;
   bottom: 15px;
   right: 15px;
 }
 
+.load-button {
+  margin-bottom: 5px;
+}
+
 .content {
-  padding-bottom: 80px;
+  padding-bottom: 140px;
 }

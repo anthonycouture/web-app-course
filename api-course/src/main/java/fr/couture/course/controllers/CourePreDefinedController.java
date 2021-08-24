@@ -93,7 +93,7 @@ public class CourePreDefinedController {
         } catch (ProductNotFoundException e) {
             e.printStackTrace();
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, e.getMessage(), e);
+                    HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }
 

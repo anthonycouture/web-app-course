@@ -107,7 +107,6 @@ export class ListeCousePredefinedComponent implements OnInit {
               message: 'Une erreur est survenue lors de la modification de la liste de course pré définie',
               colorTexte: 'red'
             });
-            break;
         }
       });
   }
@@ -123,6 +122,24 @@ export class ListeCousePredefinedComponent implements OnInit {
         this.itemsCourse = [...this.itemsCourse, result]
       }
     });
+  }
+
+  async loadInListCourse(): Promise<void> {
+    try {
+      await firstValueFrom(this._preDefinedCourseService.loadInListCourse());
+    } catch (error) {
+      console.log(error.status)
+      switch (error.status) {
+        case 409 :
+          this._messageStore.setMessage({
+            message: 'Des produits sont déjà présent dans la liste de course',
+            colorTexte: 'red'
+          });
+          break;
+        default:
+          this._messageStore.setMessage({message: 'Une erreur est survenue pendant le chargement', colorTexte: 'red'});
+      }
+    }
   }
 
 }

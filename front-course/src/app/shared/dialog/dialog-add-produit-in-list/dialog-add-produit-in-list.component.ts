@@ -155,7 +155,6 @@ export class DialogAddProduitInListComponent implements OnInit, OnDestroy {
               break;
             default :
               this.messageError = 'Une erreur est survenue lors de l\'ajout de produit dans la liste de course';
-              break;
           }
         }).finally(() => this.isSpinner = false)
       } else if (this.listType === 'pre-list') {
@@ -178,7 +177,6 @@ export class DialogAddProduitInListComponent implements OnInit, OnDestroy {
               break;
             default :
               this.messageError = 'Une erreur est survenue lors de l\'ajout de produit dans la liste de course pré définie';
-              break;
           }
         }).finally(() => this.isSpinner = false)
       } else {

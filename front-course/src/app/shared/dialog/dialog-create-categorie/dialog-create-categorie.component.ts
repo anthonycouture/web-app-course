@@ -48,7 +48,6 @@ export class DialogCreateCategorieComponent implements OnInit {
             break;
           default :
             this.messageError = 'Une erreur est survenue lors de la création de la catégorie';
-            break;
         }
       }
     ).finally(() => this.isSpinner = false)

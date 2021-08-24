@@ -81,7 +81,6 @@ export class DialogEditProduitComponent {
             break;
           default :
             this.messageError = 'Une erreur est survenue lors de la modification du produit';
-            break;
         }
       }
     ).finally(() => this.isSpinner = false);

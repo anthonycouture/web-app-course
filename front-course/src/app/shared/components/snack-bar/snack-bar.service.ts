@@ -10,7 +10,6 @@ export class SnackBarService {
 
   constructor(private _messageStore: MessageStoreService,
               private _snackBar: MatSnackBar) {
-    // @ts-ignore
     this._messageStore.message$.subscribe(
       (data) => {
         this._snackBar.openFromComponent(

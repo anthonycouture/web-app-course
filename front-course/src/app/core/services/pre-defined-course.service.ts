@@ -64,4 +64,8 @@ export class PreDefinedCourseService {
         })
       );
   }
+
+  loadInListCourse(): Observable<void> {
+    return this._http.post<void>(`${this._url}/load`, null);
+  }
 }

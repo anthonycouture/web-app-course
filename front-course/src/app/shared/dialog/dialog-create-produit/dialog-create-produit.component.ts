@@ -74,7 +74,6 @@ export class DialogCreateProduitComponent {
             break;
           default :
             this.messageError = 'Une erreur est survenue lors de la création du produit';
-            break;
         }
       }
     ).finally(() => this.isSpinner = false)

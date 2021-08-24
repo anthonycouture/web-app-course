@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SpinnerStoreService} from "./core/state/spinner-store.service";
+import {SnackBarService} from "./shared/components/snack-bar/snack-bar.service";
 
 @Component({
   selector: 'app-root',
@@ -10,19 +11,17 @@ export class AppComponent implements OnInit {
   title = 'front-course';
   isSpinner: boolean;
 
-  constructor(private _spinnerStore: SpinnerStoreService) {
-
+  constructor(private _spinnerStore: SpinnerStoreService,
+              private _snackBarService: SnackBarService) {
     this.isSpinner = false;
+  }
 
-
+  ngOnInit(): void {
     this._spinnerStore.spinner$.subscribe(
       (data) => setTimeout(() => {
         this.isSpinner = data
       }, 0)
     );
-  }
-
-  ngOnInit(): void {
 
   }
 

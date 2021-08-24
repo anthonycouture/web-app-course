@@ -42,7 +42,6 @@ export class DialogDeleteProduitComponent implements OnInit {
             break;
           default :
             this.messageError = 'Une erreur est survenue lors de la suppression du produit';
-            break;
         }
       }
     ).finally(() => this.isSpinner = false);

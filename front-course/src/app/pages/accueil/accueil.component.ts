@@ -105,7 +105,6 @@ export class AccueilComponent implements OnInit {
               message: 'Une erreur est survenue lors de la modification de la liste de course',
               colorTexte: 'red'
             });
-            break;
         }
       });
   }

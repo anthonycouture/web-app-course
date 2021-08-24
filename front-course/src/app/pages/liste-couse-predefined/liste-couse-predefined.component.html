@@ -11,7 +11,11 @@
                       (deleteItemCourse)="deleteItemCourse($event)"></app-liste-course>
   </div>
 
-  <div class="add-button">
+  <div class="button-fixe">
+    <button mat-fab class="load-button" color="warn" (click)="loadInListCourse()">
+      <mat-icon>add_shopping_cart</mat-icon>
+    </button>
+    <br>
     <button mat-fab color="primary" (click)="openDialogAddProduitInList()">
       <mat-icon>add</mat-icon>
     </button>

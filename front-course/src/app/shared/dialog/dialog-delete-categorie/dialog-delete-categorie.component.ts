@@ -42,7 +42,6 @@ export class DialogDeleteCategorieComponent implements OnInit {
             break;
           default :
             this.messageError = 'Une erreur est survenue lors de la suppression de la catégorie';
-            break;
         }
       }
     ).finally(() => this.isSpinner = false);
