@@ -7,9 +7,8 @@ import fr.couture.course.exceptions.ProductNotFoundException;
 import fr.couture.course.payload.ItemListeCourseDTO;
 import fr.couture.course.payload.ItemListeCourseNotIdDTO;
 import fr.couture.course.services.CourseService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +20,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/course")
+@Slf4j
 public class CourseController {
 
     private CourseService courseService;
     private ModelMapper modelMapper;
-
-    Logger logger = LoggerFactory.getLogger(CourseController.class);
 
     @GetMapping
     public List<ItemListeCourseDTO> getListeCourse() {
@@ -39,11 +37,11 @@ public class CourseController {
         try {
             return itemListeCourseToItemListeCourseDTO(this.courseService.ajoutProduitListe(itemListeCourseNotIdDTO.getIdProduit(), itemListeCourseNotIdDTO.getQuantite()));
         } catch (ProductNotFoundException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);
         } catch (ProductInListException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);
         }
@@ -54,15 +52,15 @@ public class CourseController {
         try {
             return itemListeCourseToItemListeCourseDTO(this.courseService.updateItemList(itemListeCourseDTO.id, itemListeCourseDTO.getIdProduit(), itemListeCourseDTO.getQuantite()));
         } catch (ItemListCourseNotFoundException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);
         } catch (ProductNotFoundException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.PRECONDITION_FAILED, e.getMessage(), e);
         } catch (ProductInListException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);
         }
@@ -73,7 +71,7 @@ public class CourseController {
         try {
             this.courseService.deleteItemInList(idItemListeCourse);
         } catch (ItemListCourseNotFoundException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);
         }

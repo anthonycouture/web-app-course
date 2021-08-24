@@ -7,9 +7,8 @@ import fr.couture.course.exceptions.ProductNotFoundException;
 import fr.couture.course.payload.ItemListeCourseDTO;
 import fr.couture.course.payload.ItemListeCourseNotIdDTO;
 import fr.couture.course.services.CoursePreDefinedService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +20,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/course-pre-defined")
+@Slf4j
 public class CourePreDefinedController {
 
     private ModelMapper modelMapper;
     private CoursePreDefinedService coursePreDefinedService;
-    Logger logger = LoggerFactory.getLogger(CourePreDefinedController.class);
 
     @GetMapping
     public List<ItemListeCourseDTO> getPreDefinedListeCourse() {
@@ -43,11 +42,11 @@ public class CourePreDefinedController {
                     )
             );
         } catch (ProductNotFoundException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);
         } catch (ProductInListException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);
         }
@@ -60,15 +59,15 @@ public class CourePreDefinedController {
                     this.coursePreDefinedService.updateItemPreDefinedListeCourse(itemListeCourseDTO.id, itemListeCourseDTO.getIdProduit(), itemListeCourseDTO.quantite)
             );
         } catch (ProductNotFoundException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.PRECONDITION_FAILED, e.getMessage(), e);
         } catch (ItemListCourseNotFoundException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);
         } catch (ProductInListException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);
         }
@@ -79,7 +78,7 @@ public class CourePreDefinedController {
         try {
             this.coursePreDefinedService.deleteItemPreDefinedListeCourse(idItemCoursePreDefined);
         } catch (ItemListCourseNotFoundException e) {
-            this.logger.error(e.getMessage() + " id " + idItemCoursePreDefined);
+            log.error(e.getMessage() + " id " + idItemCoursePreDefined);
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
@@ -90,11 +89,11 @@ public class CourePreDefinedController {
         try {
             this.coursePreDefinedService.loadPreDefinedListInListeCourse();
         } catch (ProductInListException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);
         } catch (ProductNotFoundException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }

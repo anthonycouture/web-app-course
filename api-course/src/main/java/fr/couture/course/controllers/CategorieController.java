@@ -8,9 +8,8 @@ import fr.couture.course.exceptions.ProductNotFoundException;
 import fr.couture.course.payload.CategorieDTO;
 import fr.couture.course.services.CategorieService;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +27,12 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/categories")
+@Slf4j
 public class CategorieController {
 
     private CategorieService categorieService;
 
     private ModelMapper modelMapper;
-
-    Logger logger = LoggerFactory.getLogger(CategorieController.class);
 
     /**
      * Retourne les catégories
@@ -44,6 +42,7 @@ public class CategorieController {
     @GetMapping
     @Transactional
     public List<CategorieDTO> findAllCategorie() {
+        log.info("toto");
         return listCategorieToListCategorieDTO(categorieService.findAllCategories());
     }
 
@@ -60,7 +59,7 @@ public class CategorieController {
         try {
             return categorieToCategorieDTO(categorieService.createCategorie(categorieRequest.getNom()));
         } catch (CategoryExistException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);
         }
@@ -77,15 +76,15 @@ public class CategorieController {
         try {
             categorieService.deleteCategorie(id);
         } catch (ProductInListException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, e.getMessage(), e);
         } catch (CategoryNotFoundException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);
         } catch (ProductNotFoundException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
@@ -105,7 +104,7 @@ public class CategorieController {
         try {
             return categorieToCategorieDTO(categorieService.updateCategorie(id, categorieRequest.getNom()));
         } catch (CategoryNotFoundException e) {
-            this.logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
