@@ -5,7 +5,6 @@ import {SpinnerStoreService} from "../../core/state/spinner-store.service";
 import {firstValueFrom, forkJoin} from "rxjs";
 import {ItemCourse} from "../../core/models/item-course";
 import {MessageStoreService} from "../../core/state/message-store.service";
-import {DialogAddProduitInListComponent} from "../../shared/dialog/dialog-add-produit-in-list/dialog-add-produit-in-list.component";
 import {MatDialog} from "@angular/material/dialog";
 import {Categorie} from "../../core/models/categorie";
 
@@ -111,7 +110,7 @@ export class AccueilComponent implements OnInit {
 
 
   openDialogAddProduitInList(): void {
-    const dialogRef = this._dialog.open(DialogAddProduitInListComponent, {
+    /*const dialogRef = this._dialog.open(DialogAddProduitInListComponent, {
       width: '350px',
       data: {categories: this.categories, listType: 'list'}
     });
@@ -120,7 +119,7 @@ export class AccueilComponent implements OnInit {
       if (!!result && result !== false) {
         this.itemsCourse = [...this.itemsCourse, result]
       }
-    });
+    });*/
   }
 
 }

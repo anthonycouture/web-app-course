@@ -6,7 +6,6 @@ import {SpinnerStoreService} from "../../core/state/spinner-store.service";
 import {MessageStoreService} from "../../core/state/message-store.service";
 import {CategorieService} from "../../core/services/categorie.service";
 import {Categorie} from "../../core/models/categorie";
-import {DialogAddProduitInListComponent} from "../../shared/dialog/dialog-add-produit-in-list/dialog-add-produit-in-list.component";
 import {MatDialog} from "@angular/material/dialog";
 
 @Component({
@@ -112,7 +111,7 @@ export class ListeCousePredefinedComponent implements OnInit {
   }
 
   openDialogAddProduitInList(): void {
-    const dialogRef = this._dialog.open(DialogAddProduitInListComponent, {
+    /*const dialogRef = this._dialog.open(DialogAddProduitInListComponent, {
       width: '350px',
       data: {categories: this.categories, listType: 'pre-list'}
     });
@@ -121,7 +120,7 @@ export class ListeCousePredefinedComponent implements OnInit {
       if (!!result && result !== false) {
         this.itemsCourse = [...this.itemsCourse, result]
       }
-    });
+    });*/
   }
 
   async loadInListCourse(): Promise<void> {

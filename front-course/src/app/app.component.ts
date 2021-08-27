@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SpinnerStoreService} from "./core/state/spinner-store.service";
-import {SnackBarService} from "./shared/components/snack-bar/snack-bar.service";
+import {SnackBarService} from "./core/snack-bar.service";
 
 @Component({
   selector: 'app-root',
