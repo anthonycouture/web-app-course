@@ -20,5 +20,5 @@ app.get('/*', function (req, res) {
     }
   );
 });
-const appListen = app.listen(process.env.PORT || 4200);
+const appListen = app.listen(process.env.PORT);
 console.log('Le serveur fonctionne sur le port ' + appListen.address().port);
