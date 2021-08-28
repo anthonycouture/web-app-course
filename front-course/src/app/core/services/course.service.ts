@@ -18,7 +18,7 @@ export class CourseService {
   private _url = environment.apiUrl + '/course';
 
 
-  private _timeCache: number | undefined;
+  timeCache: number | undefined;
 
   constructor(private _http: HttpClient,
               private _cacheService: CacheHttpService) {
@@ -26,11 +26,11 @@ export class CourseService {
 
 
   getListeCourse(): Observable<ItemCourse[]> {
-    if (!this._timeCache || !cacheValide(this._timeCache)) {
+    if (!this.timeCache || !cacheValide(this.timeCache)) {
       return this._http.get<ItemCourse[]>(this._url)
         .pipe(
           map((itemCourseTab) => {
-            this._timeCache = Date.now();
+            this.timeCache = Date.now();
             this._cacheService.cacheItemCourse = itemCourseTab;
             return itemCourseTab;
           })

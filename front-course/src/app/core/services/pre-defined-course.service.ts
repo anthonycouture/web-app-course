@@ -4,6 +4,7 @@ import {map, Observable, of} from "rxjs";
 import {ItemCourse} from "../models/item-course";
 import {HttpClient} from "@angular/common/http";
 import {CacheHttpService, cacheValide} from "../cache/cache-http.service";
+import {CourseService} from "./course.service";
 
 interface ItemCourseNotId {
   idProduit: number;
@@ -20,7 +21,8 @@ export class PreDefinedCourseService {
   private _timeCache: number | undefined;
 
   constructor(private _http: HttpClient,
-              private _cacheService: CacheHttpService) {
+              private _cacheService: CacheHttpService,
+              private _courseService: CourseService) {
   }
 
   getPreDefinedListeCourse(): Observable<ItemCourse[]> {
@@ -66,6 +68,10 @@ export class PreDefinedCourseService {
   }
 
   loadInListCourse(): Observable<void> {
-    return this._http.post<void>(`${this._url}/load`, null);
+    return this._http.post<void>(`${this._url}/load`, null).pipe(
+      map(() => {
+        this._courseService.timeCache = undefined;
+      })
+    );
   }
 }
