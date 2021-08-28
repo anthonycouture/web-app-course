@@ -7,6 +7,7 @@ import {ItemCourse} from "../../core/models/item-course";
 import {MessageStoreService} from "../../core/state/message-store.service";
 import {MatDialog} from "@angular/material/dialog";
 import {Categorie} from "../../core/models/categorie";
+import {DialogAddProduitInListComponent} from "../../shared/dialog/dialog-add-produit-in-list/dialog-add-produit-in-list.component";
 
 @Component({
   selector: 'app-accueil',
@@ -110,7 +111,7 @@ export class AccueilComponent implements OnInit {
 
 
   openDialogAddProduitInList(): void {
-    /*const dialogRef = this._dialog.open(DialogAddProduitInListComponent, {
+    const dialogRef = this._dialog.open(DialogAddProduitInListComponent, {
       width: '350px',
       data: {categories: this.categories, listType: 'list'}
     });
@@ -119,7 +120,7 @@ export class AccueilComponent implements OnInit {
       if (!!result && result !== false) {
         this.itemsCourse = [...this.itemsCourse, result]
       }
-    });*/
+    });
   }
 
 }
