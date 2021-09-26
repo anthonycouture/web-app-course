@@ -73,6 +73,12 @@ export class ListeCourseComponent implements OnChanges {
       });
     });
 
+    response.sort((a, b) => a.nomCategorie.localeCompare(b.nomCategorie));
+
+    response.forEach((item) =>
+      item.produits.sort((a, b) => a.nomProduit.localeCompare(b.nomProduit))
+    );
+
 
     return response;
   }

@@ -127,8 +127,11 @@ export class ListeCousePredefinedComponent implements OnInit {
   async loadInListCourse(): Promise<void> {
     try {
       await firstValueFrom(this._preDefinedCourseService.loadInListCourse());
+      this._messageStore.setMessage({
+        message: 'Les produits sont chargés dans la liste de course',
+        colorTexte: 'white'
+      });
     } catch (error) {
-      console.log(error.status)
       switch (error.status) {
         case 409 :
           this._messageStore.setMessage({

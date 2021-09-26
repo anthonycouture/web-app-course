@@ -43,11 +43,14 @@ export class ListGestionCategorieProduitComponent implements OnChanges {
         expandedNodes.push(node)
     });
     this.dataSource.data = [];
-    this.dataSource.data = this._categoriesToGestionNode(this.categories);
+    const data = this._categoriesToGestionNode(this.categories);
+    data.sort((a, b) => a.item.nom.localeCompare(b.item.nom));
+    data.forEach((item) => item.children?.sort((a, b) => a.item.nom.localeCompare(b.item.nom)));
+    this.dataSource.data = data;
     this.dataSource.data.forEach(node => {
       if (expandedNodes.find(nodeExpand => nodeExpand.item.id === node.item.id))
         this.treeControl.expand(node);
-    })
+    });
   }
 
   private _categoriesToGestionNode(categories: Categorie[]): GestionNode[] {
